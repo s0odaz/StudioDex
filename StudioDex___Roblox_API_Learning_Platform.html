@@ -1,0 +1,1251 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head><base href="https://d16ilfvy4mv02r.cloudfront.net/workspaces/VTucIhqSmviUAiMhTIg1ajbe75jx14up/17501518-cc98-4743-8f39-7f62f58f21e5/files/">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>StudioDex — Master Every Roblox API</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@400;500;600;700&family=Oxanium:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body { background: #0D0F14; font-family: 'Rajdhani', sans-serif; color: #e2e8f0; margin: 0; overflow-x: hidden; }
+  ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: #111216; } ::-webkit-scrollbar-thumb { background: #2a2d35; border-radius: 3px; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .oxanium { font-family: 'Oxanium', sans-serif; }
+  .glow-cyan { box-shadow: 0 0 20px rgba(0,212,255,0.15); }
+  .glow-cyan:hover { box-shadow: 0 0 30px rgba(0,212,255,0.3); }
+  .glow-red { box-shadow: 0 0 20px rgba(255,59,59,0.15); }
+  .card-hover { transition: all 0.2s ease; border: 1px solid #1e2028; }
+  .card-hover:hover { border-color: rgba(0,212,255,0.3); box-shadow: 0 0 20px rgba(0,212,255,0.1); transform: translateY(-2px); }
+  .grid-bg { background-image: linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px); background-size: 40px 40px; }
+  .code-editor { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; background: #0a0c10; color: #abb2bf; border: 1px solid #2a2d35; resize: none; outline: none; padding: 16px; width: 100%; }
+  .xp-bar { background: linear-gradient(90deg, #00D4FF, #0099cc); border-radius: 9999px; transition: width 0.6s ease; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 600; }
+  .badge-beginner { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+  .badge-intermediate { background: rgba(234,179,8,0.15); color: #eab308; border: 1px solid rgba(234,179,8,0.3); }
+  .badge-advanced { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+  .badge-pro { background: rgba(0,212,255,0.15); color: #00D4FF; border: 1px solid rgba(0,212,255,0.3); }
+  .nav-item { transition: all 0.15s; border-left: 2px solid transparent; }
+  .nav-item:hover { border-left-color: rgba(0,212,255,0.5); background: rgba(0,212,255,0.05); }
+  .nav-item.active { border-left-color: #00D4FF; background: rgba(0,212,255,0.1); color: #00D4FF; }
+  .btn-primary { background: linear-gradient(135deg, #00D4FF, #0099cc); color: #000; font-weight: 700; border-radius: 8px; padding: 10px 24px; transition: all 0.2s; cursor: pointer; border: none; font-family: 'Oxanium', sans-serif; }
+  .btn-primary:hover { filter: brightness(1.15); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,212,255,0.4); }
+  .btn-outline { background: transparent; color: #00D4FF; font-weight: 700; border-radius: 8px; padding: 10px 24px; transition: all 0.2s; cursor: pointer; border: 1px solid #00D4FF; font-family: 'Oxanium', sans-serif; }
+  .btn-outline:hover { background: rgba(0,212,255,0.1); }
+  .pulse-glow { animation: pulseGlow 2s infinite; }
+  @keyframes pulseGlow { 0%,100% { box-shadow: 0 0 10px rgba(0,212,255,0.3); } 50% { box-shadow: 0 0 30px rgba(0,212,255,0.7); } }
+  .streak-fire { animation: bounce 1s infinite alternate; }
+  @keyframes bounce { from { transform: scale(1); } to { transform: scale(1.15); } }
+  .syntax-kw { color: #c678dd; }
+  .syntax-fn { color: #61afef; }
+  .syntax-str { color: #98c379; }
+  .syntax-num { color: #d19a66; }
+  .syntax-cm { color: #5c6370; font-style: italic; }
+  .syntax-var { color: #abb2bf; }
+  .locked-overlay { position: absolute; inset: 0; background: rgba(13,15,20,0.85); backdrop-filter: blur(2px); border-radius: inherit; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; }
+  select { background: #111216; color: #e2e8f0; border: 1px solid #2a2d35; border-radius: 6px; padding: 6px 12px; }
+  input[type="text"], input[type="email"], input[type="password"] { background: #111216; color: #e2e8f0; border: 1px solid #2a2d35; border-radius: 6px; padding: 8px 12px; outline: none; width: 100%; }
+  input:focus { border-color: #00D4FF; }
+  .tab { padding: 8px 16px; cursor: pointer; border-bottom: 2px solid transparent; color: #888; transition: all 0.15s; }
+  .tab.active { border-bottom-color: #00D4FF; color: #00D4FF; }
+  .tab:hover { color: #ccc; }
+  .progress-ring { transform: rotate(-90deg); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+// ─── MOCK DATA ────────────────────────────────────────────────────────────────
+const LESSONS = [
+  { id:1, title:"Introduction to BasePart Properties", category:"Classes", difficulty:"Beginner", xp:50, time:"8 min", locked:false, completed:true, description:"Learn the foundational properties of BasePart: Size, Position, Color, Material, Anchored, and CanCollide.", code:`-- BasePart Properties Example\nlocal part = workspace.MyPart\n\n-- Position the part\npart.Position = Vector3.new(0, 10, 0)\n\n-- Set size\npart.Size = Vector3.new(4, 1, 4)\n\n-- Visual properties\npart.Color = Color3.fromRGB(255, 100, 0)\npart.Material = Enum.Material.SmoothPlastic\n\n-- Physics\npart.Anchored = true\npart.CanCollide = true\n\nprint("Part configured!")` },
+  { id:2, title:"Moving Parts with CFrame", category:"Data Types", difficulty:"Intermediate", xp:75, time:"12 min", locked:false, completed:true, description:"Master CFrame for positioning, rotating, and orienting objects in 3D space.", code:`-- CFrame Examples\nlocal part = workspace.Part\n\n-- Simple position\npart.CFrame = CFrame.new(0, 5, 0)\n\n-- Position + rotation\npart.CFrame = CFrame.new(0, 5, 0) \n  * CFrame.Angles(0, math.rad(45), 0)\n\n-- Smooth lerp movement\nlocal target = CFrame.new(10, 5, 10)\nfor i = 0, 1, 0.05 do\n  part.CFrame = part.CFrame:Lerp(target, i)\n  task.wait(0.05)\nend\nprint("Moved!")` },
+  { id:3, title:"Detecting Collisions with .Touched", category:"Events", difficulty:"Beginner", xp:50, time:"6 min", locked:false, completed:false, description:"Use the Touched event to detect when parts collide and respond with game logic.", code:`-- Touched Event Example\nlocal part = workspace.KillBrick\nlocal debounce = false\n\npart.Touched:Connect(function(hit)\n  if debounce then return end\n  \n  local humanoid = hit.Parent:FindFirstChild("Humanoid")\n  if humanoid then\n    debounce = true\n    humanoid.Health = 0\n    print("Player eliminated!")\n    task.wait(1)\n    debounce = false\n  end\nend)` },
+  { id:4, title:"Animating with TweenService", category:"Classes", difficulty:"Intermediate", xp:100, time:"15 min", locked:false, completed:false, description:"Create smooth animations for parts, UI, and more using TweenService.", code:`-- TweenService Animation\nlocal TweenService = game:GetService("TweenService")\nlocal part = workspace.Part\n\nlocal info = TweenInfo.new(\n  1.5,                      -- duration\n  Enum.EasingStyle.Bounce,  -- style\n  Enum.EasingDirection.Out  -- direction\n)\n\nlocal tween = TweenService:Create(part, info, {\n  Position = Vector3.new(0, 20, 0),\n  Color = Color3.fromRGB(0, 212, 255)\n})\n\ntween:Play()\ntween.Completed:Connect(function()\n  print("Animation complete!")\nend)` },
+  { id:5, title:"Remote Events for Client-Server", category:"Events", difficulty:"Advanced", xp:150, time:"20 min", locked:false, completed:false, description:"Master the client-server boundary using RemoteEvents and RemoteFunctions.", code:`-- SERVER SCRIPT\nlocal remote = game.ReplicatedStorage.MyEvent\n\nremote.OnServerEvent:Connect(function(player, damage)\n  local char = player.Character\n  local hum = char and char:FindFirstChild("Humanoid")\n  if hum then\n    hum.Health -= damage\n  end\n  print(player.Name, "dealt", damage, "damage")\nend)\n\n-- LOCAL SCRIPT\nlocal remote = game.ReplicatedStorage.MyEvent\nlocal UIS = game:GetService("UserInputService")\n\nUIS.InputBegan:Connect(function(input)\n  if input.KeyCode == Enum.KeyCode.E then\n    remote:FireServer(25) -- deal 25 damage\n  end\nend)` },
+  { id:6, title:"Using pcall() for Error Handling", category:"Global Functions", difficulty:"Intermediate", xp:75, time:"10 min", locked:true, completed:false, description:"Write robust scripts that gracefully handle runtime errors using pcall and xpcall.", code:`-- Safe error handling with pcall\nlocal function riskyOperation()\n  local data = game:GetService("DataStoreService")\n    :GetDataStore("PlayerData")\n    :GetAsync("player_123")\n  return data\nend\n\nlocal success, result = pcall(riskyOperation)\n\nif success then\n  print("Data loaded:", result)\nelse\n  warn("Failed to load data:", result)\n  -- fallback logic here\nend\n\n-- xpcall with error handler\nlocal ok, err = xpcall(riskyOperation, function(e)\n  return "Caught: " .. tostring(e)\nend)\nprint(ok, err)` },
+  { id:7, title:"Color3 and BrickColor Explained", category:"Data Types", difficulty:"Beginner", xp:50, time:"8 min", locked:true, completed:false, description:"Understand the difference between Color3 and BrickColor and how to use them effectively.", code:`-- Color3 Methods\nlocal c1 = Color3.new(1, 0, 0)           -- Red (0-1 range)\nlocal c2 = Color3.fromRGB(255, 165, 0)    -- Orange\nlocal c3 = Color3.fromHSV(0.6, 1, 1)     -- Blue via HSV\n\n-- BrickColor (legacy)\nlocal bc = BrickColor.new("Bright red")\nlocal bc2 = BrickColor.Random()\n\n-- Convert BrickColor → Color3\nlocal asColor3 = bc.Color\n\n-- Lerp between colors\nlocal lerped = c1:Lerp(c2, 0.5)\nprint("Lerped:", lerped)` },
+  { id:8, title:"Enum.KeyCode: Keyboard Input", category:"Enumerations", difficulty:"Beginner", xp:50, time:"7 min", locked:true, completed:false, description:"Use Enum.KeyCode with UserInputService to detect and respond to keyboard input.", code:`-- Keyboard Input with UserInputService\nlocal UIS = game:GetService("UserInputService")\n\nUIS.InputBegan:Connect(function(input, gameProcessed)\n  if gameProcessed then return end\n  \n  if input.KeyCode == Enum.KeyCode.Space then\n    print("Space pressed!")\n  elseif input.KeyCode == Enum.KeyCode.F then\n    print("F pressed - toggling flashlight")\n  end\nend)\n\n-- Check if key is held\ngame:GetService("RunService").Heartbeat:Connect(function()\n  if UIS:IsKeyDown(Enum.KeyCode.W) then\n    print("Moving forward...")\n  end\nend)` },
+  { id:9, title:"table Library Mastery", category:"Libraries", difficulty:"Advanced", xp:125, time:"18 min", locked:true, completed:false, description:"Deep dive into Luau's table library: sort, move, freeze, clone, and more.", code:`-- table library examples\nlocal players = {"Alice","Bob","Charlie","Dave"}\n\n-- Sort alphabetically\ntable.sort(players)\n\n-- Sort by custom condition\nlocal scores = {name="Alice",xp=1200}\ntable.sort(scores, function(a,b) return a.xp > b.xp end)\n\n-- find\nlocal idx = table.find(players, "Bob")\nprint("Bob is at index:", idx)\n\n-- freeze (immutable)\nlocal config = table.freeze({maxHealth=100, speed=16})\n-- config.speed = 20 -- would error!\n\n-- clone\nlocal copy = table.clone(players)\ntable.insert(copy, "Eve")\nprint(#players, #copy) -- 4, 5` },
+  { id:10, title:"task Library & Async Patterns", category:"Libraries", difficulty:"Intermediate", xp:100, time:"14 min", locked:true, completed:false, description:"Modern async patterns using task.spawn, task.defer, task.delay and task.cancel.", code:`-- task library - modern threading\n\n-- task.spawn: immediate new thread\ntask.spawn(function()\n  print("Runs immediately in new thread")\n  task.wait(2)\n  print("Done after 2 seconds")\nend)\nprint("This runs before the wait!")\n\n-- task.defer: next frame\ntask.defer(function()\n  print("Deferred to next frame")\nend)\n\n-- task.delay: run after N seconds\nlocal thread = task.delay(5, function()\n  print("5 seconds later!")\nend)\n\n-- Cancel a pending task\ntask.cancel(thread)\nprint("Task cancelled!")` },
+  { id:11, title:"Humanoid & Character Control", category:"Classes", difficulty:"Intermediate", xp:100, time:"16 min", locked:true, completed:false, description:"Control player characters using the Humanoid class: health, movement, states.", code:`-- Humanoid Control\nlocal Players = game:GetService("Players")\n\nPlayers.PlayerAdded:Connect(function(player)\n  player.CharacterAdded:Connect(function(char)\n    local hum = char:WaitForChild("Humanoid")\n    \n    -- Modify stats\n    hum.MaxHealth = 200\n    hum.Health = 200\n    hum.WalkSpeed = 24\n    hum.JumpPower = 60\n    \n    -- Listen to state changes\n    hum.StateChanged:Connect(function(old, new)\n      if new == Enum.HumanoidStateType.Freefall then\n        print(player.Name, "is falling!")\n      end\n    end)\n  end)\nend)` },
+  { id:12, title:"DataStore: Saving Player Data", category:"Classes", difficulty:"Advanced", xp:200, time:"25 min", locked:true, completed:false, description:"Persist player data across sessions using DataStoreService with proper error handling.", code:`-- DataStoreService Pattern\nlocal DSS = game:GetService("DataStoreService")\nlocal Players = game:GetService("Players")\nlocal store = DSS:GetDataStore("PlayerData_v1")\n\nlocal function loadData(player)\n  local ok, data = pcall(function()\n    return store:GetAsync(player.UserId)\n  end)\n  return ok and data or { coins=0, level=1, xp=0 }\nend\n\nlocal function saveData(player, data)\n  local ok, err = pcall(function()\n    store:SetAsync(player.UserId, data)\n  end)\n  if not ok then warn("Save failed:", err) end\nend\n\nPlayers.PlayerRemoving:Connect(function(p)\n  saveData(p, { coins=500, level=5, xp=1200 })\nend)` },
+  { id:13, title:"math Library: Advanced Functions", category:"Libraries", difficulty:"Intermediate", xp:75, time:"11 min", locked:true, completed:false, description:"Leverage Luau's math library for game logic: noise, clamp, lerp patterns, trig.", code:`-- Advanced math patterns\n\n-- Clamping a value\nlocal health = math.clamp(currentHP, 0, 100)\n\n-- Manual lerp (math.lerp doesn't exist in Luau)\nlocal function lerp(a, b, t)\n  return a + (b - a) * t\nend\n\n-- Perlin noise for terrain\nfor x = 0, 10 do\n  for z = 0, 10 do\n    local height = math.noise(x * 0.1, z * 0.1) * 20\n    print(x, z, height)\n  end\nend\n\n-- Trigonometry for circular motion\nlocal radius = 10\nlocal angle = 0\ngame:GetService("RunService").Heartbeat:Connect(function(dt)\n  angle += dt\n  local x = math.cos(angle) * radius\n  local z = math.sin(angle) * radius\n  part.Position = Vector3.new(x, 5, z)\nend)` },
+  { id:14, title:"ScreenGui & Frame Layout", category:"Classes", difficulty:"Beginner", xp:50, time:"9 min", locked:true, completed:false, description:"Build responsive UI layouts using ScreenGui, Frame, UIListLayout, and UIPadding.", code:`-- UI Building in LocalScript\nlocal player = game.Players.LocalPlayer\nlocal gui = Instance.new("ScreenGui")\ngui.ResetOnSpawn = false\ngui.Parent = player.PlayerGui\n\nlocal frame = Instance.new("Frame")\nframe.Size = UDim2.new(0, 300, 0, 200)\nframe.Position = UDim2.new(0.5, -150, 0.5, -100)\nframe.BackgroundColor3 = Color3.fromRGB(20, 22, 28)\nframe.Parent = gui\n\n-- Rounded corners\nlocal corner = Instance.new("UICorner")\ncorner.CornerRadius = UDim.new(0, 12)\ncorner.Parent = frame\n\n-- Layout\nlocal layout = Instance.new("UIListLayout")\nlayout.Padding = UDim.new(0, 8)\nlayout.Parent = frame\n\nprint("UI created!")` },
+  { id:15, title:"string Library & Pattern Matching", category:"Libraries", difficulty:"Advanced", xp:125, time:"16 min", locked:true, completed:false, description:"Master Luau string patterns for parsing, validation, and text manipulation.", code:`-- String Library Patterns\n\n-- Basic operations\nlocal s = "Hello, Roblox World!"\nprint(string.upper(s))  -- HELLO, ROBLOX WORLD!\nprint(string.len(s))    -- 21\nprint(#s)               -- 21 (same)\n\n-- Pattern matching\nlocal username = "Player_123"\nlocal name, num = string.match(username, "(%a+)_(%d+)")\nprint(name, num)  -- Player  123\n\n-- Find all numbers\nfor num in string.gmatch("Coins: 50, XP: 1200", "%d+") do\n  print("Found number:", num)\nend\n\n-- Replace\nlocal clean = string.gsub("Hello <b>World</b>", "<.->", "")\nprint(clean)  -- Hello World\n\n-- Format\nprint(string.format("%.1f%%", 87.5678)) -- 87.6%` },
+];
+
+const CHALLENGES = [
+  { id:1, title:"Teleport a Player on Touch", difficulty:"Beginner", tags:["Events","BasePart"], xp:100, completed:true, description:"Create a teleport pad that moves the player to a specific location when touched. Use the Touched event and Character to find the HumanoidRootPart.", starter:`-- Challenge: Teleport Pad\nlocal pad = workspace.TeleportPad\nlocal destination = Vector3.new(0, 50, 0)\n\npad.Touched:Connect(function(hit)\n  -- TODO: Check if hit is a player character\n  -- TODO: Teleport the player's HumanoidRootPart\n  -- TODO: Add a debounce to prevent spam\nend)\n\nprint("Teleport pad ready!")`, solution:`local pad = workspace.TeleportPad\nlocal destination = Vector3.new(0, 50, 0)\nlocal debounce = {}\n\npad.Touched:Connect(function(hit)\n  local char = hit.Parent\n  local hum = char:FindFirstChild("Humanoid")\n  local hrp = char:FindFirstChild("HumanoidRootPart")\n  if not hum or not hrp then return end\n  if debounce[char] then return end\n  debounce[char] = true\n  hrp.CFrame = CFrame.new(destination)\n  task.wait(2)\n  debounce[char] = nil\nend)` },
+  { id:2, title:"Animate a Door with TweenService", difficulty:"Intermediate", tags:["TweenService","CFrame"], xp:150, completed:false, description:"Build a door that smoothly opens when a player approaches using TweenService and CFrame.", starter:`-- Challenge: Animated Door\nlocal TweenService = game:GetService("TweenService")\nlocal door = workspace.Door\nlocal trigger = workspace.DoorTrigger\n\nlocal openCFrame = -- TODO: Define where the door opens to\nlocal closedCFrame = door.CFrame\n\n-- TODO: Create tween info\n-- TODO: Connect trigger.Touched to open the door\n-- TODO: Connect trigger.TouchEnded to close it\nprint("Door system ready!")`, solution:`local TS = game:GetService("TweenService")\nlocal door = workspace.Door\nlocal trigger = workspace.DoorTrigger\nlocal info = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)\nlocal closed = door.CFrame\nlocal opened = closed * CFrame.new(0, 10, 0)\nlocal playing = false\ntrigger.Touched:Connect(function()\n  if not playing then\n    playing = true\n    TS:Create(door, info, {CFrame = opened}):Play()\n  end\nend)\ntrigger.TouchEnded:Connect(function()\n  playing = false\n  TS:Create(door, info, {CFrame = closed}):Play()\nend)` },
+  { id:3, title:"Build a Countdown Timer UI", difficulty:"Intermediate", tags:["UI","string.format"], xp:150, completed:false, description:"Create a countdown timer that displays MM:SS format in a ScreenGui TextLabel.", starter:`-- Challenge: Countdown Timer\nlocal Players = game:GetService("Players")\nlocal player = Players.LocalPlayer\nlocal gui = player.PlayerGui\n\nlocal timeLeft = 120 -- 2 minutes\n\nlocal function formatTime(seconds)\n  -- TODO: Return "MM:SS" format string\nend\n\n-- TODO: Create ScreenGui, Frame, TextLabel\n-- TODO: Update the label every second using task.spawn\n-- TODO: When timer hits 0, show "TIME UP!"\nprint("Timer started!")`, solution:`local player = game.Players.LocalPlayer\nlocal screen = Instance.new("ScreenGui")\nscreen.Parent = player.PlayerGui\nlocal label = Instance.new("TextLabel")\nlabel.Size = UDim2.new(0,200,0,60)\nlabel.Position = UDim2.new(0.5,-100,0,20)\nlabel.BackgroundColor3 = Color3.fromRGB(15,15,20)\nlabel.TextColor3 = Color3.fromRGB(0,212,255)\nlabel.Font = Enum.Font.Code\nlabel.TextScaled = true\nlabel.Parent = screen\nlocal timeLeft = 120\ntask.spawn(function()\n  while timeLeft > 0 do\n    local m = math.floor(timeLeft/60)\n    local s = timeLeft % 60\n    label.Text = string.format("%02d:%02d", m, s)\n    task.wait(1)\n    timeLeft -= 1\n  end\n  label.Text = "TIME UP!"\nend)` },
+  { id:4, title:"Create a Coin Collection System", difficulty:"Advanced", tags:["RemoteEvent","DataStore"], xp:250, completed:false, description:"Build a full coin collection system: spawn coins in workspace, detect collection, update a leaderboard, and save to DataStore.", starter:`-- SERVER SCRIPT\nlocal Players = game:GetService("Players")\nlocal RSt = game:GetService("ReplicatedStorage")\n\n-- TODO: Create RemoteEvent for coin collection\n-- TODO: Create leaderstats on PlayerAdded\n-- TODO: Spawn coins randomly in workspace\n-- TODO: Handle coin Touched → fire remote → update coins stat\n-- TODO: Save coins on PlayerRemoving\nprint("Coin system initializing...")`, solution:`-- Full solution too long for preview\n-- See lesson: DataStore & Remote Events` },
+  { id:5, title:"Raycasting Weapon System", difficulty:"Advanced", tags:["Raycasting","Physics"], xp:300, completed:false, description:"Implement a hitscan weapon using workspace:Raycast() that fires from the camera and deals damage on hit.", starter:`-- LOCAL SCRIPT: Weapon\nlocal Players = game:GetService("Players")\nlocal UIS = game:GetService("UserInputService")\nlocal RunService = game:GetService("RunService")\nlocal player = Players.LocalPlayer\nlocal camera = workspace.CurrentCamera\n\n-- TODO: On mouse click, cast a ray from camera\n-- TODO: Use RaycastParams to filter out player\n-- TODO: If hit has Humanoid, fire damage remote\n-- TODO: Show hit effect at result.Position\nprint("Weapon ready!")`, solution:`-- Raycasting hitscan\nlocal params = RaycastParams.new()\nparams.FilterDescendantsInstances = {player.Character}\nparams.FilterType = Enum.RaycastFilterType.Exclude\nUIS.InputBegan:Connect(function(input)\n  if input.UserInputType ~= Enum.UserInputType.MouseButton1 then return end\n  local origin = camera.CFrame.Position\n  local dir = camera.CFrame.LookVector * 500\n  local result = workspace:Raycast(origin, dir, params)\n  if result then\n    local hum = result.Instance.Parent:FindFirstChild("Humanoid")\n    if hum then damageRemote:FireServer(result.Instance.Parent, 25) end\n  end\nend)` },
+  { id:6, title:"string.format Scoreboard", difficulty:"Beginner", tags:["string","table"], xp:75, completed:false, description:"Use string.format and table.sort to display a formatted top-5 scoreboard in the Output.", starter:`-- Challenge: Format a scoreboard\nlocal players = {\n  {name="AlphaBuilder", score=4200},\n  {name="LuaWizard99", score=8750},\n  {name="DevMaster", score=3100},\n  {name="RobloxPro", score=6400},\n  {name="ScriptKing", score=9999},\n}\n\n-- TODO: Sort by score descending\n-- TODO: Print formatted: "#1 ScriptKing     9,999 XP"\n-- TODO: Use string.format for alignment\nprint("=== SCOREBOARD ===")`, solution:`table.sort(players, function(a,b) return a.score > b.score end)\nprint("=== SCOREBOARD ===")\nfor i, p in ipairs(players) do\n  print(string.format("#%d %-15s %s XP", i, p.name, \n    tostring(p.score):reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,","")))\nend` },
+  { id:7, title:"math.noise Terrain Generator", difficulty:"Advanced", tags:["math","Workspace"], xp:200, completed:false, description:"Use math.noise (Perlin noise) to procedurally generate a grid of terrain parts with varying heights.", starter:`-- Procedural Terrain with math.noise\nlocal SIZE = 20      -- grid size\nlocal SCALE = 0.15   -- noise zoom\nlocal HEIGHT = 30    -- max height\n\nfor x = 0, SIZE do\n  for z = 0, SIZE do\n    -- TODO: Calculate height using math.noise\n    -- TODO: Create a Part at (x, height/2, z)\n    -- TODO: Set part size to (1, height, 1)\n    -- TODO: Color by height (green low, white high)\n  end\nend\nprint("Terrain generated!")`, solution:`for x = 0, SIZE do\n  for z = 0, SIZE do\n    local h = math.floor((math.noise(x*SCALE, z*SCALE) + 0.5) * HEIGHT)\n    local p = Instance.new("Part")\n    p.Anchored = true\n    p.Size = Vector3.new(1, math.max(h,1), 1)\n    p.CFrame = CFrame.new(x, h/2, z)\n    local t = h/HEIGHT\n    p.Color = Color3.fromRGB(34+t*200, 139-t*80, 34-t*20)\n    p.Parent = workspace\n  end\nend` },
+  { id:8, title:"coroutine Producer/Consumer", difficulty:"Advanced", tags:["coroutine","task"], xp:175, completed:false, description:"Implement a producer-consumer pattern using Luau coroutines to process a queue of items.", starter:`-- Coroutine Producer/Consumer\nlocal queue = {}\n\nlocal producer = coroutine.create(function()\n  for i = 1, 10 do\n    -- TODO: Add item to queue\n    -- TODO: yield after producing\n  end\nend)\n\nlocal consumer = coroutine.create(function()\n  -- TODO: Process items from queue\n  -- TODO: yield when queue is empty\nend)\n\n-- TODO: Drive both coroutines`, solution:`local queue = {}\nlocal producer = coroutine.create(function()\n  for i = 1, 10 do\n    table.insert(queue, "item_"..i)\n    print("Produced: item_"..i)\n    coroutine.yield()\n  end\nend)\nlocal consumer = coroutine.create(function()\n  while true do\n    if #queue > 0 then\n      local item = table.remove(queue, 1)\n      print("Consumed:", item)\n    end\n    coroutine.yield()\n  end\nend)\nfor i = 1, 20 do\n  coroutine.resume(producer)\n  coroutine.resume(consumer)\nend` },
+  { id:9, title:"Proximity Prompt Interaction", difficulty:"Beginner", tags:["Classes","Events"], xp:80, completed:false, description:"Add a ProximityPrompt to a part and handle the Triggered event to create an interactive object.", starter:`-- ProximityPrompt Setup\nlocal chest = workspace.TreasureChest\n\n-- TODO: Create a ProximityPrompt\n-- TODO: Set ActionText, ObjectText, HoldDuration\n-- TODO: Connect Triggered event\n-- TODO: Give player reward when triggered\nprint("Chest ready!")`, solution:`local chest = workspace.TreasureChest\nlocal prompt = Instance.new("ProximityPrompt")\nprompt.ActionText = "Open"\nprompt.ObjectText = "Treasure Chest"\nprompt.HoldDuration = 1.5\nprompt.MaxActivationDistance = 10\nprompt.Parent = chest\nprompt.Triggered:Connect(function(player)\n  print(player.Name, "opened the chest!")\n  local coins = player.leaderstats and player.leaderstats.Coins\n  if coins then coins.Value += 100 end\nend)` },
+  { id:10, title:"Vector3 Math Operations", difficulty:"Intermediate", tags:["Data Types","math"], xp:120, completed:false, description:"Practice Vector3 arithmetic: magnitude, dot product, cross product, and normalization for game AI.", starter:`-- Vector3 Math Challenge\nlocal playerPos = Vector3.new(10, 0, 10)\nlocal enemyPos = Vector3.new(30, 0, 15)\n\n-- TODO: Calculate distance between positions\n-- TODO: Get normalized direction from enemy to player\n-- TODO: Calculate dot product to check line of sight\n-- TODO: Use cross product to find perpendicular\nprint("Vector math start!")`, solution:`local dist = (playerPos - enemyPos).Magnitude\nprint("Distance:", dist)\nlocal dir = (playerPos - enemyPos).Unit\nprint("Direction:", dir)\nlocal forward = Vector3.new(0,0,-1)\nlocal dot = dir:Dot(forward)\nprint("Dot:", dot, "| Facing:", dot > 0.7)\nlocal cross = dir:Cross(forward)\nprint("Cross (perpendicular):", cross)` },
+];
+
+const API_ENTRIES = [
+  { id:1, name:"BasePart", category:"Classes", description:"Abstract base class for all primitive parts in Roblox. Defines physics, appearance, and collision behavior.", syntax:"game.Workspace.PartName", properties:["Anchored","CanCollide","CFrame","Color","Material","Position","Rotation","Size","Transparency","Velocity"], example:`local p = workspace.Part\np.Anchored = true\np.Size = Vector3.new(4,1,4)\np.Color = Color3.fromRGB(255,0,0)` },
+  { id:2, name:"CFrame", category:"Data Types", description:"Represents position and orientation in 3D space. Essential for precise object placement and rotation.", syntax:"CFrame.new(x, y, z)", properties:["Position","LookVector","RightVector","UpVector","X","Y","Z"], example:`local cf = CFrame.new(0, 10, 0)\nlocal rotated = cf * CFrame.Angles(0, math.rad(90), 0)\npart.CFrame = cf:Lerp(rotated, 0.5)` },
+  { id:3, name:"Vector3", category:"Data Types", description:"Represents a 3D vector with X, Y, Z components. Used for positions, directions, velocities.", syntax:"Vector3.new(x, y, z)", properties:["X","Y","Z","Magnitude","Unit","Zero","One"], example:`local v = Vector3.new(1, 0, 0)\nlocal dist = (v1 - v2).Magnitude\nlocal dir = (v2 - v1).Unit` },
+  { id:4, name:"TweenService", category:"Classes", description:"Service for creating smooth animations (tweens) on instance properties.", syntax:"game:GetService('TweenService')", properties:["Create","GetValue"], example:`local TS = game:GetService("TweenService")\nlocal info = TweenInfo.new(1, Enum.EasingStyle.Quad)\nTS:Create(part, info, {Position = Vector3.new(0,10,0)}):Play()` },
+  { id:5, name:"RemoteEvent", category:"Classes", description:"Enables one-way communication between client and server scripts.", syntax:"Instance.new('RemoteEvent')", properties:["FireServer","FireClient","FireAllClients","OnServerEvent","OnClientEvent"], example:`-- Server\nremote.OnServerEvent:Connect(function(player, data)\n  print(player.Name, data)\nend)\n-- Client\nremote:FireServer("hello")` },
+  { id:6, name:"Humanoid", category:"Classes", description:"Controls a character's movement, health, and animations. Found in player and NPC character models.", syntax:"char:FindFirstChild('Humanoid')", properties:["Health","MaxHealth","WalkSpeed","JumpPower","StateChanged","Died","MoveDirection"], example:`local hum = char:WaitForChild("Humanoid")\nhum.WalkSpeed = 24\nhum.MaxHealth = 200\nhum.Died:Connect(function() print("Dead!") end)` },
+  { id:7, name:"Color3", category:"Data Types", description:"Represents an RGB color with values from 0 to 1. Used for part colors, UI elements, and lighting.", syntax:"Color3.new(r, g, b)", properties:["R","G","B","fromRGB","fromHSV","Lerp"], example:`local red = Color3.new(1, 0, 0)\nlocal orange = Color3.fromRGB(255, 165, 0)\nlocal mid = red:Lerp(orange, 0.5)` },
+  { id:8, name:"UDim2", category:"Data Types", description:"2D coordinate used for UI sizing and positioning. Combines Scale (0-1) and Offset (pixels).", syntax:"UDim2.new(sx, ox, sy, oy)", properties:["X","Y","Scale","Offset"], example:`-- Full parent width, 50px height\nframe.Size = UDim2.new(1, 0, 0, 50)\n-- Centered\nframe.Position = UDim2.new(0.5, -100, 0.5, -25)` },
+  { id:9, name:"Enum.KeyCode", category:"Enumerations", description:"Defines keyboard and gamepad key constants for input detection.", syntax:"Enum.KeyCode.KeyName", properties:["Space","E","F","W","A","S","D","LeftShift","Return"], example:`UIS.InputBegan:Connect(function(input)\n  if input.KeyCode == Enum.KeyCode.E then\n    print("E pressed!")\n  end\nend)` },
+  { id:10, name:"RunService", category:"Classes", description:"Service providing events that fire each frame for real-time game logic.", syntax:"game:GetService('RunService')", properties:["Heartbeat","RenderStepped","Stepped","IsServer","IsClient"], example:`RunService.Heartbeat:Connect(function(dt)\n  part.CFrame *= CFrame.new(0, 0, -dt * 10)\nend)` },
+  { id:11, name:"pcall", category:"Global Functions", description:"Protected call — executes a function and catches any runtime errors without crashing the script.", syntax:"pcall(func, ...)", properties:["returns success (bool), result"], example:`local ok, err = pcall(function()\n  return dataStore:GetAsync(key)\nend)\nif not ok then warn(err) end` },
+  { id:12, name:"TweenInfo", category:"Data Types", description:"Configuration object for TweenService. Defines duration, easing style and direction, repeat count.", syntax:"TweenInfo.new(time, style, dir, repeat, reverse, delay)", properties:["Time","EasingStyle","EasingDirection","RepeatCount","Reverses","DelayTime"], example:`TweenInfo.new(\n  0.5,\n  Enum.EasingStyle.Bounce,\n  Enum.EasingDirection.Out,\n  0, false, 0\n)` },
+  { id:13, name:"workspace", category:"Global Functions", description:"Global shorthand for game.Workspace — the container for all 3D objects rendered in the world.", syntax:"workspace", properties:["FindFirstChild","WaitForChild","Raycast","CurrentCamera","Gravity"], example:`local part = workspace:FindFirstChild("MyPart")\nif part then\n  print("Found:", part.Name)\nend` },
+  { id:14, name:"task.wait", category:"Libraries", description:"Modern replacement for wait(). Yields the current thread for a specified number of seconds.", syntax:"task.wait(seconds)", properties:["More accurate than wait()","Uses a scheduler"], example:`task.spawn(function()\n  print("Start")\n  task.wait(2)\n  print("2 seconds later")\nend)` },
+  { id:15, name:"DataStoreService", category:"Classes", description:"Service for persisting data across game sessions. Use GetDataStore() to get a named store.", syntax:"game:GetService('DataStoreService')", properties:["GetDataStore","GetOrderedDataStore","GetAsync","SetAsync","UpdateAsync","RemoveAsync"], example:`local store = DSS:GetDataStore("Data")\nlocal ok, val = pcall(store.GetAsync, store, userId)\nif ok then print(val) end` },
+  { id:16, name:"BindableEvent", category:"Classes", description:"Enables one-way communication between scripts on the same side (server↔server or client↔client).", syntax:"Instance.new('BindableEvent')", properties:["Fire","Event"], example:`local be = Instance.new("BindableEvent")\nbe.Event:Connect(function(msg) print(msg) end)\nbe:Fire("hello same-side!")` },
+  { id:17, name:"Enum.Material", category:"Enumerations", description:"Defines the visual material of a BasePart — affects appearance and physics friction.", syntax:"Enum.Material.MaterialName", properties:["SmoothPlastic","Neon","Glass","Wood","Metal","Grass","Ice"], example:`part.Material = Enum.Material.Neon\npart.Color = Color3.fromRGB(0, 212, 255)` },
+  { id:18, name:"RaycastParams", category:"Data Types", description:"Configuration for workspace:Raycast() — controls which instances are included or excluded.", syntax:"RaycastParams.new()", properties:["FilterDescendantsInstances","FilterType"], example:`local params = RaycastParams.new()\nparams.FilterDescendantsInstances = {player.Character}\nparams.FilterType = Enum.RaycastFilterType.Exclude\nlocal result = workspace:Raycast(origin, dir, params)` },
+  { id:19, name:"string.format", category:"Libraries", description:"Formats strings using printf-style format specifiers. Essential for UI displays.", syntax:"string.format(fmt, ...)", properties:["%s = string","%d = integer","%.2f = float","%-10s = left-pad"], example:`local display = string.format(\n  "#%d %-12s %d XP",\n  rank, playerName, xp\n)` },
+  { id:20, name:"Players", category:"Classes", description:"Service managing connected players. Use GetPlayers(), PlayerAdded, and PlayerRemoving for player logic.", syntax:"game:GetService('Players')", properties:["LocalPlayer","GetPlayers","PlayerAdded","PlayerRemoving","MaxPlayers"], example:`Players.PlayerAdded:Connect(function(p)\n  print(p.Name, "joined!")\n  p.CharacterAdded:Connect(function(char)\n    -- setup character\n  end)\nend)` },
+];
+
+const LEADERBOARD = [
+  { rank:1, name:"LuaWizard99", xp:18750, level:47, badge:"Wizard", avatar:"🧙", streak:42 },
+  { rank:2, name:"RobloxArchitect", xp:15200, level:38, badge:"Architect", avatar:"🏗️", streak:28 },
+  { rank:3, name:"ScriptKing_Dev", xp:12900, level:32, badge:"Engineer", avatar:"⚙️", streak:15 },
+  { rank:4, name:"AlphaBuilder_X", xp:9400, level:24, badge:"Builder", avatar:"🔨", streak:7 },
+  { rank:5, name:"DevMaster2025", xp:6800, level:17, badge:"Builder", avatar:"🛠️", streak:3 },
+];
+
+const CATEGORIES = [
+  { name:"Classes", icon:"📦", color:"#00D4FF", count:8, desc:"BasePart, Humanoid, TweenService, RemoteEvent..." },
+  { name:"Data Types", icon:"🔢", color:"#22c55e", count:44, desc:"Vector3, CFrame, Color3, UDim2, Ray..." },
+  { name:"Enumerations", icon:"🔖", color:"#eab308", count:78, desc:"Enum.Material, Enum.KeyCode, Enum.EasingStyle..." },
+  { name:"Global Functions", icon:"⚙️", color:"#f97316", count:26, desc:"print(), pcall(), require(), typeof()..." },
+  { name:"Events", icon:"📡", color:"#a855f7", count:12, desc:".Touched, .Changed, .ChildAdded, PlayerAdded..." },
+  { name:"Callbacks", icon:"🔁", color:"#ec4899", count:8, desc:"BindableFunction, RemoteFunction, OnServerEvent..." },
+  { name:"Libraries", icon:"📚", color:"#14b8a6", count:11, desc:"math, string, table, task, coroutine..." },
+];
+
+const BADGES_LIST = [
+  { name:"First Script", icon:"📝", earned:true, desc:"Write your first Luau script" },
+  { name:"Event Whisperer", icon:"📡", earned:true, desc:"Connect your first event" },
+  { name:"CFrame Master", icon:"🎯", earned:false, desc:"Complete all CFrame lessons" },
+  { name:"Data Keeper", icon:"💾", earned:false, desc:"Implement a DataStore system" },
+  { name:"7-Day Streak", icon:"🔥", earned:true, desc:"Log in 7 days in a row" },
+  { name:"Challenge Crusher", icon:"⚡", earned:false, desc:"Complete 10 challenges" },
+  { name:"API Explorer", icon:"🗺️", earned:false, desc:"View 50 API reference entries" },
+  { name:"Wizard", icon:"🧙", earned:false, desc:"Reach level 50" },
+];
+
+// ─── ICONS ────────────────────────────────────────────────────────────────────
+const Icons = {
+  home: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>,
+  book: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>,
+  code: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/></svg>,
+  zap: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><polygon points="13,2 3,14 12,14 11,22 21,10 12,10 13,2"/></svg>,
+  terminal: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><polyline points="4,17 10,11 4,5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>,
+  search: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
+  user: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+  trophy: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><polyline points="8,21 16,21"/><line x1="12" y1="17" x2="12" y2="21"/><path d="M7 4H17l-1 7a5 5 0 01-10 0L7 4z"/><path d="M5 4a2 2 0 00-2 2v1c0 2.5 2 5 4 5"/><path d="M19 4a2 2 0 012 2v1c0 2.5-2 5-4 5"/></svg>,
+  dollar: <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/></svg>,
+  lock: <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>,
+  check: <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg>,
+  play: <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>,
+  star: <svg width="14" height="14" fill="#eab308" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>,
+  x: <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+  share: <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>,
+  arrow: <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>,
+  heart: <svg width="14" height="14" fill="#ef4444" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>,
+  filter: <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"/></svg>,
+};
+
+// ─── CODE EDITOR COMPONENT ────────────────────────────────────────────────────
+function CodeEditor({ value, onChange, height = "300px", readOnly = false }) {
+  const lineCount = value.split('\n').length;
+  return (
+    <div style={{ position:'relative', fontFamily:'JetBrains Mono, monospace' }}>
+      <div style={{ display:'flex', background:'#0a0c10', border:'1px solid #2a2d35', borderRadius:'8px', overflow:'hidden' }}>
+        <div style={{ background:'#090b0f', padding:'16px 8px', color:'#4a4f5a', fontSize:'13px', lineHeight:'1.6', textAlign:'right', userSelect:'none', minWidth:'40px' }}>
+          {Array.from({length: lineCount}, (_,i) => <div key={i}>{i+1}</div>)}
+        </div>
+        <textarea
+          value={value}
+          onChange={e => onChange && onChange(e.target.value)}
+          readOnly={readOnly}
+          className="code-editor"
+          style={{ height, borderRadius:0, border:'none', flex:1 }}
+          spellCheck={false}
+        />
+      </div>
+    </div>
+  );
+}
+
+// ─── CONSOLE COMPONENT ────────────────────────────────────────────────────────
+function Console({ logs, onClear }) {
+  return (
+    <div style={{ background:'#050709', border:'1px solid #1e2028', borderRadius:'8px', height:'140px', overflow:'auto', padding:'8px' }}>
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'6px', paddingBottom:'6px', borderBottom:'1px solid #1e2028' }}>
+        <span className="mono" style={{ fontSize:'11px', color:'#4a4f5a' }}>OUTPUT</span>
+        <button onClick={onClear} style={{ background:'none', border:'none', color:'#4a4f5a', cursor:'pointer', fontSize:'11px' }}>Clear</button>
+      </div>
+      {logs.length === 0 ? <div className="mono" style={{ fontSize:'12px', color:'#4a4f5a' }}>▶ Click Run to execute code</div> :
+        logs.map((l,i) => (
+          <div key={i} className="mono" style={{ fontSize:'12px', color: l.type==='error'?'#ef4444':l.type==='warn'?'#eab308':'#98c379', marginBottom:'2px' }}>
+            {l.type==='error'?'✗ ':l.type==='warn'?'⚠ ':'▶ '}{l.text}
+          </div>
+        ))
+      }
+    </div>
+  );
+}
+
+function simulateRun(code) {
+  const logs = [];
+  const fakePrint = (...args) => logs.push({ type:'log', text: args.join('\t') });
+  const fakeWarn = (...args) => logs.push({ type:'warn', text: args.join('\t') });
+  try {
+    const prints = [];
+    const lines = code.split('\n').filter(l => l.trim().startsWith('print('));
+    if (lines.length === 0) logs.push({ type:'log', text:'Script executed successfully (no print output)' });
+    lines.slice(0,8).forEach(line => {
+      const match = line.match(/print\((.+)\)/);
+      if (match) {
+        let content = match[1].replace(/"/g, '').replace(/'/g, '');
+        if (content.includes('..')) content = content.split('..').join(' + ');
+        logs.push({ type:'log', text: content });
+      }
+    });
+    if (code.includes('warn(')) logs.push({ type:'warn', text:'Warning triggered in script' });
+    if (code.includes('error(')) logs.push({ type:'error', text:'Error: Runtime error in script' });
+  } catch(e) {
+    logs.push({ type:'error', text: e.message });
+  }
+  if (logs.length === 0) logs.push({ type:'log', text:'Script ran with no output' });
+  return logs;
+}
+
+// ─── UPGRADE MODAL ────────────────────────────────────────────────────────────
+function UpgradeModal({ onClose }) {
+  return (
+    <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.8)', zIndex:100, display:'flex', alignItems:'center', justifyContent:'center' }} onClick={onClose}>
+      <div onClick={e=>e.stopPropagation()} style={{ background:'#111216', border:'1px solid rgba(0,212,255,0.3)', borderRadius:'16px', padding:'32px', maxWidth:'440px', width:'90%', position:'relative' }}>
+        <div className="pulse-glow" style={{ position:'absolute', inset:0, borderRadius:'16px', pointerEvents:'none' }} />
+        <div style={{ textAlign:'center', marginBottom:'24px' }}>
+          <div style={{ fontSize:'40px', marginBottom:'8px' }}>⚡</div>
+          <div className="oxanium" style={{ fontSize:'24px', fontWeight:'800', color:'#00D4FF' }}>Go Pro</div>
+          <div style={{ color:'#888', marginTop:'4px' }}>Unlock the full StudioDex experience</div>
+        </div>
+        <div style={{ display:'grid', gap:'12px', marginBottom:'24px' }}>
+          {[["✓","Unlimited lessons & challenges"],["✓","All 78+ API reference entries"],["✓","Challenge solution reveals"],["✓","AI code hints"],["✓","Pro badge on profile"],["✓","Priority leaderboard slot"]].map(([icon,text],i)=>(
+            <div key={i} style={{ display:'flex', gap:'10px', color:'#ccc', fontSize:'14px' }}>
+              <span style={{ color:'#00D4FF', fontWeight:'700' }}>{icon}</span>{text}
+            </div>
+          ))}
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px', marginBottom:'16px' }}>
+          <div style={{ background:'#0D0F14', border:'1px solid #2a2d35', borderRadius:'10px', padding:'16px', textAlign:'center' }}>
+            <div style={{ color:'#888', fontSize:'12px' }}>MONTHLY</div>
+            <div className="oxanium" style={{ fontSize:'28px', fontWeight:'800', color:'#fff' }}>$9</div>
+            <div style={{ color:'#888', fontSize:'12px' }}>/month</div>
+          </div>
+          <div style={{ background:'rgba(0,212,255,0.08)', border:'1px solid rgba(0,212,255,0.4)', borderRadius:'10px', padding:'16px', textAlign:'center', position:'relative' }}>
+            <div style={{ position:'absolute', top:'-10px', left:'50%', transform:'translateX(-50%)', background:'#eab308', color:'#000', padding:'2px 10px', borderRadius:'999px', fontSize:'11px', fontWeight:'700' }}>SAVE 40%</div>
+            <div style={{ color:'#888', fontSize:'12px' }}>ANNUAL</div>
+            <div className="oxanium" style={{ fontSize:'28px', fontWeight:'800', color:'#00D4FF' }}>$65</div>
+            <div style={{ color:'#888', fontSize:'12px' }}>/year</div>
+          </div>
+        </div>
+        <div style={{ marginBottom:'16px' }}>
+          <input type="text" placeholder="Coupon code..." style={{ width:'100%' }} />
+        </div>
+        <button className="btn-primary" style={{ width:'100%', fontSize:'16px', padding:'14px' }}>🚀 Unlock Pro Now</button>
+        <div style={{ textAlign:'center', marginTop:'12px', color:'#555', fontSize:'12px' }}>Cancel anytime. Join 12,400+ Roblox developers.</div>
+        <button onClick={onClose} style={{ position:'absolute', top:'12px', right:'12px', background:'none', border:'none', color:'#555', cursor:'pointer', fontSize:'18px' }}>✕</button>
+      </div>
+    </div>
+  );
+}
+
+// ─── PAGES ────────────────────────────────────────────────────────────────────
+
+function LandingPage({ setPage }) {
+  const [hovered, setHovered] = useState(null);
+  return (
+    <div>
+      {/* Hero */}
+      <div className="grid-bg" style={{ minHeight:'90vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center', padding:'60px 20px', position:'relative' }}>
+        <div style={{ position:'absolute', top:'20%', left:'10%', width:'300px', height:'300px', background:'radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%)', borderRadius:'50%', pointerEvents:'none' }} />
+        <div style={{ position:'absolute', bottom:'20%', right:'10%', width:'200px', height:'200px', background:'radial-gradient(circle, rgba(255,59,59,0.08) 0%, transparent 70%)', borderRadius:'50%', pointerEvents:'none' }} />
+        <div style={{ background:'rgba(0,212,255,0.1)', border:'1px solid rgba(0,212,255,0.3)', borderRadius:'999px', padding:'6px 18px', fontSize:'13px', color:'#00D4FF', marginBottom:'24px', display:'inline-block' }}>
+          🎮 Join 12,400+ Roblox Developers
+        </div>
+        <h1 className="oxanium" style={{ fontSize:'clamp(36px,6vw,72px)', fontWeight:'800', lineHeight:1.1, marginBottom:'16px', maxWidth:'800px' }}>
+          Master Every{' '}
+          <span style={{ background:'linear-gradient(135deg, #00D4FF, #FF3B3B)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Roblox API</span>.{' '}
+          Build Anything.
+        </h1>
+        <p style={{ fontSize:'18px', color:'#888', maxWidth:'540px', marginBottom:'40px', lineHeight:1.6 }}>
+          The gamified learning platform for Roblox developers. Interactive lessons, coding challenges, and a built-in Luau sandbox — all in one place.
+        </p>
+        <div style={{ display:'flex', gap:'16px', flexWrap:'wrap', justifyContent:'center' }}>
+          <button className="btn-primary pulse-glow" style={{ fontSize:'16px', padding:'14px 32px' }} onClick={() => setPage('signup')}>
+            🚀 Start Learning Free
+          </button>
+          <button className="btn-outline" style={{ fontSize:'16px', padding:'14px 32px' }} onClick={() => setPage('learn')}>
+            Explore Curriculum
+          </button>
+        </div>
+        <div style={{ display:'flex', gap:'40px', marginTop:'60px', flexWrap:'wrap', justifyContent:'center' }}>
+          {[["150+","Lessons"],["12.4K","Developers"],["10+","Challenges"],["100%","Free to Start"]].map(([num,label])=>(
+            <div key={label} style={{ textAlign:'center' }}>
+              <div className="oxanium" style={{ fontSize:'32px', fontWeight:'800', color:'#00D4FF' }}>{num}</div>
+              <div style={{ color:'#666', fontSize:'14px' }}>{label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Features */}
+      <div style={{ padding:'80px 40px', maxWidth:'1100px', margin:'0 auto' }}>
+        <h2 className="oxanium" style={{ textAlign:'center', fontSize:'36px', fontWeight:'800', marginBottom:'48px' }}>
+          Everything you need to level up
+        </h2>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(280px, 1fr))', gap:'24px' }}>
+          {[
+            { icon:"📚", title:"Structured Lessons", desc:"Step-by-step lessons covering Classes, Data Types, Enums, Events, and more — with real code examples." },
+            { icon:"⚡", title:"Coding Challenges", desc:"LeetCode-style challenges that test your Luau skills. Submit solutions and earn XP rewards." },
+            { icon:"🧪", title:"Luau Sandbox", desc:"Write and simulate Luau code directly in your browser. No Roblox Studio required." },
+            { icon:"🏆", title:"Gamification", desc:"Earn XP, level up from Novice to Wizard, collect badges, and climb the global leaderboard." },
+            { icon:"📖", title:"API Reference", desc:"Searchable, filterable reference for all major Roblox APIs with syntax, examples, and tips." },
+            { icon:"🔥", title:"Daily Streaks", desc:"Build habits with daily streak tracking. Consistent practice is the fastest path to mastery." },
+          ].map((f,i) => (
+            <div key={i} className="card-hover" style={{ background:'#111216', borderRadius:'12px', padding:'28px' }}>
+              <div style={{ fontSize:'36px', marginBottom:'16px' }}>{f.icon}</div>
+              <div style={{ fontSize:'18px', fontWeight:'700', marginBottom:'8px', color:'#fff' }}>{f.title}</div>
+              <div style={{ color:'#888', lineHeight:1.6, fontSize:'15px' }}>{f.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Pricing */}
+      <div style={{ padding:'80px 40px', maxWidth:'900px', margin:'0 auto' }} id="pricing">
+        <h2 className="oxanium" style={{ textAlign:'center', fontSize:'36px', fontWeight:'800', marginBottom:'8px' }}>Simple Pricing</h2>
+        <p style={{ textAlign:'center', color:'#888', marginBottom:'48px' }}>Start free, upgrade when you're ready</p>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(250px, 1fr))', gap:'24px' }}>
+          {[
+            { name:"Free", price:"$0", period:"forever", color:"#2a2d35", accent:"#888", features:["3 lessons per category","Basic API reference","Luau Sandbox","Public leaderboard"], cta:"Start Free" },
+            { name:"Pro", price:"$9", period:"/month", color:"rgba(0,212,255,0.08)", accent:"#00D4FF", features:["All 150+ lessons","Full API reference (78+ entries)","All 10+ challenges","Solution reveals","AI hints","Pro badge"], cta:"Go Pro", popular:true },
+            { name:"Teams", price:"$15", period:"/mo per seat", color:"rgba(255,59,59,0.08)", accent:"#FF3B3B", features:["Everything in Pro","Team leaderboard","Shared progress tracking","Priority support","Custom branding"], cta:"Best Deal! 🔥", tag:"BEST DEAL" },
+          ].map((p,i) => (
+            <div key={i} style={{ background:p.color, border:`1px solid ${p.accent}44`, borderRadius:'16px', padding:'32px', position:'relative' }}>
+              {p.popular && <div style={{ position:'absolute', top:'-12px', left:'50%', transform:'translateX(-50%)', background:'#00D4FF', color:'#000', padding:'4px 16px', borderRadius:'999px', fontSize:'12px', fontWeight:'700' }}>MOST POPULAR</div>}
+              {p.tag && <div style={{ position:'absolute', top:'-12px', left:'50%', transform:'translateX(-50%)', background:'#FF3B3B', color:'#fff', padding:'4px 16px', borderRadius:'999px', fontSize:'12px', fontWeight:'700' }}>{p.tag}</div>}
+              <div className="oxanium" style={{ fontSize:'22px', fontWeight:'700', color:p.accent, marginBottom:'8px' }}>{p.name}</div>
+              <div style={{ marginBottom:'24px' }}>
+                <span className="oxanium" style={{ fontSize:'40px', fontWeight:'800', color:'#fff' }}>{p.price}</span>
+                <span style={{ color:'#888', fontSize:'14px' }}>{p.period}</span>
+              </div>
+              <div style={{ marginBottom:'24px', display:'flex', flexDirection:'column', gap:'10px' }}>
+                {p.features.map((f,j) => <div key={j} style={{ display:'flex', gap:'8px', fontSize:'14px', color:'#ccc' }}><span style={{ color:p.accent }}>✓</span>{f}</div>)}
+              </div>
+              <button onClick={()=>setPage('pricing')} style={{ width:'100%', background:p.popular?'linear-gradient(135deg, #00D4FF, #0099cc)':p.tag?'linear-gradient(135deg, #FF3B3B, #cc0000)':'transparent', color: p.popular||p.tag?'#000':'#ccc', border:`1px solid ${p.accent}`, borderRadius:'8px', padding:'12px', fontWeight:'700', cursor:'pointer', fontFamily:'Oxanium, sans-serif', fontSize:'15px' }}>{p.cta}</button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Testimonials */}
+      <div style={{ padding:'60px 40px', background:'#0a0c10' }}>
+        <h2 className="oxanium" style={{ textAlign:'center', fontSize:'32px', fontWeight:'800', marginBottom:'40px' }}>What developers say</h2>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(280px, 1fr))', gap:'20px', maxWidth:'900px', margin:'0 auto' }}>
+          {[
+            { quote:"StudioDex finally made TweenService click for me. The sandbox is 🔥", name:"@roblox_dev99", avatar:"🎮" },
+            { quote:"Got my first game published after 2 weeks of lessons. The CFrame module alone is worth it.", name:"@LuaBuilder_x", avatar:"⚡" },
+            { quote:"The challenge mode is addictive. I went from Novice to Engineer in a month.", name:"@ScriptMaster22", avatar:"🏆" },
+          ].map((t,i) => (
+            <div key={i} style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'12px', padding:'24px' }}>
+              <div style={{ fontSize:'24px', marginBottom:'12px' }}>⭐⭐⭐⭐⭐</div>
+              <div style={{ color:'#ccc', marginBottom:'16px', lineHeight:1.6, fontSize:'15px' }}>"{t.quote}"</div>
+              <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
+                <div style={{ fontSize:'28px' }}>{t.avatar}</div>
+                <div style={{ color:'#00D4FF', fontSize:'14px' }}>{t.name}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div className="grid-bg" style={{ padding:'80px 40px', textAlign:'center' }}>
+        <h2 className="oxanium" style={{ fontSize:'36px', fontWeight:'800', marginBottom:'16px' }}>Ready to become a Roblox Wizard?</h2>
+        <p style={{ color:'#888', marginBottom:'32px', fontSize:'16px' }}>Join 12,400+ developers mastering the Roblox engine</p>
+        <button className="btn-primary pulse-glow" style={{ fontSize:'18px', padding:'16px 40px' }} onClick={() => setPage('signup')}>
+          🚀 Start Learning Free — No Credit Card
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function LearnPage({ setPage, setSelectedLesson }) {
+  const [selectedCat, setSelectedCat] = useState('All');
+  const cats = ['All', ...CATEGORIES.map(c => c.name)];
+  const filtered = selectedCat === 'All' ? LESSONS : LESSONS.filter(l => l.category === selectedCat);
+  const completed = LESSONS.filter(l => l.completed).length;
+  return (
+    <div style={{ padding:'32px' }}>
+      <div style={{ marginBottom:'32px' }}>
+        <h1 className="oxanium" style={{ fontSize:'32px', fontWeight:'800', marginBottom:'8px' }}>Learning Paths</h1>
+        <p style={{ color:'#888' }}>Master every Roblox API category — from Classes to Libraries</p>
+      </div>
+
+      {/* Progress */}
+      <div style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'12px', padding:'20px', marginBottom:'32px', display:'flex', gap:'24px', alignItems:'center', flexWrap:'wrap' }}>
+        <div style={{ flex:1, minWidth:'200px' }}>
+          <div style={{ display:'flex', justifyContent:'space-between', marginBottom:'8px', fontSize:'14px' }}>
+            <span style={{ color:'#ccc' }}>Overall Progress</span>
+            <span style={{ color:'#00D4FF', fontWeight:'700' }}>{completed}/{LESSONS.length} lessons</span>
+          </div>
+          <div style={{ background:'#1e2028', borderRadius:'9999px', height:'8px' }}>
+            <div className="xp-bar" style={{ width:`${(completed/LESSONS.length)*100}%`, height:'8px' }} />
+          </div>
+        </div>
+        <div style={{ display:'flex', gap:'20px', flexWrap:'wrap' }}>
+          {[['1,250','XP Earned'],['2','Streak 🔥'],['2/7','Categories']].map(([v,l])=>(
+            <div key={l} style={{ textAlign:'center' }}>
+              <div className="oxanium" style={{ fontSize:'22px', fontWeight:'700', color:'#00D4FF' }}>{v}</div>
+              <div style={{ fontSize:'12px', color:'#888' }}>{l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Category Cards */}
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))', gap:'16px', marginBottom:'32px' }}>
+        {CATEGORIES.map(cat => (
+          <div key={cat.name} className="card-hover" onClick={() => setSelectedCat(cat.name)} style={{ background:'#111216', borderRadius:'12px', padding:'20px', cursor:'pointer', border:`1px solid ${selectedCat===cat.name?cat.color+'44':'#1e2028'}` }}>
+            <div style={{ fontSize:'28px', marginBottom:'8px' }}>{cat.icon}</div>
+            <div style={{ fontWeight:'700', color: selectedCat===cat.name?cat.color:'#fff', marginBottom:'4px' }}>{cat.name}</div>
+            <div style={{ fontSize:'12px', color:'#666', marginBottom:'8px' }}>{cat.count} items</div>
+            <div style={{ fontSize:'12px', color:'#888' }}>{cat.desc.slice(0,50)}...</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Filter Tabs */}
+      <div style={{ display:'flex', gap:'8px', marginBottom:'24px', overflowX:'auto', paddingBottom:'4px', flexWrap:'wrap' }}>
+        {cats.map(c => (
+          <button key={c} onClick={() => setSelectedCat(c)} style={{ padding:'6px 16px', borderRadius:'999px', background: selectedCat===c?'rgba(0,212,255,0.15)':'#111216', color: selectedCat===c?'#00D4FF':'#888', border:`1px solid ${selectedCat===c?'rgba(0,212,255,0.4)':'#1e2028'}`, cursor:'pointer', fontSize:'13px', whiteSpace:'nowrap' }}>
+            {c}
+          </button>
+        ))}
+      </div>
+
+      {/* Lesson Cards */}
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(320px, 1fr))', gap:'20px' }}>
+        {filtered.map(lesson => (
+          <div key={lesson.id} className="card-hover" style={{ background:'#111216', borderRadius:'12px', padding:'20px', position:'relative', cursor:'pointer', opacity: lesson.locked ? 0.75 : 1 }}
+            onClick={() => { if(!lesson.locked){ setSelectedLesson(lesson); setPage('lesson'); } }}>
+            {lesson.locked && (
+              <div style={{ position:'absolute', top:'12px', right:'12px', display:'flex', alignItems:'center', gap:'4px', background:'rgba(0,212,255,0.1)', border:'1px solid rgba(0,212,255,0.2)', borderRadius:'999px', padding:'2px 8px', fontSize:'11px', color:'#00D4FF' }}>
+                {Icons.lock} PRO
+              </div>
+            )}
+            {lesson.completed && (
+              <div style={{ position:'absolute', top:'12px', right:'12px', display:'flex', alignItems:'center', gap:'4px', background:'rgba(34,197,94,0.15)', border:'1px solid rgba(34,197,94,0.3)', borderRadius:'999px', padding:'2px 8px', fontSize:'11px', color:'#22c55e' }}>
+                {Icons.check} Done
+              </div>
+            )}
+            <div style={{ display:'flex', gap:'8px', marginBottom:'12px', flexWrap:'wrap' }}>
+              <span className={`badge badge-${lesson.difficulty.toLowerCase()}`}>{lesson.difficulty}</span>
+              <span style={{ fontSize:'12px', color:'#888', padding:'2px 8px' }}>📂 {lesson.category}</span>
+            </div>
+            <div style={{ fontWeight:'700', fontSize:'16px', color:'#fff', marginBottom:'8px' }}>{lesson.title}</div>
+            <div style={{ fontSize:'13px', color:'#888', marginBottom:'16px', lineHeight:1.5 }}>{lesson.description.slice(0,80)}...</div>
+            <div style={{ display:'flex', justifyContent:'space-between', fontSize:'13px', color:'#666' }}>
+              <span>⏱ {lesson.time}</span>
+              <span style={{ color:'#eab308', fontWeight:'700' }}>+{lesson.xp} XP</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function LessonPage({ lesson, setPage, setShowUpgrade }) {
+  const [code, setCode] = useState(lesson?.code || '');
+  const [logs, setLogs] = useState([]);
+  const [step, setStep] = useState(0);
+  const [showHint, setShowHint] = useState(false);
+  const steps = ['Explanation', 'Example', 'Try It', 'Quiz'];
+  const quiz = { q:"Which function runs code safely and catches errors?", opts:["wait()","pcall()","spawn()","error()"], ans:1 };
+  const [quizAns, setQuizAns] = useState(null);
+  if (!lesson) return <div style={{ padding:'40px', color:'#888' }}>No lesson selected. <button onClick={()=>setPage('learn')} style={{ color:'#00D4FF', background:'none', border:'none', cursor:'pointer' }}>Go to Learn</button></div>;
+  return (
+    <div style={{ padding:'24px' }}>
+      <button onClick={() => setPage('learn')} style={{ background:'none', border:'none', color:'#888', cursor:'pointer', marginBottom:'16px', display:'flex', alignItems:'center', gap:'6px', fontSize:'14px' }}>
+        ← Back to Lessons
+      </button>
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'24px', height:'calc(100vh - 180px)', minHeight:'500px' }}>
+        {/* Left: Content */}
+        <div style={{ overflow:'auto', display:'flex', flexDirection:'column', gap:'16px' }}>
+          <div>
+            <div style={{ display:'flex', gap:'8px', marginBottom:'12px', flexWrap:'wrap' }}>
+              <span className={`badge badge-${lesson.difficulty.toLowerCase()}`}>{lesson.difficulty}</span>
+              <span style={{ fontSize:'12px', color:'#eab308', padding:'2px 8px' }}>+{lesson.xp} XP</span>
+              <span style={{ fontSize:'12px', color:'#888', padding:'2px 8px' }}>⏱ {lesson.time}</span>
+            </div>
+            <h1 className="oxanium" style={{ fontSize:'22px', fontWeight:'800', marginBottom:'8px' }}>{lesson.title}</h1>
+          </div>
+
+          {/* Steps */}
+          <div style={{ display:'flex', borderBottom:'1px solid #1e2028', marginBottom:'8px' }}>
+            {steps.map((s,i) => <div key={s} className={`tab ${step===i?'active':''}`} onClick={()=>setStep(i)}>{s}</div>)}
+          </div>
+
+          {step===0 && (
+            <div style={{ color:'#ccc', lineHeight:1.8, fontSize:'15px' }}>
+              <p>{lesson.description}</p>
+              <p style={{ marginTop:'16px' }}>In this lesson, you'll learn how to use <span className="mono" style={{ color:'#00D4FF' }}>{lesson.title.split(' ')[0]}</span> effectively in your Roblox games.</p>
+              <div style={{ background:'rgba(0,212,255,0.06)', border:'1px solid rgba(0,212,255,0.2)', borderRadius:'8px', padding:'16px', marginTop:'16px' }}>
+                <div style={{ color:'#00D4FF', fontWeight:'700', marginBottom:'8px' }}>💡 Key Concepts</div>
+                <ul style={{ paddingLeft:'20px', color:'#ccc', display:'flex', flexDirection:'column', gap:'6px' }}>
+                  <li>Understanding the API's role in game development</li>
+                  <li>Common use cases and patterns</li>
+                  <li>Pitfalls to avoid</li>
+                </ul>
+              </div>
+            </div>
+          )}
+          {step===1 && (
+            <div>
+              <p style={{ color:'#ccc', marginBottom:'16px', fontSize:'15px' }}>Study this working example carefully. Notice the patterns used:</p>
+              <CodeEditor value={lesson.code} height="300px" readOnly />
+            </div>
+          )}
+          {step===2 && (
+            <div>
+              <p style={{ color:'#ccc', marginBottom:'12px', fontSize:'15px' }}>Modify the code in the editor on the right. Try changing values and see what happens.</p>
+              <div style={{ background:'rgba(234,179,8,0.06)', border:'1px solid rgba(234,179,8,0.2)', borderRadius:'8px', padding:'12px', fontSize:'13px', color:'#eab308' }}>
+                🎯 Challenge: Can you modify the code to use a different value or approach?
+              </div>
+              {showHint && (
+                <div style={{ background:'rgba(168,85,247,0.06)', border:'1px solid rgba(168,85,247,0.2)', borderRadius:'8px', padding:'12px', marginTop:'12px', fontSize:'13px', color:'#a855f7' }}>
+                  💡 Hint: Look at the last parameter — try changing numbers and observing the output.
+                </div>
+              )}
+              <button onClick={()=>setShowHint(true)} style={{ background:'none', border:'none', color:'#888', cursor:'pointer', fontSize:'13px', marginTop:'8px' }}>
+                {showHint ? '' : '🔍 Show Hint'}
+              </button>
+            </div>
+          )}
+          {step===3 && (
+            <div>
+              <p style={{ fontWeight:'700', fontSize:'16px', marginBottom:'16px' }}>❓ {quiz.q}</p>
+              <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
+                {quiz.opts.map((opt,i) => (
+                  <button key={i} onClick={() => setQuizAns(i)} style={{ textAlign:'left', padding:'12px 16px', borderRadius:'8px', cursor:'pointer', border:`1px solid ${quizAns===null?'#2a2d35':quizAns===i?i===quiz.ans?'rgba(34,197,94,0.5)':'rgba(239,68,68,0.5)':i===quiz.ans&&quizAns!==null?'rgba(34,197,94,0.5)':'#2a2d35'}`, background: quizAns===null?'#111216':quizAns===i?i===quiz.ans?'rgba(34,197,94,0.1)':'rgba(239,68,68,0.1)':i===quiz.ans&&quizAns!==null?'rgba(34,197,94,0.1)':'#111216', color:'#ccc', fontFamily:'inherit' }}>
+                    {['A','B','C','D'][i]}. {opt}
+                  </button>
+                ))}
+              </div>
+              {quizAns !== null && (
+                <div style={{ marginTop:'16px', padding:'12px', borderRadius:'8px', background: quizAns===quiz.ans?'rgba(34,197,94,0.1)':'rgba(239,68,68,0.1)', border:`1px solid ${quizAns===quiz.ans?'rgba(34,197,94,0.3)':'rgba(239,68,68,0.3)'}`, color: quizAns===quiz.ans?'#22c55e':'#ef4444' }}>
+                  {quizAns===quiz.ans ? '✅ Correct! pcall() safely runs code and catches errors.' : '❌ Incorrect. pcall() is the safe call function in Luau.'}
+                </div>
+              )}
+              {quizAns===quiz.ans && (
+                <button className="btn-primary" style={{ marginTop:'16px', width:'100%' }}>
+                  ✓ Complete Lesson — Claim +{lesson.xp} XP
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Right: Editor */}
+        <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+            <span className="mono" style={{ fontSize:'12px', color:'#888' }}>LUAU SANDBOX</span>
+            <div style={{ display:'flex', gap:'8px' }}>
+              <button onClick={()=>setCode(lesson.code)} style={{ background:'none', border:'1px solid #2a2d35', color:'#888', padding:'4px 12px', borderRadius:'6px', fontSize:'12px', cursor:'pointer' }}>Reset</button>
+              <button onClick={()=>setLogs(simulateRun(code))} className="btn-primary" style={{ padding:'6px 16px', fontSize:'13px', display:'flex', alignItems:'center', gap:'6px' }}>
+                {Icons.play} Run
+              </button>
+            </div>
+          </div>
+          <CodeEditor value={code} onChange={setCode} height="calc(100vh - 420px)" />
+          <Console logs={logs} onClear={()=>setLogs([])} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ChallengesPage({ setPage, setSelectedChallenge }) {
+  const [diff, setDiff] = useState('All');
+  const [tag, setTag] = useState('All');
+  const diffs = ['All','Beginner','Intermediate','Advanced'];
+  const allTags = ['All', ...new Set(CHALLENGES.flatMap(c=>c.tags))];
+  const filtered = CHALLENGES.filter(c => (diff==='All'||c.difficulty===diff) && (tag==='All'||c.tags.includes(tag)));
+  return (
+    <div style={{ padding:'32px' }}>
+      <div style={{ marginBottom:'32px' }}>
+        <h1 className="oxanium" style={{ fontSize:'32px', fontWeight:'800', marginBottom:'8px' }}>⚡ Challenges</h1>
+        <p style={{ color:'#888' }}>Real Roblox problems. Real Luau solutions. Earn XP for every submission.</p>
+      </div>
+
+      <div style={{ display:'flex', gap:'32px', marginBottom:'32px', flexWrap:'wrap' }}>
+        {[['10','Total'],['1','Solved'],['9','Remaining'],['350','XP Available']].map(([v,l])=>(
+          <div key={l} style={{ textAlign:'center' }}>
+            <div className="oxanium" style={{ fontSize:'28px', fontWeight:'700', color:'#00D4FF' }}>{v}</div>
+            <div style={{ fontSize:'12px', color:'#888' }}>{l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Filters */}
+      <div style={{ display:'flex', gap:'16px', marginBottom:'24px', flexWrap:'wrap', alignItems:'center' }}>
+        <div style={{ display:'flex', gap:'6px' }}>
+          {diffs.map(d => (
+            <button key={d} onClick={()=>setDiff(d)} style={{ padding:'5px 14px', borderRadius:'999px', background:diff===d?'rgba(0,212,255,0.15)':'#111216', color:diff===d?'#00D4FF':'#888', border:`1px solid ${diff===d?'rgba(0,212,255,0.4)':'#1e2028'}`, cursor:'pointer', fontSize:'13px' }}>{d}</button>
+          ))}
+        </div>
+        <select value={tag} onChange={e=>setTag(e.target.value)}>
+          {allTags.map(t=><option key={t}>{t}</option>)}
+        </select>
+      </div>
+
+      <div style={{ display:'flex', flexDirection:'column', gap:'16px' }}>
+        {filtered.map(ch => (
+          <div key={ch.id} className="card-hover" onClick={()=>{ setSelectedChallenge(ch); setPage('challenge'); }} style={{ background:'#111216', borderRadius:'12px', padding:'20px', cursor:'pointer', display:'flex', gap:'20px', alignItems:'center', flexWrap:'wrap' }}>
+            <div style={{ width:'48px', height:'48px', borderRadius:'50%', background: ch.completed?'rgba(34,197,94,0.15)':'rgba(0,212,255,0.1)', border:`1px solid ${ch.completed?'rgba(34,197,94,0.3)':'rgba(0,212,255,0.2)'}`, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, fontSize:'20px' }}>
+              {ch.completed ? '✅' : '🎯'}
+            </div>
+            <div style={{ flex:1 }}>
+              <div style={{ display:'flex', gap:'8px', marginBottom:'6px', flexWrap:'wrap', alignItems:'center' }}>
+                <span className={`badge badge-${ch.difficulty.toLowerCase()}`}>{ch.difficulty}</span>
+                {ch.tags.map(t => <span key={t} style={{ fontSize:'11px', color:'#888', background:'#1e2028', padding:'2px 8px', borderRadius:'4px' }}>#{t}</span>)}
+              </div>
+              <div style={{ fontWeight:'700', fontSize:'16px', color:'#fff', marginBottom:'4px' }}>{ch.title}</div>
+              <div style={{ fontSize:'13px', color:'#888' }}>{ch.description.slice(0,80)}...</div>
+            </div>
+            <div style={{ textAlign:'right', flexShrink:0 }}>
+              <div style={{ color:'#eab308', fontWeight:'700', fontSize:'18px' }}>+{ch.xp} XP</div>
+              <div style={{ color:'#888', fontSize:'12px', marginTop:'4px' }}>{ch.completed?'Solved':'Unsolved'}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ChallengePage({ challenge, setPage }) {
+  const [code, setCode] = useState(challenge?.starter || '');
+  const [logs, setLogs] = useState([]);
+  const [showSolution, setShowSolution] = useState(false);
+  const [activeTab, setActiveTab] = useState('problem');
+  if (!challenge) return <div style={{ padding:'40px' }}>No challenge selected. <button onClick={()=>setPage('challenges')} style={{ color:'#00D4FF', background:'none', border:'none', cursor:'pointer' }}>Back</button></div>;
+  return (
+    <div style={{ padding:'24px' }}>
+      <button onClick={() => setPage('challenges')} style={{ background:'none', border:'none', color:'#888', cursor:'pointer', marginBottom:'16px', fontSize:'14px' }}>
+        ← Back to Challenges
+      </button>
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'24px', minHeight:'500px' }}>
+        {/* Left */}
+        <div style={{ overflow:'auto' }}>
+          <div style={{ display:'flex', gap:'8px', marginBottom:'12px', flexWrap:'wrap', alignItems:'center' }}>
+            <span className={`badge badge-${challenge.difficulty.toLowerCase()}`}>{challenge.difficulty}</span>
+            {challenge.tags.map(t=><span key={t} style={{ fontSize:'11px', color:'#888', background:'#1e2028', padding:'2px 8px', borderRadius:'4px' }}>#{t}</span>)}
+            <span style={{ color:'#eab308', fontSize:'14px', fontWeight:'700', marginLeft:'auto' }}>+{challenge.xp} XP</span>
+          </div>
+          <h2 className="oxanium" style={{ fontSize:'22px', fontWeight:'800', marginBottom:'16px' }}>{challenge.title}</h2>
+          <div style={{ display:'flex', borderBottom:'1px solid #1e2028', marginBottom:'16px' }}>
+            {['problem','solution'].map(t => <div key={t} className={`tab ${activeTab===t?'active':''}`} onClick={()=>setActiveTab(t)} style={{ textTransform:'capitalize' }}>{t==='solution'?'💡 Solution':t}</div>)}
+          </div>
+          {activeTab==='problem' && (
+            <div style={{ color:'#ccc', lineHeight:1.8, fontSize:'15px' }}>
+              <p>{challenge.description}</p>
+              <div style={{ marginTop:'20px', background:'rgba(234,179,8,0.06)', border:'1px solid rgba(234,179,8,0.2)', borderRadius:'8px', padding:'16px' }}>
+                <div style={{ color:'#eab308', fontWeight:'700', marginBottom:'8px' }}>📋 Requirements</div>
+                <ul style={{ paddingLeft:'20px', display:'flex', flexDirection:'column', gap:'6px', fontSize:'14px' }}>
+                  <li>Your script should work with the given starter code</li>
+                  <li>Fill in all the TODO comments</li>
+                  <li>Code should run without errors</li>
+                </ul>
+              </div>
+              <div style={{ marginTop:'16px', background:'rgba(168,85,247,0.06)', border:'1px solid rgba(168,85,247,0.2)', borderRadius:'8px', padding:'16px' }}>
+                <div style={{ color:'#a855f7', fontWeight:'700', marginBottom:'8px' }}>🏷️ Related APIs</div>
+                <div style={{ display:'flex', gap:'8px', flexWrap:'wrap' }}>
+                  {challenge.tags.map(t=><span key={t} style={{ background:'rgba(168,85,247,0.1)', border:'1px solid rgba(168,85,247,0.2)', borderRadius:'4px', padding:'3px 10px', fontSize:'13px', color:'#c4b5fd' }}>{t}</span>)}
+                </div>
+              </div>
+            </div>
+          )}
+          {activeTab==='solution' && (
+            <div>
+              {!showSolution ? (
+                <div style={{ textAlign:'center', padding:'40px 20px' }}>
+                  <div style={{ fontSize:'40px', marginBottom:'16px' }}>🔒</div>
+                  <div style={{ color:'#ccc', marginBottom:'16px' }}>Try solving it yourself first!</div>
+                  <button onClick={()=>setShowSolution(true)} className="btn-outline" style={{ marginBottom:'8px' }}>Reveal Solution</button>
+                  <div style={{ fontSize:'12px', color:'#888', marginTop:'8px' }}>Pro feature — requires Pro plan</div>
+                </div>
+              ) : (
+                <div>
+                  <div style={{ background:'rgba(34,197,94,0.06)', border:'1px solid rgba(34,197,94,0.2)', borderRadius:'8px', padding:'12px', marginBottom:'16px', fontSize:'13px', color:'#22c55e' }}>
+                    ✅ Study this solution then implement your own version
+                  </div>
+                  <CodeEditor value={challenge.solution} height="280px" readOnly />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        {/* Right: Editor */}
+        <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+            <span className="mono" style={{ fontSize:'12px', color:'#888' }}>YOUR SOLUTION</span>
+            <div style={{ display:'flex', gap:'8px' }}>
+              <button onClick={()=>setCode(challenge.starter)} style={{ background:'none', border:'1px solid #2a2d35', color:'#888', padding:'4px 12px', borderRadius:'6px', fontSize:'12px', cursor:'pointer' }}>Reset</button>
+              <button onClick={()=>setLogs(simulateRun(code))} className="btn-primary" style={{ padding:'6px 16px', fontSize:'13px', display:'flex', alignItems:'center', gap:'6px' }}>
+                {Icons.play} Submit
+              </button>
+            </div>
+          </div>
+          <CodeEditor value={code} onChange={setCode} height="calc(100vh - 420px)" />
+          <Console logs={logs} onClear={()=>setLogs([])} />
+          <div style={{ display:'flex', gap:'8px', fontSize:'13px', color:'#888' }}>
+            <div style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'6px', padding:'6px 12px', flex:1 }}>
+              ✅ Test 1: Script runs without errors
+            </div>
+            <div style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'6px', padding:'6px 12px', flex:1 }}>
+              ✅ Test 2: Uses correct API
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PlaygroundPage() {
+  const starter = `-- 🧪 Luau Sandbox — Write anything!\n-- This is a simulated environment\n\nlocal message = "Hello from StudioDex!"\nprint(message)\n\n-- Try using math, string, table...\nlocal nums = {10, 3, 7, 1, 9, 4}\ntable.sort(nums)\nprint("Sorted:", table.concat(nums, ", "))\n\n-- String formatting\nlocal xp = 1250\nprint(string.format("Current XP: %d | Level: %d", xp, math.floor(xp/100)))\n\n-- math operations\nprint("Pi:", math.pi)\nprint("Random:", math.random(1, 100))\nprint("Clamp:", math.clamp(150, 0, 100))`;
+  const [code, setCode] = useState(starter);
+  const [logs, setLogs] = useState([]);
+  const [copied, setCopied] = useState(false);
+  const snippets = [
+    { label:"CFrame", code:`-- CFrame operations\nlocal cf = CFrame.new(0, 10, 0)\nlocal rotated = cf * CFrame.Angles(0, math.rad(45), 0)\nprint("Position:", cf.Position)\nprint("LookVector:", cf.LookVector)` },
+    { label:"table.sort", code:`local scores = {42, 8, 99, 17, 55}\ntable.sort(scores, function(a,b) return a > b end)\nprint("Sorted desc:", table.concat(scores, ", "))` },
+    { label:"pcall", code:`local function risky()\n  error("Something went wrong!")\nend\nlocal ok, err = pcall(risky)\nprint("Success:", ok)\nprint("Error:", err)` },
+    { label:"string patterns", code:`local text = "Player_123 joined the game"\nlocal name, id = string.match(text, "(%a+)_(%d+)")\nprint("Name:", name, "| ID:", id)` },
+    { label:"task.wait", code:`print("Start")\ntask.spawn(function()\n  task.wait(1)\n  print("After 1 second")\nend)\nprint("This runs immediately")` },
+  ];
+  return (
+    <div style={{ padding:'24px', height:'calc(100vh - 80px)', display:'flex', flexDirection:'column', gap:'16px' }}>
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:'12px' }}>
+        <div>
+          <h1 className="oxanium" style={{ fontSize:'28px', fontWeight:'800', marginBottom:'4px' }}>🧪 Luau Playground</h1>
+          <p style={{ color:'#888', fontSize:'14px' }}>Experiment with Luau code. Simulated output — no Roblox Studio needed.</p>
+        </div>
+        <div style={{ display:'flex', gap:'8px' }}>
+          <button onClick={()=>{navigator.clipboard.writeText(code);setCopied(true);setTimeout(()=>setCopied(false),2000);}} style={{ background:'none', border:'1px solid #2a2d35', color:'#888', padding:'8px 16px', borderRadius:'6px', fontSize:'13px', cursor:'pointer', display:'flex', alignItems:'center', gap:'6px' }}>
+            {Icons.share} {copied?'Copied!':'Share'}
+          </button>
+          <button onClick={()=>setCode(starter)} style={{ background:'none', border:'1px solid #2a2d35', color:'#888', padding:'8px 16px', borderRadius:'6px', fontSize:'13px', cursor:'pointer' }}>Reset</button>
+          <button onClick={()=>setLogs(simulateRun(code))} className="btn-primary" style={{ padding:'8px 20px', display:'flex', alignItems:'center', gap:'6px' }}>
+            {Icons.play} Run
+          </button>
+        </div>
+      </div>
+
+      {/* Snippets */}
+      <div style={{ display:'flex', gap:'8px', flexWrap:'wrap' }}>
+        <span style={{ fontSize:'12px', color:'#888', alignSelf:'center' }}>Snippets:</span>
+        {snippets.map(s => (
+          <button key={s.label} onClick={()=>setCode(s.code)} style={{ padding:'4px 12px', background:'#111216', border:'1px solid #2a2d35', color:'#ccc', borderRadius:'6px', fontSize:'12px', cursor:'pointer' }}>
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px', flex:1 }}>
+        <CodeEditor value={code} onChange={setCode} height="100%" />
+        <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+          <div style={{ background:'#050709', border:'1px solid #1e2028', borderRadius:'8px', flex:1, overflow:'auto', padding:'16px' }}>
+            <div style={{ display:'flex', justifyContent:'space-between', marginBottom:'12px' }}>
+              <span className="mono" style={{ fontSize:'11px', color:'#4a4f5a' }}>OUTPUT CONSOLE</span>
+              <button onClick={()=>setLogs([])} style={{ background:'none', border:'none', color:'#4a4f5a', cursor:'pointer', fontSize:'11px' }}>Clear</button>
+            </div>
+            {logs.length === 0 ? (
+              <div className="mono" style={{ fontSize:'13px', color:'#4a4f5a' }}>
+                <div>{">"} Click Run to execute your code</div>
+                <div style={{ marginTop:'8px', color:'#2a2d35' }}>-- print(), warn(), error() are simulated</div>
+              </div>
+            ) : logs.map((l,i) => (
+              <div key={i} className="mono" style={{ fontSize:'13px', color:l.type==='error'?'#ef4444':l.type==='warn'?'#eab308':'#98c379', padding:'2px 0', borderBottom:'1px solid #0a0c10' }}>
+                <span style={{ color:'#4a4f5a', marginRight:'8px' }}>[{String(i+1).padStart(2,'0')}]</span>
+                {l.type==='error'?'✗ ':l.type==='warn'?'⚠ ':'▶ '}{l.text}
+              </div>
+            ))}
+          </div>
+          <div style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'8px', padding:'16px' }}>
+            <div style={{ fontSize:'13px', fontWeight:'700', marginBottom:'12px', color:'#888' }}>AUTOCOMPLETE SNIPPETS</div>
+            <div style={{ display:'flex', flexDirection:'column', gap:'6px' }}>
+              {['game:GetService("ServiceName")', 'workspace:FindFirstChild("name")', 'task.spawn(function() end)', 'Vector3.new(x, y, z)', 'CFrame.new(x, y, z)'].map((s,i)=>(
+                <button key={i} onClick={()=>setCode(prev=>prev+'\n'+s)} className="mono" style={{ textAlign:'left', background:'#0a0c10', border:'1px solid #2a2d35', color:'#888', padding:'5px 8px', borderRadius:'4px', fontSize:'11px', cursor:'pointer' }}>
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ReferencePage() {
+  const [search, setSearch] = useState('');
+  const [cat, setCat] = useState('All');
+  const [selected, setSelected] = useState(API_ENTRIES[0]);
+  const cats = ['All', ...new Set(API_ENTRIES.map(e=>e.category))];
+  const filtered = API_ENTRIES.filter(e =>
+    (cat==='All'||e.category===cat) &&
+    (e.name.toLowerCase().includes(search.toLowerCase()) || e.description.toLowerCase().includes(search.toLowerCase()))
+  );
+  return (
+    <div style={{ padding:'24px', display:'grid', gridTemplateColumns:'280px 1fr', gap:'24px', height:'calc(100vh - 80px)' }}>
+      {/* Sidebar */}
+      <div style={{ display:'flex', flexDirection:'column', gap:'12px', overflow:'auto' }}>
+        <h2 className="oxanium" style={{ fontSize:'22px', fontWeight:'800' }}>📖 API Reference</h2>
+        <div style={{ position:'relative' }}>
+          <div style={{ position:'absolute', left:'10px', top:'50%', transform:'translateY(-50%)', color:'#888' }}>{Icons.search}</div>
+          <input type="text" placeholder="Search APIs..." value={search} onChange={e=>setSearch(e.target.value)} style={{ paddingLeft:'34px' }} />
+        </div>
+        <div style={{ display:'flex', gap:'4px', flexWrap:'wrap' }}>
+          {cats.map(c => <button key={c} onClick={()=>setCat(c)} style={{ padding:'3px 10px', borderRadius:'999px', background:cat===c?'rgba(0,212,255,0.15)':'#111216', color:cat===c?'#00D4FF':'#888', border:`1px solid ${cat===c?'rgba(0,212,255,0.3)':'#1e2028'}`, cursor:'pointer', fontSize:'11px' }}>{c}</button>)}
+        </div>
+        <div style={{ flex:1, overflow:'auto', display:'flex', flexDirection:'column', gap:'4px' }}>
+          {filtered.map(e => (
+            <div key={e.id} onClick={()=>setSelected(e)} style={{ padding:'10px 12px', borderRadius:'8px', cursor:'pointer', background:selected?.id===e.id?'rgba(0,212,255,0.1)':'transparent', border:`1px solid ${selected?.id===e.id?'rgba(0,212,255,0.2)':'transparent'}`, transition:'all 0.15s' }}>
+              <div style={{ fontWeight:'700', fontSize:'14px', color:selected?.id===e.id?'#00D4FF':'#ccc' }}>{e.name}</div>
+              <div style={{ fontSize:'11px', color:'#666', marginTop:'2px' }}>{e.category}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Detail */}
+      {selected && (
+        <div style={{ overflow:'auto' }}>
+          <div style={{ display:'flex', gap:'12px', alignItems:'center', marginBottom:'20px', flexWrap:'wrap' }}>
+            <h1 className="oxanium" style={{ fontSize:'28px', fontWeight:'800', color:'#00D4FF' }}>{selected.name}</h1>
+            <span style={{ fontSize:'13px', color:'#888', background:'#111216', border:'1px solid #2a2d35', padding:'3px 10px', borderRadius:'6px' }}>{selected.category}</span>
+            <button style={{ marginLeft:'auto', background:'none', border:'1px solid #2a2d35', color:'#888', padding:'5px 12px', borderRadius:'6px', cursor:'pointer', fontSize:'12px' }}>⭐ Favorite</button>
+          </div>
+          <p style={{ color:'#ccc', lineHeight:1.8, fontSize:'16px', marginBottom:'24px' }}>{selected.description}</p>
+
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'20px', marginBottom:'24px' }}>
+            <div style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'10px', padding:'16px' }}>
+              <div style={{ color:'#888', fontSize:'12px', marginBottom:'8px', fontWeight:'700' }}>SYNTAX</div>
+              <div className="mono" style={{ color:'#61afef', fontSize:'14px' }}>{selected.syntax}</div>
+            </div>
+            <div style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'10px', padding:'16px' }}>
+              <div style={{ color:'#888', fontSize:'12px', marginBottom:'8px', fontWeight:'700' }}>KEY MEMBERS</div>
+              <div style={{ display:'flex', flexWrap:'wrap', gap:'6px' }}>
+                {selected.properties.map(p => <span key={p} className="mono" style={{ fontSize:'12px', background:'#0a0c10', border:'1px solid #2a2d35', padding:'2px 8px', borderRadius:'4px', color:'#c678dd' }}>{p}</span>)}
+              </div>
+            </div>
+          </div>
+
+          <div style={{ background:'#0a0c10', border:'1px solid #2a2d35', borderRadius:'10px', padding:'0' }}>
+            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'12px 16px', borderBottom:'1px solid #1e2028' }}>
+              <span className="mono" style={{ fontSize:'12px', color:'#888' }}>EXAMPLE</span>
+              <button onClick={()=>navigator.clipboard.writeText(selected.example)} style={{ background:'none', border:'none', color:'#888', cursor:'pointer', fontSize:'12px' }}>Copy</button>
+            </div>
+            <pre className="mono" style={{ padding:'16px', color:'#abb2bf', fontSize:'13px', lineHeight:1.7, margin:0, overflowX:'auto' }}>{selected.example}</pre>
+          </div>
+
+          <div style={{ marginTop:'24px', padding:'16px', background:'rgba(0,212,255,0.05)', border:'1px solid rgba(0,212,255,0.15)', borderRadius:'10px' }}>
+            <div style={{ color:'#00D4FF', fontWeight:'700', marginBottom:'8px' }}>📚 Related Lessons</div>
+            <div style={{ display:'flex', gap:'8px', flexWrap:'wrap' }}>
+              {LESSONS.filter(l=>l.category===selected.category).slice(0,3).map(l=>(
+                <span key={l.id} style={{ fontSize:'13px', color:'#888', background:'#111216', border:'1px solid #1e2028', padding:'4px 12px', borderRadius:'6px' }}>{l.title.slice(0,30)}...</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ProfilePage() {
+  const xp = 1250;
+  const maxXp = 2000;
+  const level = 12;
+  return (
+    <div style={{ padding:'32px', maxWidth:'800px' }}>
+      <h1 className="oxanium" style={{ fontSize:'32px', fontWeight:'800', marginBottom:'24px' }}>👤 My Profile</h1>
+      <div style={{ display:'grid', gridTemplateColumns:'auto 1fr', gap:'24px', background:'#111216', border:'1px solid #1e2028', borderRadius:'16px', padding:'24px', marginBottom:'24px', alignItems:'center' }}>
+        <div style={{ width:'80px', height:'80px', borderRadius:'50%', background:'linear-gradient(135deg, #00D4FF, #0099cc)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'36px' }}>🧑‍💻</div>
+        <div>
+          <div style={{ display:'flex', gap:'12px', alignItems:'center', flexWrap:'wrap', marginBottom:'4px' }}>
+            <h2 className="oxanium" style={{ fontSize:'24px', fontWeight:'800' }}>YoungDev_123</h2>
+            <span className="badge badge-pro">PRO</span>
+            <span style={{ background:'rgba(255,165,0,0.15)', color:'#ffa500', border:'1px solid rgba(255,165,0,0.3)', padding:'2px 10px', borderRadius:'999px', fontSize:'12px' }}>Level {level} Builder</span>
+          </div>
+          <div style={{ color:'#888', fontSize:'14px', marginBottom:'12px' }}>Member since May 2026 · 🔥 2-day streak</div>
+          <div>
+            <div style={{ display:'flex', justifyContent:'space-between', fontSize:'13px', marginBottom:'6px' }}>
+              <span style={{ color:'#ccc' }}>Level {level} → {level+1}</span>
+              <span style={{ color:'#00D4FF', fontWeight:'700' }}>{xp} / {maxXp} XP</span>
+            </div>
+            <div style={{ background:'#1e2028', borderRadius:'9999px', height:'8px' }}>
+              <div className="xp-bar" style={{ width:`${(xp/maxXp)*100}%`, height:'8px' }} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(160px, 1fr))', gap:'16px', marginBottom:'32px' }}>
+        {[['2','Lessons Done'],['1','Challenges'],['1,250','XP Total'],['2','Day Streak'],['3','Badges']].map(([v,l])=>(
+          <div key={l} style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'10px', padding:'16px', textAlign:'center' }}>
+            <div className="oxanium" style={{ fontSize:'26px', fontWeight:'800', color:'#00D4FF' }}>{v}</div>
+            <div style={{ fontSize:'12px', color:'#888', marginTop:'4px' }}>{l}</div>
+          </div>
+        ))}
+      </div>
+
+      <h3 style={{ fontWeight:'700', marginBottom:'16px', fontSize:'18px' }}>🏅 Badges</h3>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(180px, 1fr))', gap:'16px', marginBottom:'32px' }}>
+        {BADGES_LIST.map(b => (
+          <div key={b.name} style={{ background:'#111216', border:`1px solid ${b.earned?'rgba(0,212,255,0.3)':'#1e2028'}`, borderRadius:'10px', padding:'16px', textAlign:'center', opacity:b.earned?1:0.45 }}>
+            <div style={{ fontSize:'36px', marginBottom:'8px' }}>{b.icon}</div>
+            <div style={{ fontWeight:'700', fontSize:'14px', color:b.earned?'#fff':'#888', marginBottom:'4px' }}>{b.name}</div>
+            <div style={{ fontSize:'11px', color:'#666' }}>{b.desc}</div>
+            {b.earned && <div style={{ marginTop:'8px', fontSize:'11px', color:'#00D4FF', fontWeight:'700' }}>✓ EARNED</div>}
+          </div>
+        ))}
+      </div>
+
+      <h3 style={{ fontWeight:'700', marginBottom:'16px', fontSize:'18px' }}>📊 Learning Progress</h3>
+      <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+        {CATEGORIES.map(cat => {
+          const done = LESSONS.filter(l=>l.category===cat.name && l.completed).length;
+          const total = LESSONS.filter(l=>l.category===cat.name).length;
+          const pct = total ? (done/total)*100 : 0;
+          return (
+            <div key={cat.name} style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'8px', padding:'14px 18px' }}>
+              <div style={{ display:'flex', justifyContent:'space-between', marginBottom:'8px', fontSize:'14px' }}>
+                <span>{cat.icon} {cat.name}</span>
+                <span style={{ color: pct===100?'#22c55e':'#888' }}>{done}/{total}</span>
+              </div>
+              <div style={{ background:'#1e2028', borderRadius:'999px', height:'6px' }}>
+                <div style={{ background: pct===100?'#22c55e':'linear-gradient(90deg, #00D4FF, #0099cc)', width:`${pct}%`, height:'6px', borderRadius:'999px', transition:'width 0.6s' }} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function LeaderboardPage() {
+  return (
+    <div style={{ padding:'32px', maxWidth:'700px' }}>
+      <h1 className="oxanium" style={{ fontSize:'32px', fontWeight:'800', marginBottom:'8px' }}>🏆 Leaderboard</h1>
+      <p style={{ color:'#888', marginBottom:'32px' }}>Top XP earners this week. Keep grinding!</p>
+      <div style={{ display:'flex', gap:'8px', marginBottom:'24px' }}>
+        {['Weekly','Monthly','All Time'].map((t,i) => (
+          <button key={t} style={{ padding:'6px 18px', borderRadius:'999px', background:i===0?'rgba(0,212,255,0.15)':'#111216', color:i===0?'#00D4FF':'#888', border:`1px solid ${i===0?'rgba(0,212,255,0.4)':'#1e2028'}`, cursor:'pointer', fontSize:'13px' }}>{t}</button>
+        ))}
+      </div>
+
+      <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+        {LEADERBOARD.map((p,i) => (
+          <div key={p.rank} style={{ background: p.rank===1?'rgba(234,179,8,0.08)':p.rank===2?'rgba(148,163,184,0.05)':p.rank===3?'rgba(205,127,50,0.05)':'#111216', border:`1px solid ${p.rank===1?'rgba(234,179,8,0.3)':p.rank===2?'rgba(148,163,184,0.2)':p.rank===3?'rgba(205,127,50,0.2)':'#1e2028'}`, borderRadius:'12px', padding:'16px 20px', display:'flex', alignItems:'center', gap:'16px' }}>
+            <div className="oxanium" style={{ fontSize:'24px', fontWeight:'800', width:'40px', color:p.rank===1?'#eab308':p.rank===2?'#94a3b8':p.rank===3?'#cd7f32':'#888' }}>
+              {p.rank===1?'🥇':p.rank===2?'🥈':p.rank===3?'🥉':`#${p.rank}`}
+            </div>
+            <div style={{ fontSize:'32px' }}>{p.avatar}</div>
+            <div style={{ flex:1 }}>
+              <div style={{ fontWeight:'700', fontSize:'16px', marginBottom:'2px' }}>{p.name}</div>
+              <div style={{ fontSize:'12px', color:'#888' }}>Level {p.level} · {p.badge} · 🔥 {p.streak} streak</div>
+            </div>
+            <div style={{ textAlign:'right' }}>
+              <div className="oxanium" style={{ fontSize:'20px', fontWeight:'800', color:'#00D4FF' }}>{p.xp.toLocaleString()}</div>
+              <div style={{ fontSize:'11px', color:'#888' }}>XP</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ background:'rgba(0,212,255,0.05)', border:'1px solid rgba(0,212,255,0.15)', borderRadius:'12px', padding:'20px', marginTop:'24px', textAlign:'center' }}>
+        <div style={{ color:'#888', marginBottom:'4px' }}>Your rank</div>
+        <div className="oxanium" style={{ fontSize:'32px', fontWeight:'800', color:'#00D4FF', marginBottom:'4px' }}>#247</div>
+        <div style={{ fontSize:'14px', color:'#ccc' }}>Complete more lessons to climb the board!</div>
+      </div>
+    </div>
+  );
+}
+
+function PricingPage({ setShowUpgrade }) {
+  const [annual, setAnnual] = useState(false);
+  return (
+    <div style={{ padding:'48px 32px', maxWidth:'1000px', margin:'0 auto' }}>
+      <div style={{ textAlign:'center', marginBottom:'48px' }}>
+        <h1 className="oxanium" style={{ fontSize:'40px', fontWeight:'800', marginBottom:'12px' }}>
+          Unlock Your Full{' '}
+          <span style={{ background:'linear-gradient(135deg, #00D4FF, #FF3B3B)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Potential</span>
+        </h1>
+        <p style={{ color:'#888', fontSize:'16px', marginBottom:'24px' }}>Choose the plan that fits your journey</p>
+        <div style={{ display:'inline-flex', alignItems:'center', gap:'12px', background:'#111216', border:'1px solid #2a2d35', borderRadius:'999px', padding:'4px 12px' }}>
+          <span style={{ color: !annual?'#fff':'#888', fontSize:'14px' }}>Monthly</span>
+          <div onClick={()=>setAnnual(a=>!a)} style={{ width:'44px', height:'24px', background: annual?'#00D4FF':'#2a2d35', borderRadius:'999px', cursor:'pointer', position:'relative', transition:'background 0.2s' }}>
+            <div style={{ position:'absolute', top:'3px', left: annual?'22px':'3px', width:'18px', height:'18px', background:'#fff', borderRadius:'50%', transition:'left 0.2s' }} />
+          </div>
+          <span style={{ color: annual?'#fff':'#888', fontSize:'14px' }}>Annual <span style={{ color:'#22c55e', fontWeight:'700' }}>-40%</span></span>
+        </div>
+      </div>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(260px, 1fr))', gap:'24px', marginBottom:'48px' }}>
+        {[
+          { name:"Free", price:"$0", annualPrice:"$0", period:"forever", color:"#111216", accent:"#888", features:["3 lessons per category","Basic API reference (20 entries)","Luau Playground","Public leaderboard access","Community forum access"], cta:"Current Plan", ctaStyle:'#2a2d35', disabled:true },
+          { name:"Pro", price:"$9", annualPrice:"$5.40", period:"/month", color:"rgba(0,212,255,0.05)", accent:"#00D4FF", features:["All 150+ lessons","Full API reference (78+ entries)","All challenges + solution reveals","AI code hints","Pro badge on profile","Priority leaderboard slot","Certificate of completion"], cta:"Upgrade to Pro", popular:true },
+          { name:"Teams", price:"$15", annualPrice:"$9", period:"/mo per seat", color:"rgba(255,59,59,0.05)", accent:"#FF3B3B", tag:"BEST DEAL 🔥", features:["Everything in Pro","Team leaderboard","Shared progress tracking","Admin dashboard","Priority support","Custom team branding","Bulk seat discounts"], cta:"Get Teams Plan" },
+        ].map((p,i) => (
+          <div key={i} style={{ background:p.color, border:`2px solid ${p.accent}33`, borderRadius:'16px', padding:'32px', position:'relative', display:'flex', flexDirection:'column' }}>
+            {p.popular && <div style={{ position:'absolute', top:'-14px', left:'50%', transform:'translateX(-50%)', background:'#00D4FF', color:'#000', padding:'4px 20px', borderRadius:'999px', fontSize:'12px', fontWeight:'800', whiteSpace:'nowrap' }}>⭐ MOST POPULAR</div>}
+            {p.tag && <div style={{ position:'absolute', top:'-14px', left:'50%', transform:'translateX(-50%)', background:'linear-gradient(135deg, #FF3B3B, #cc0000)', color:'#fff', padding:'4px 20px', borderRadius:'999px', fontSize:'12px', fontWeight:'800', whiteSpace:'nowrap' }}>{p.tag}</div>}
+            <div className="oxanium" style={{ fontSize:'22px', fontWeight:'700', color:p.accent, marginBottom:'12px' }}>{p.name}</div>
+            <div style={{ marginBottom:'24px' }}>
+              <span className="oxanium" style={{ fontSize:'44px', fontWeight:'800', color:'#fff' }}>{annual?p.annualPrice:p.price}</span>
+              <span style={{ color:'#888', fontSize:'14px' }}>{p.period}</span>
+              {annual && p.name!=='Free' && <div style={{ fontSize:'12px', color:'#22c55e', marginTop:'4px' }}>Save 40% annually</div>}
+            </div>
+            <div style={{ flex:1, marginBottom:'24px', display:'flex', flexDirection:'column', gap:'10px' }}>
+              {p.features.map((f,j) => <div key={j} style={{ display:'flex', gap:'8px', fontSize:'14px', color:'#ccc', alignItems:'flex-start' }}><span style={{ color:p.accent, flexShrink:0, marginTop:'2px' }}>✓</span>{f}</div>)}
+            </div>
+            <button onClick={()=>!p.disabled&&setShowUpgrade(true)} style={{ width:'100%', background:p.disabled?'#1e2028':p.popular?'linear-gradient(135deg, #00D4FF, #0099cc)':p.tag?'linear-gradient(135deg, #FF3B3B, #cc0000)':'transparent', color:p.disabled?'#555':p.popular||p.tag?'#000':'#ccc', border:`1px solid ${p.accent}`, borderRadius:'10px', padding:'14px', fontWeight:'700', cursor:p.disabled?'default':'pointer', fontFamily:'Oxanium, sans-serif', fontSize:'15px', transition:'all 0.2s' }}>
+              {p.cta}
+            </button>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'16px', padding:'32px' }}>
+        <h3 className="oxanium" style={{ textAlign:'center', fontSize:'22px', fontWeight:'700', marginBottom:'24px' }}>Compare Plans</h3>
+        <div style={{ overflowX:'auto' }}>
+          <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'14px' }}>
+            <thead>
+              <tr style={{ borderBottom:'1px solid #2a2d35' }}>
+                <th style={{ textAlign:'left', padding:'10px 16px', color:'#888', fontWeight:'600' }}>Feature</th>
+                {['Free','Pro','Teams'].map(h=><th key={h} style={{ padding:'10px 16px', color:h==='Pro'?'#00D4FF':h==='Teams'?'#FF3B3B':'#888', fontWeight:'700', textAlign:'center' }}>{h}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['Lessons per category','3','Unlimited','Unlimited'],
+                ['API Reference entries','20','78+','78+'],
+                ['Coding challenges','✗','✓','✓'],
+                ['Solution reveals','✗','✓','✓'],
+                ['AI hints','✗','✓','✓'],
+                ['Pro badge','✗','✓','✓'],
+                ['Team leaderboard','✗','✗','✓'],
+                ['Admin dashboard','✗','✗','✓'],
+              ].map(([feat,...vals],i)=>(
+                <tr key={i} style={{ borderBottom:'1px solid #1e2028', background:i%2===0?'transparent':'rgba(255,255,255,0.01)' }}>
+                  <td style={{ padding:'10px 16px', color:'#ccc' }}>{feat}</td>
+                  {vals.map((v,j)=><td key={j} style={{ padding:'10px 16px', textAlign:'center', color:v==='✓'?'#22c55e':v==='✗'?'#ef4444':'#ccc', fontWeight:v==='✓'||v==='✗'?'700':'400' }}>{v}</td>)}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AuthPage({ mode, setPage }) {
+  const [form, setForm] = useState({ email:'', password:'', username:'' });
+  return (
+    <div style={{ minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', padding:'40px 20px' }} className="grid-bg">
+      <div style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'16px', padding:'40px', width:'100%', maxWidth:'400px' }}>
+        <div style={{ textAlign:'center', marginBottom:'32px' }}>
+          <div className="oxanium" style={{ fontSize:'28px', fontWeight:'800', marginBottom:'4px' }}>
+            <span style={{ color:'#00D4FF' }}>Studio</span>Dex
+          </div>
+          <div style={{ color:'#888', fontSize:'15px' }}>{mode==='login'?'Welcome back!':'Create your account'}</div>
+        </div>
+
+        <div style={{ display:'flex', flexDirection:'column', gap:'12px', marginBottom:'20px' }}>
+          {[['🔵 Continue with Google'],['🟠 Continue with Roblox']].map(([label])=>(
+            <button key={label} style={{ width:'100%', background:'#1e2028', border:'1px solid #2a2d35', color:'#ccc', padding:'12px', borderRadius:'8px', cursor:'pointer', fontSize:'14px', fontFamily:'Rajdhani, sans-serif' }}>{label}</button>
+          ))}
+        </div>
+
+        <div style={{ display:'flex', alignItems:'center', gap:'12px', marginBottom:'20px' }}>
+          <div style={{ flex:1, height:'1px', background:'#2a2d35' }} />
+          <span style={{ color:'#888', fontSize:'13px' }}>or</span>
+          <div style={{ flex:1, height:'1px', background:'#2a2d35' }} />
+        </div>
+
+        <div style={{ display:'flex', flexDirection:'column', gap:'12px', marginBottom:'24px' }}>
+          {mode==='signup' && <input type="text" placeholder="Username" value={form.username} onChange={e=>setForm(f=>({...f,username:e.target.value}))} />}
+          <input type="email" placeholder="Email address" value={form.email} onChange={e=>setForm(f=>({...f,email:e.target.value}))} />
+          <input type="password" placeholder="Password" value={form.password} onChange={e=>setForm(f=>({...f,password:e.target.value}))} />
+        </div>
+
+        <button className="btn-primary pulse-glow" style={{ width:'100%', fontSize:'16px', padding:'14px', marginBottom:'16px' }} onClick={()=>setPage('profile')}>
+          {mode==='login'?'Log In':'Create Account — Free'}
+        </button>
+
+        <div style={{ textAlign:'center', fontSize:'14px', color:'#888' }}>
+          {mode==='login'?<>Don't have an account? <button onClick={()=>setPage('signup')} style={{ color:'#00D4FF', background:'none', border:'none', cursor:'pointer' }}>Sign up free</button></>
+          :<>Already have an account? <button onClick={()=>setPage('login')} style={{ color:'#00D4FF', background:'none', border:'none', cursor:'pointer' }}>Log in</button></>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── MAIN APP ────────────────────────────────────────────────────────────────
+function App() {
+  const [page, setPage] = useState('landing');
+  const [selectedLesson, setSelectedLesson] = useState(null);
+  const [selectedChallenge, setSelectedChallenge] = useState(null);
+  const [showUpgrade, setShowUpgrade] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const noSidebarPages = ['landing','login','signup'];
+  const showSidebar = !noSidebarPages.includes(page);
+
+  const navItems = [
+    { id:'learn', label:'Curriculum', icon:Icons.book },
+    { id:'challenges', label:'Challenges', icon:Icons.zap },
+    { id:'playground', label:'Playground', icon:Icons.terminal },
+    { id:'reference', label:'API Reference', icon:Icons.search },
+    { id:'profile', label:'Profile', icon:Icons.user },
+    { id:'leaderboard', label:'Leaderboard', icon:Icons.trophy },
+    { id:'pricing', label:'Pricing', icon:Icons.dollar },
+  ];
+
+  const renderPage = () => {
+    switch(page) {
+      case 'landing': return <LandingPage setPage={setPage} />;
+      case 'login': return <AuthPage mode="login" setPage={setPage} />;
+      case 'signup': return <AuthPage mode="signup" setPage={setPage} />;
+      case 'learn': return <LearnPage setPage={setPage} setSelectedLesson={setSelectedLesson} />;
+      case 'lesson': return <LessonPage lesson={selectedLesson} setPage={setPage} setShowUpgrade={setShowUpgrade} />;
+      case 'challenges': return <ChallengesPage setPage={setPage} setSelectedChallenge={setSelectedChallenge} />;
+      case 'challenge': return <ChallengePage challenge={selectedChallenge} setPage={setPage} />;
+      case 'playground': return <PlaygroundPage />;
+      case 'reference': return <ReferencePage />;
+      case 'profile': return <ProfilePage />;
+      case 'leaderboard': return <LeaderboardPage />;
+      case 'pricing': return <PricingPage setShowUpgrade={setShowUpgrade} />;
+      default: return <LandingPage setPage={setPage} />;
+    }
+  };
+
+  if (!showSidebar) {
+    return (
+      <div>
+        {/* Top Bar */}
+        <div style={{ position:'fixed', top:0, left:0, right:0, height:'60px', background:'rgba(13,15,20,0.95)', borderBottom:'1px solid #1e2028', display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 32px', zIndex:50, backdropFilter:'blur(10px)' }}>
+          <div className="oxanium" style={{ fontSize:'22px', fontWeight:'800', cursor:'pointer' }} onClick={()=>setPage('landing')}>
+            <span style={{ color:'#00D4FF' }}>Studio</span>Dex
+          </div>
+          <div style={{ display:'flex', gap:'12px' }}>
+            <button className="btn-outline" style={{ padding:'7px 20px', fontSize:'14px' }} onClick={()=>setPage('login')}>Log In</button>
+            <button className="btn-primary" style={{ padding:'7px 20px', fontSize:'14px' }} onClick={()=>setPage('signup')}>Sign Up Free</button>
+          </div>
+        </div>
+        <div style={{ paddingTop:'60px' }}>{renderPage()}</div>
+        {showUpgrade && <UpgradeModal onClose={()=>setShowUpgrade(false)} />}
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ display:'flex', height:'100vh', overflow:'hidden' }}>
+      {/* Sidebar */}
+      <div style={{ width: sidebarOpen?'220px':'60px', background:'#080a0e', borderRight:'1px solid #1e2028', display:'flex', flexDirection:'column', flexShrink:0, transition:'width 0.2s', overflow:'hidden' }}>
+        <div style={{ padding:'16px 12px', borderBottom:'1px solid #1e2028', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+          {sidebarOpen && <div className="oxanium" style={{ fontSize:'18px', fontWeight:'800', cursor:'pointer' }} onClick={()=>setPage('landing')}><span style={{ color:'#00D4FF' }}>Studio</span>Dex</div>}
+          <button onClick={()=>setSidebarOpen(o=>!o)} style={{ background:'none', border:'none', color:'#888', cursor:'pointer', padding:'4px', flexShrink:0 }}>
+            <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+
+        {/* XP Mini */}
+        {sidebarOpen && (
+          <div style={{ padding:'12px', borderBottom:'1px solid #1e2028' }}>
+            <div style={{ display:'flex', justifyContent:'space-between', fontSize:'11px', color:'#888', marginBottom:'4px' }}>
+              <span>Lv.12 Builder</span><span>🔥 2</span>
+            </div>
+            <div style={{ background:'#1e2028', borderRadius:'999px', height:'5px' }}>
+              <div className="xp-bar" style={{ width:'62%', height:'5px' }} />
+            </div>
+          </div>
+        )}
+
+        <nav style={{ flex:1, padding:'8px 8px', display:'flex', flexDirection:'column', gap:'4px', overflowY:'auto' }}>
+          {navItems.map(item => (
+            <div key={item.id} className={`nav-item ${page===item.id||page===item.id.slice(0,-1)?'active':''}`}
+              onClick={() => setPage(item.id)}
+              style={{ display:'flex', alignItems:'center', gap:'12px', padding:'10px 12px', borderRadius:'8px', cursor:'pointer', whiteSpace:'nowrap' }}>
+              <span style={{ flexShrink:0 }}>{item.icon}</span>
+              {sidebarOpen && <span style={{ fontSize:'14px', fontWeight:'600' }}>{item.label}</span>}
+            </div>
+          ))}
+        </nav>
+
+        {sidebarOpen && (
+          <div style={{ padding:'12px', borderTop:'1px solid #1e2028' }}>
+            <button onClick={()=>setShowUpgrade(true)} className="btn-primary pulse-glow" style={{ width:'100%', fontSize:'13px', padding:'10px' }}>
+              ⚡ Go Pro
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Main Content */}
+      <div style={{ flex:1, overflow:'auto', display:'flex', flexDirection:'column' }}>
+        {/* Top Bar */}
+        <div style={{ height:'52px', background:'rgba(8,10,14,0.95)', borderBottom:'1px solid #1e2028', display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 24px', flexShrink:0, backdropFilter:'blur(10px)' }}>
+          <div style={{ fontSize:'14px', color:'#888' }}>
+            {navItems.find(n=>n.id===page)?.label || 'StudioDex'}
+          </div>
+          <div style={{ display:'flex', alignItems:'center', gap:'16px' }}>
+            <span style={{ fontSize:'13px', color:'#eab308' }}>🔥 2-day streak</span>
+            <span style={{ fontSize:'13px', color:'#00D4FF', fontWeight:'700' }}>⭐ 1,250 XP</span>
+            <div style={{ width:'32px', height:'32px', borderRadius:'50%', background:'linear-gradient(135deg, #00D4FF, #0099cc)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }} onClick={()=>setPage('profile')}>🧑‍💻</div>
+          </div>
+        </div>
+        <div style={{ flex:1, overflow:'auto' }}>{renderPage()}</div>
+      </div>
+
+      {showUpgrade && <UpgradeModal onClose={()=>setShowUpgrade(false)} />}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
