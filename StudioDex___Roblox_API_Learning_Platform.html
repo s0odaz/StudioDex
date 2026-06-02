@@ -12,17 +12,17 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@400;500;600;700&family=Oxanium:wght@400;600;700;800&display=swap" rel="stylesheet" />
 <style>
   * { box-sizing: border-box; }
-  body { background: #0D0F14; font-family: 'Rajdhani', sans-serif; color: #e2e8f0; margin: 0; overflow-x: hidden; }
-  ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: #111216; } ::-webkit-scrollbar-thumb { background: #2a2d35; border-radius: 3px; }
+  body { background: #1A1A1A; font-family: 'Rajdhani', sans-serif; color: #e2e8f0; margin: 0; overflow-x: hidden; }
+  ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: #282828; } ::-webkit-scrollbar-thumb { background: #3d3d3d; border-radius: 3px; }
   .mono { font-family: 'JetBrains Mono', monospace; }
   .oxanium { font-family: 'Oxanium', sans-serif; }
   .glow-cyan { box-shadow: 0 0 20px rgba(0,212,255,0.15); }
   .glow-cyan:hover { box-shadow: 0 0 30px rgba(0,212,255,0.3); }
   .glow-red { box-shadow: 0 0 20px rgba(255,59,59,0.15); }
-  .card-hover { transition: all 0.2s ease; border: 1px solid #1e2028; }
+  .card-hover { transition: all 0.2s ease; border: 1px solid #333333; }
   .card-hover:hover { border-color: rgba(0,212,255,0.3); box-shadow: 0 0 20px rgba(0,212,255,0.1); transform: translateY(-2px); }
   .grid-bg { background-image: linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px); background-size: 40px 40px; }
-  .code-editor { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; background: #0a0c10; color: #abb2bf; border: 1px solid #2a2d35; resize: none; outline: none; padding: 16px; width: 100%; }
+  .code-editor { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; background: #1e1e1e; color: #abb2bf; border: 1px solid #3d3d3d; resize: none; outline: none; padding: 16px; width: 100%; }
   .xp-bar { background: linear-gradient(90deg, #00D4FF, #0099cc); border-radius: 9999px; transition: width 0.6s ease; }
   .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 600; }
   .badge-beginner { background: rgba(0,184,163,0.12); color: #00b8a3; border: 1px solid rgba(0,184,163,0.3); }
@@ -34,15 +34,15 @@
   .btn-run:hover { background: #2c2f3a; border-color: #606060; color: #fff; }
   .btn-submit { background: #2cbb5d; color: #fff; border: none; border-radius: 6px; padding: 6px 18px; cursor: pointer; font-size: 13px; font-family: 'Rajdhani', sans-serif; font-weight: 700; transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
   .btn-submit:hover { background: #27a050; box-shadow: 0 2px 12px rgba(44,187,93,0.35); }
-  .console-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #1e2028; background: #0a0c10; border-radius: 8px 8px 0 0; }
-  .lc-panel { background: #111216; border: 1px solid #1e2028; border-radius: 10px; overflow: hidden; }
+  .console-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #333333; background: #1e1e1e; border-radius: 8px 8px 0 0; }
+  .lc-panel { background: #282828; border: 1px solid #333333; border-radius: 10px; overflow: hidden; }
   .lc-btab { padding: 6px 14px; cursor: pointer; font-size: 13px; color: #6b7280; font-family: 'Rajdhani', sans-serif; font-weight: 600; border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap; }
   .lc-btab:hover { color: #ccc; }
   .lc-btab.active { color: #e5e7eb; border-bottom-color: #00D4FF; }
-  .lc-textarea { width: 100%; box-sizing: border-box; background: #1a1d23; border: 1px solid #2a2d35; border-radius: 5px; color: #ccc; font-family: 'Fira Code', monospace; font-size: 12px; padding: 8px 10px; resize: none; outline: none; margin-top: 4px; }
+  .lc-textarea { width: 100%; box-sizing: border-box; background: #1e1e1e; border: 1px solid #3d3d3d; border-radius: 5px; color: #ccc; font-family: 'Fira Code', monospace; font-size: 12px; padding: 8px 10px; resize: none; outline: none; margin-top: 4px; }
   .lc-textarea:focus { border-color: #ffa116; }
   .lc-label { font-size: 12px; font-weight: 700; color: #9ca3af; margin-top: 10px; display: block; }
-  .lc-sep { width: 1px; background: #2a2d35; margin: 6px 2px; align-self: stretch; }
+  .lc-sep { width: 1px; background: #3d3d3d; margin: 6px 2px; align-self: stretch; }
   .badge-advanced { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
   .badge-pro { background: rgba(0,212,255,0.15); color: #00D4FF; border: 1px solid rgba(0,212,255,0.3); }
   .nav-item { transition: all 0.15s; border-left: 2px solid transparent; }
@@ -62,9 +62,9 @@
   .syntax-num { color: #d19a66; }
   .syntax-cm { color: #5c6370; font-style: italic; }
   .syntax-var { color: #abb2bf; }
-  .locked-overlay { position: absolute; inset: 0; background: rgba(13,15,20,0.85); backdrop-filter: blur(2px); border-radius: inherit; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; }
-  select { background: #111216; color: #e2e8f0; border: 1px solid #2a2d35; border-radius: 6px; padding: 6px 12px; }
-  input[type="text"], input[type="email"], input[type="password"] { background: #111216; color: #e2e8f0; border: 1px solid #2a2d35; border-radius: 6px; padding: 8px 12px; outline: none; width: 100%; }
+  .locked-overlay { position: absolute; inset: 0; background: rgba(26,26,26,0.88); backdrop-filter: blur(2px); border-radius: inherit; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; }
+  select { background: #282828; color: #e2e8f0; border: 1px solid #3d3d3d; border-radius: 6px; padding: 6px 12px; }
+  input[type="text"], input[type="email"], input[type="password"] { background: #282828; color: #e2e8f0; border: 1px solid #3d3d3d; border-radius: 6px; padding: 8px 12px; outline: none; width: 100%; }
   input:focus { border-color: #00D4FF; }
   .tab { padding: 8px 16px; cursor: pointer; border-bottom: 2px solid transparent; color: #888; transition: all 0.15s; }
   .tab.active { border-bottom-color: #00D4FF; color: #00D4FF; }
@@ -72,7 +72,7 @@
   .progress-ring { transform: rotate(-90deg); }
   @keyframes fadeSlideIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
   .page-enter { animation: fadeSlideIn 0.22s ease-out forwards; }
-  .otp-box { background:#111216; color:#e5e7eb; border:2px solid #2a2d35; border-radius:8px; text-align:center; font-size:24px; font-weight:900; width:46px; height:54px; outline:none; font-family:'Oxanium',sans-serif; transition:border-color 0.15s; caret-color:#00D4FF; }
+  .otp-box { background:#282828; color:#e5e7eb; border:2px solid #3d3d3d; border-radius:8px; text-align:center; font-size:24px; font-weight:900; width:46px; height:54px; outline:none; font-family:'Oxanium',sans-serif; transition:border-color 0.15s; caret-color:#00D4FF; }
   .otp-box:focus { border-color:#00D4FF; box-shadow:0 0 0 3px rgba(0,212,255,0.1); }
 </style>
 </head>
@@ -1028,8 +1028,8 @@ function CodeEditor({ value, onChange, height = "300px", readOnly = false }) {
 // ─── CONSOLE COMPONENT ────────────────────────────────────────────────────────
 function Console({ logs, onClear }) {
   return (
-    <div style={{ background:'#050709', border:'1px solid #1e2028', borderRadius:'8px', height:'140px', overflow:'auto', padding:'8px' }}>
-      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'6px', paddingBottom:'6px', borderBottom:'1px solid #1e2028' }}>
+    <div style={{ background:'#1e1e1e', border:'1px solid #333333', borderRadius:'8px', height:'140px', overflow:'auto', padding:'8px' }}>
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'6px', paddingBottom:'6px', borderBottom:'1px solid #333333' }}>
         <span className="mono" style={{ fontSize:'11px', color:'#4a4f5a' }}>OUTPUT</span>
         <button onClick={onClear} style={{ background:'none', border:'none', color:'#4a4f5a', cursor:'pointer', fontSize:'11px' }}>Clear</button>
       </div>
@@ -1079,7 +1079,7 @@ function UpgradeModal({ onClose }) {
 
   return (
     <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.85)', zIndex:100, display:'flex', alignItems:'center', justifyContent:'center', padding:'20px' }} onClick={onClose}>
-      <div onClick={e=>e.stopPropagation()} style={{ background:'#111216', border:'1px solid rgba(0,212,255,0.3)', borderRadius:'16px', padding:'32px', maxWidth:'460px', width:'100%', position:'relative', maxHeight:'90vh', overflowY:'auto' }}>
+      <div onClick={e=>e.stopPropagation()} style={{ background:'#282828', border:'1px solid rgba(0,212,255,0.3)', borderRadius:'16px', padding:'32px', maxWidth:'460px', width:'100%', position:'relative', maxHeight:'90vh', overflowY:'auto' }}>
         <button onClick={onClose} style={{ position:'absolute', top:'12px', right:'12px', background:'none', border:'none', color:'#555', cursor:'pointer', fontSize:'20px' }}>✕</button>
 
         {step === 'done' ? (
@@ -1096,7 +1096,7 @@ function UpgradeModal({ onClose }) {
               <div className="oxanium" style={{ fontSize:'22px', fontWeight:'800', color:'#00D4FF' }}>Complete Your Order</div>
               <div style={{ color:'#888', fontSize:'14px', marginTop:'4px' }}>StudioDex Pro — {price}</div>
             </div>
-            <div style={{ background:'#0D0F14', border:'1px solid #2a2d35', borderRadius:'10px', padding:'16px', marginBottom:'20px' }}>
+            <div style={{ background:'#1A1A1A', border:'1px solid #2a2d35', borderRadius:'10px', padding:'16px', marginBottom:'20px' }}>
               <div style={{ display:'flex', justifyContent:'space-between', marginBottom:'6px', fontSize:'14px' }}>
                 <span style={{ color:'#888' }}>Pro Plan ({annual?'Annual':'Monthly'})</span>
                 <span style={{ color:'#fff', fontWeight:'700' }}>{price}</span>
@@ -1147,12 +1147,12 @@ function UpgradeModal({ onClose }) {
               ))}
             </div>
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px', marginBottom:'20px' }}>
-              <div onClick={()=>setAnnual(false)} style={{ background: !annual?'rgba(0,212,255,0.1)':'#0D0F14', border:`1px solid ${!annual?'rgba(0,212,255,0.5)':'#2a2d35'}`, borderRadius:'10px', padding:'16px', textAlign:'center', cursor:'pointer' }}>
+              <div onClick={()=>setAnnual(false)} style={{ background: !annual?'rgba(0,212,255,0.1)':'#1A1A1A', border:`1px solid ${!annual?'rgba(0,212,255,0.5)':'#3d3d3d'}`, borderRadius:'10px', padding:'16px', textAlign:'center', cursor:'pointer' }}>
                 <div style={{ color:'#888', fontSize:'11px', marginBottom:'4px' }}>MONTHLY</div>
                 <div className="oxanium" style={{ fontSize:'28px', fontWeight:'800', color:'#fff' }}>$9</div>
                 <div style={{ color:'#888', fontSize:'11px' }}>/month</div>
               </div>
-              <div onClick={()=>setAnnual(true)} style={{ background: annual?'rgba(0,212,255,0.1)':'#0D0F14', border:`1px solid ${annual?'rgba(0,212,255,0.5)':'#2a2d35'}`, borderRadius:'10px', padding:'16px', textAlign:'center', cursor:'pointer', position:'relative' }}>
+              <div onClick={()=>setAnnual(true)} style={{ background: annual?'rgba(0,212,255,0.1)':'#1A1A1A', border:`1px solid ${annual?'rgba(0,212,255,0.5)':'#3d3d3d'}`, borderRadius:'10px', padding:'16px', textAlign:'center', cursor:'pointer', position:'relative' }}>
                 <div style={{ position:'absolute', top:'-10px', left:'50%', transform:'translateX(-50%)', background:'#eab308', color:'#000', padding:'2px 10px', borderRadius:'999px', fontSize:'10px', fontWeight:'700', whiteSpace:'nowrap' }}>SAVE 40%</div>
                 <div style={{ color:'#888', fontSize:'11px', marginBottom:'4px' }}>ANNUAL</div>
                 <div className="oxanium" style={{ fontSize:'28px', fontWeight:'800', color:'#00D4FF' }}>$65</div>
@@ -1230,7 +1230,7 @@ function LandingPage({ setPage }) {
             { icon:"📖", title:"API Reference", desc:"Searchable, filterable reference for all major Roblox APIs with syntax, examples, and tips." },
             { icon:"🔥", title:"Daily Streaks", desc:"Build habits with daily streak tracking. Consistent practice is the fastest path to mastery." },
           ].map((f,i) => (
-            <div key={i} className="card-hover" style={{ background:'#111216', borderRadius:'12px', padding:'28px' }}>
+            <div key={i} className="card-hover" style={{ background:'#282828', borderRadius:'12px', padding:'28px' }}>
               <div style={{ fontSize:'36px', marginBottom:'16px' }}>{f.icon}</div>
               <div style={{ fontSize:'18px', fontWeight:'700', marginBottom:'8px', color:'#fff' }}>{f.title}</div>
               <div style={{ color:'#888', lineHeight:1.6, fontSize:'15px' }}>{f.desc}</div>
@@ -1245,7 +1245,7 @@ function LandingPage({ setPage }) {
         <p style={{ textAlign:'center', color:'#888', marginBottom:'48px' }}>Start free, upgrade when you're ready</p>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(250px, 1fr))', gap:'24px' }}>
           {[
-            { name:"Free", price:"$0", period:"forever", color:"#2a2d35", accent:"#888", features:["3 lessons per category","Basic API reference","Luau Sandbox","Public leaderboard"], cta:"Start Free" },
+            { name:"Free", price:"$0", period:"forever", color:"#3d3d3d", accent:"#888", features:["3 lessons per category","Basic API reference","Luau Sandbox","Public leaderboard"], cta:"Start Free" },
             { name:"Pro", price:"$9", period:"/month", color:"rgba(0,212,255,0.08)", accent:"#00D4FF", features:["All 150+ lessons","Full API reference (78+ entries)","All 10+ challenges","Solution reveals","AI hints","Pro badge"], cta:"Go Pro", popular:true },
             { name:"Teams", price:"$15", period:"/mo per seat", color:"rgba(255,59,59,0.08)", accent:"#FF3B3B", features:["Everything in Pro","Team leaderboard","Shared progress tracking","Priority support","Custom branding"], cta:"Best Deal! 🔥", tag:"BEST DEAL" },
           ].map((p,i) => (
@@ -1267,7 +1267,7 @@ function LandingPage({ setPage }) {
       </div>
 
       {/* Testimonials */}
-      <div style={{ padding:'60px 40px', background:'#0a0c10' }}>
+      <div style={{ padding:'60px 40px', background:'#1e1e1e' }}>
         <h2 className="oxanium" style={{ textAlign:'center', fontSize:'32px', fontWeight:'800', marginBottom:'40px' }}>What developers say</h2>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(280px, 1fr))', gap:'20px', maxWidth:'900px', margin:'0 auto' }}>
           {[
@@ -1275,7 +1275,7 @@ function LandingPage({ setPage }) {
             { quote:"Got my first game published after 2 weeks of lessons. The CFrame module alone is worth it.", name:"@LuaBuilder_x", avatar:"⚡" },
             { quote:"The challenge mode is addictive. I went from Novice to Engineer in a month.", name:"@ScriptMaster22", avatar:"🏆" },
           ].map((t,i) => (
-            <div key={i} style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'12px', padding:'24px' }}>
+            <div key={i} style={{ background:'#282828', border:'1px solid #333333', borderRadius:'12px', padding:'24px' }}>
               <div style={{ fontSize:'24px', marginBottom:'12px' }}>⭐⭐⭐⭐⭐</div>
               <div style={{ color:'#ccc', marginBottom:'16px', lineHeight:1.6, fontSize:'15px' }}>"{t.quote}"</div>
               <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
@@ -1312,13 +1312,13 @@ function LearnPage({ setPage, setSelectedLesson }) {
       </div>
 
       {/* Progress */}
-      <div style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'12px', padding:'20px', marginBottom:'32px', display:'flex', gap:'24px', alignItems:'center', flexWrap:'wrap' }}>
+      <div style={{ background:'#282828', border:'1px solid #333333', borderRadius:'12px', padding:'20px', marginBottom:'32px', display:'flex', gap:'24px', alignItems:'center', flexWrap:'wrap' }}>
         <div style={{ flex:1, minWidth:'200px' }}>
           <div style={{ display:'flex', justifyContent:'space-between', marginBottom:'8px', fontSize:'14px' }}>
             <span style={{ color:'#ccc' }}>Overall Progress</span>
             <span style={{ color:'#00D4FF', fontWeight:'700' }}>{completed}/{LESSONS.length} lessons</span>
           </div>
-          <div style={{ background:'#1e2028', borderRadius:'9999px', height:'8px' }}>
+          <div style={{ background:'#333333', borderRadius:'9999px', height:'8px' }}>
             <div className="xp-bar" style={{ width:`${(completed/LESSONS.length)*100}%`, height:'8px' }} />
           </div>
         </div>
@@ -1335,7 +1335,7 @@ function LearnPage({ setPage, setSelectedLesson }) {
       {/* Category Cards */}
       <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))', gap:'16px', marginBottom:'32px' }}>
         {CATEGORIES.map(cat => (
-          <div key={cat.name} className="card-hover" onClick={() => setSelectedCat(cat.name)} style={{ background:'#111216', borderRadius:'12px', padding:'20px', cursor:'pointer', border:`1px solid ${selectedCat===cat.name?cat.color+'44':'#1e2028'}` }}>
+          <div key={cat.name} className="card-hover" onClick={() => setSelectedCat(cat.name)} style={{ background:'#282828', borderRadius:'12px', padding:'20px', cursor:'pointer', border:`1px solid ${selectedCat===cat.name?cat.color+'44':'#333333'}` }}>
             <div style={{ fontSize:'28px', marginBottom:'8px' }}>{cat.icon}</div>
             <div style={{ fontWeight:'700', color: selectedCat===cat.name?cat.color:'#fff', marginBottom:'4px' }}>{cat.name}</div>
             <div style={{ fontSize:'12px', color:'#666', marginBottom:'8px' }}>{cat.count} items</div>
@@ -1347,7 +1347,7 @@ function LearnPage({ setPage, setSelectedLesson }) {
       {/* Filter Tabs */}
       <div style={{ display:'flex', gap:'8px', marginBottom:'24px', overflowX:'auto', paddingBottom:'4px', flexWrap:'wrap' }}>
         {cats.map(c => (
-          <button key={c} onClick={() => setSelectedCat(c)} style={{ padding:'6px 16px', borderRadius:'999px', background: selectedCat===c?'rgba(0,212,255,0.15)':'#111216', color: selectedCat===c?'#00D4FF':'#888', border:`1px solid ${selectedCat===c?'rgba(0,212,255,0.4)':'#1e2028'}`, cursor:'pointer', fontSize:'13px', whiteSpace:'nowrap' }}>
+          <button key={c} onClick={() => setSelectedCat(c)} style={{ padding:'6px 16px', borderRadius:'999px', background: selectedCat===c?'rgba(0,212,255,0.15)':'#282828', color: selectedCat===c?'#00D4FF':'#888', border:`1px solid ${selectedCat===c?'rgba(0,212,255,0.4)':'#333333'}`, cursor:'pointer', fontSize:'13px', whiteSpace:'nowrap' }}>
             {c}
           </button>
         ))}
@@ -1356,7 +1356,7 @@ function LearnPage({ setPage, setSelectedLesson }) {
       {/* Lesson Cards */}
       <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(320px, 1fr))', gap:'20px' }}>
         {filtered.map(lesson => (
-          <div key={lesson.id} className="card-hover" style={{ background:'#111216', borderRadius:'12px', padding:'20px', position:'relative', cursor:'pointer', opacity: lesson.locked ? 0.75 : 1 }}
+          <div key={lesson.id} className="card-hover" style={{ background:'#282828', borderRadius:'12px', padding:'20px', position:'relative', cursor:'pointer', opacity: lesson.locked ? 0.75 : 1 }}
             onClick={() => { if(!lesson.locked){ setSelectedLesson(lesson); setPage('lesson'); } }}>
             {lesson.locked && (
               <div style={{ position:'absolute', top:'12px', right:'12px', display:'flex', alignItems:'center', gap:'4px', background:'rgba(0,212,255,0.1)', border:'1px solid rgba(0,212,255,0.2)', borderRadius:'999px', padding:'2px 8px', fontSize:'11px', color:'#00D4FF' }}>
@@ -1412,7 +1412,7 @@ function LessonPage({ lesson, setPage, setShowUpgrade }) {
           </div>
 
           {/* Steps */}
-          <div style={{ display:'flex', borderBottom:'1px solid #1e2028', marginBottom:'8px' }}>
+          <div style={{ display:'flex', borderBottom:'1px solid #333333', marginBottom:'8px' }}>
             {steps.map((s,i) => <div key={s} className={`tab ${step===i?'active':''}`} onClick={()=>setStep(i)}>{s}</div>)}
           </div>
 
@@ -1457,7 +1457,7 @@ function LessonPage({ lesson, setPage, setShowUpgrade }) {
               <p style={{ fontWeight:'700', fontSize:'16px', marginBottom:'16px' }}>❓ {quiz.q}</p>
               <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
                 {quiz.opts.map((opt,i) => (
-                  <button key={i} onClick={() => setQuizAns(i)} style={{ textAlign:'left', padding:'12px 16px', borderRadius:'8px', cursor:'pointer', border:`1px solid ${quizAns===null?'#2a2d35':quizAns===i?i===quiz.ans?'rgba(34,197,94,0.5)':'rgba(239,68,68,0.5)':i===quiz.ans&&quizAns!==null?'rgba(34,197,94,0.5)':'#2a2d35'}`, background: quizAns===null?'#111216':quizAns===i?i===quiz.ans?'rgba(34,197,94,0.1)':'rgba(239,68,68,0.1)':i===quiz.ans&&quizAns!==null?'rgba(34,197,94,0.1)':'#111216', color:'#ccc', fontFamily:'inherit' }}>
+                  <button key={i} onClick={() => setQuizAns(i)} style={{ textAlign:'left', padding:'12px 16px', borderRadius:'8px', cursor:'pointer', border:`1px solid ${quizAns===null?'#3d3d3d':quizAns===i?i===quiz.ans?'rgba(34,197,94,0.5)':'rgba(239,68,68,0.5)':i===quiz.ans&&quizAns!==null?'rgba(34,197,94,0.5)':'#3d3d3d'}`, background: quizAns===null?'#282828':quizAns===i?i===quiz.ans?'rgba(34,197,94,0.1)':'rgba(239,68,68,0.1)':i===quiz.ans&&quizAns!==null?'rgba(34,197,94,0.1)':'#282828', color:'#ccc', fontFamily:'inherit' }}>
                     {['A','B','C','D'][i]}. {opt}
                   </button>
                 ))}
@@ -1530,7 +1530,7 @@ function ChallengesPage({ setPage, setSelectedChallenge }) {
             const isActive = pathFilter === cat.name;
             return (
               <div key={cat.name} onClick={()=>setPathFilter(isActive ? null : cat.name)}
-                style={{ background:isActive ? `rgba(${parseInt(cat.color.slice(1,3),16)||0},${parseInt(cat.color.slice(3,5),16)||212},${parseInt(cat.color.slice(5,7),16)||255},0.15)` : '#111216', border:`1px solid ${isActive?cat.color+'66':'#1e2028'}`, borderRadius:'12px', padding:'14px', cursor:'pointer', transition:'all 0.2s', display:'flex', flexDirection:'column' }}>
+                style={{ background:isActive ? `rgba(${parseInt(cat.color.slice(1,3),16)||0},${parseInt(cat.color.slice(3,5),16)||212},${parseInt(cat.color.slice(5,7),16)||255},0.15)` : '#282828', border:`1px solid ${isActive?cat.color+'66':'#333333'}`, borderRadius:'12px', padding:'14px', cursor:'pointer', transition:'all 0.2s', display:'flex', flexDirection:'column' }}>
                 <div style={{ fontSize:'24px', marginBottom:'6px' }}>{cat.icon}</div>
                 <div style={{ fontWeight:'700', fontSize:'14px', color: isActive ? cat.color : '#e2e8f0', marginBottom:'2px' }}>{cat.name}</div>
                 <div style={{ fontSize:'11px', color:'#666', marginBottom: lessonCount > 0 ? '8px' : '0' }}>
@@ -1571,7 +1571,7 @@ function ChallengesPage({ setPage, setSelectedChallenge }) {
       <div style={{ display:'flex', gap:'16px', marginBottom:'24px', flexWrap:'wrap', alignItems:'center' }}>
         <div style={{ display:'flex', gap:'6px' }}>
           {diffs.map(d => (
-            <button key={d} onClick={()=>setDiff(d)} style={{ padding:'5px 14px', borderRadius:'999px', background:diff===d?'rgba(0,212,255,0.15)':'#111216', color:diff===d?'#00D4FF':'#888', border:`1px solid ${diff===d?'rgba(0,212,255,0.4)':'#1e2028'}`, cursor:'pointer', fontSize:'13px' }}>{d}</button>
+            <button key={d} onClick={()=>setDiff(d)} style={{ padding:'5px 14px', borderRadius:'999px', background:diff===d?'rgba(0,212,255,0.15)':'#282828', color:diff===d?'#00D4FF':'#888', border:`1px solid ${diff===d?'rgba(0,212,255,0.4)':'#333333'}`, cursor:'pointer', fontSize:'13px' }}>{d}</button>
           ))}
         </div>
         <select value={tag} onChange={e=>setTag(e.target.value)}>
@@ -1581,14 +1581,14 @@ function ChallengesPage({ setPage, setSelectedChallenge }) {
 
       <div style={{ display:'flex', flexDirection:'column', gap:'16px' }}>
         {filtered.map(ch => (
-          <div key={ch.id} className="card-hover" onClick={()=>{ setSelectedChallenge(ch); setPage('challenge'); }} style={{ background:'#111216', borderRadius:'12px', padding:'20px', cursor:'pointer', display:'flex', gap:'20px', alignItems:'center', flexWrap:'wrap' }}>
+          <div key={ch.id} className="card-hover" onClick={()=>{ setSelectedChallenge(ch); setPage('challenge'); }} style={{ background:'#282828', borderRadius:'12px', padding:'20px', cursor:'pointer', display:'flex', gap:'20px', alignItems:'center', flexWrap:'wrap' }}>
             <div style={{ width:'48px', height:'48px', borderRadius:'50%', background: ch.completed?'rgba(34,197,94,0.15)':'rgba(0,212,255,0.1)', border:`1px solid ${ch.completed?'rgba(34,197,94,0.3)':'rgba(0,212,255,0.2)'}`, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, fontSize:'20px' }}>
               {ch.completed ? '✅' : '🎯'}
             </div>
             <div style={{ flex:1 }}>
               <div style={{ display:'flex', gap:'8px', marginBottom:'6px', flexWrap:'wrap', alignItems:'center' }}>
                 <span className={ch.difficulty==='Beginner'?'diff-easy':ch.difficulty==='Intermediate'?'diff-medium':'diff-hard'}>{ch.difficulty}</span>
-                {ch.tags.map(t => <span key={t} style={{ fontSize:'11px', color:'#888', background:'#1e2028', padding:'2px 8px', borderRadius:'4px' }}>#{t}</span>)}
+                {ch.tags.map(t => <span key={t} style={{ fontSize:'11px', color:'#888', background:'#333333', padding:'2px 8px', borderRadius:'4px' }}>#{t}</span>)}
               </div>
               <div style={{ fontWeight:'700', fontSize:'16px', color:'#fff', marginBottom:'4px' }}>{ch.title}</div>
               <div style={{ fontSize:'13px', color:'#888' }}>{ch.description.slice(0,80)}...</div>
@@ -1651,18 +1651,18 @@ function ChallengePage({ challenge, setPage }) {
   return (
     <div style={{ display:'flex', flexDirection:'column', height:'calc(100vh - 80px)', overflow:'hidden' }}>
       {/* ── Top bar ── */}
-      <div style={{ display:'flex', alignItems:'center', gap:'12px', padding:'8px 16px', borderBottom:'1px solid #1e2028', background:'#0a0b0e', flexShrink:0 }}>
+      <div style={{ display:'flex', alignItems:'center', gap:'12px', padding:'8px 16px', borderBottom:'1px solid #333333', background:'#1e1e1e', flexShrink:0 }}>
         <button onClick={() => setPage('challenges')} style={{ background:'none', border:'none', color:'#6b7280', cursor:'pointer', fontSize:'13px', display:'flex', alignItems:'center', gap:'4px', padding:'4px 8px', borderRadius:'4px', transition:'color 0.15s' }}
           onMouseOver={e=>e.currentTarget.style.color='#ccc'} onMouseOut={e=>e.currentTarget.style.color='#6b7280'}>
           ← Problems
         </button>
-        <div style={{ width:'1px', height:'18px', background:'#2a2d35' }} />
+        <div style={{ width:'1px', height:'18px', background:'#3d3d3d' }} />
         <span className={diffClass}>{challenge.difficulty}</span>
         <span style={{ fontWeight:'700', fontSize:'15px', color:'#e5e7eb' }}>{challenge.title}</span>
         <span style={{ color:'#eab308', fontSize:'12px', fontWeight:'700', background:'rgba(234,179,8,0.08)', border:'1px solid rgba(234,179,8,0.2)', borderRadius:'4px', padding:'1px 8px' }}>+{challenge.xp} XP</span>
         <div style={{ flex:1 }} />
         <button onClick={()=>setCode(challenge.starter)} style={{ background:'none', border:'1px solid #2a2d35', color:'#6b7280', padding:'5px 14px', borderRadius:'6px', fontSize:'12px', cursor:'pointer', transition:'all 0.15s' }}
-          onMouseOver={e=>{e.currentTarget.style.borderColor='#4a4f5a';e.currentTarget.style.color='#ccc';}} onMouseOut={e=>{e.currentTarget.style.borderColor='#2a2d35';e.currentTarget.style.color='#6b7280';}}>↺ Reset</button>
+          onMouseOver={e=>{e.currentTarget.style.borderColor='#4a4f5a';e.currentTarget.style.color='#ccc';}} onMouseOut={e=>{e.currentTarget.style.borderColor='#3d3d3d';e.currentTarget.style.color='#6b7280';}}>↺ Reset</button>
         {currentUser
           ? <><button className="btn-run" onClick={handleRun}>{Icons.play} Run</button>
               <button className="btn-submit" onClick={handleSubmit}>✓ Submit</button></>
@@ -1674,9 +1674,9 @@ function ChallengePage({ challenge, setPage }) {
       <div style={{ display:'grid', gridTemplateColumns:'50% 50%', flex:1, overflow:'hidden' }}>
 
         {/* ── Left: Description / Solution ── */}
-        <div style={{ borderRight:'1px solid #1e2028', display:'flex', flexDirection:'column', overflow:'hidden' }}>
+        <div style={{ borderRight:'1px solid #333333', display:'flex', flexDirection:'column', overflow:'hidden' }}>
           {/* Tab bar */}
-          <div style={{ display:'flex', alignItems:'center', borderBottom:'1px solid #1e2028', background:'#0a0b0e', flexShrink:0 }}>
+          <div style={{ display:'flex', alignItems:'center', borderBottom:'1px solid #333333', background:'#1e1e1e', flexShrink:0 }}>
             {[{k:'description',label:'Description'},{k:'solution',label:'Solution'}].map(({k,label},i) => (
               <React.Fragment key={k}>
                 {i > 0 && <div className="lc-sep" />}
@@ -1695,7 +1695,7 @@ function ChallengePage({ challenge, setPage }) {
                 {tcs.map((t,i)=>(
                   <div key={i} style={{ marginBottom:'16px' }}>
                     <div style={{ fontWeight:'700', color:'#e5e7eb', fontSize:'14px', marginBottom:'8px' }}>Example {i+1}:</div>
-                    <div style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'6px', padding:'12px 14px' }}>
+                    <div style={{ background:'#282828', border:'1px solid #333333', borderRadius:'6px', padding:'12px 14px' }}>
                       <div style={{ fontFamily:"'Fira Code',monospace", fontSize:'12px', color:'#9ca3af', whiteSpace:'pre-wrap', lineHeight:1.7 }}>
                         <span style={{ color:'#6b7280', fontWeight:'700' }}>Input: </span>{t.input}{'\n'}
                         <span style={{ color:'#6b7280', fontWeight:'700' }}>Expected: </span>{t.expected}
@@ -1760,7 +1760,7 @@ function ChallengePage({ challenge, setPage }) {
         {/* ── Right: Editor + tabbed bottom ── */}
         <div style={{ display:'flex', flexDirection:'column', overflow:'hidden' }}>
           {/* Code tab header */}
-          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'6px 16px', borderBottom:'1px solid #1e2028', background:'#0a0b0e', flexShrink:0 }}>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'6px 16px', borderBottom:'1px solid #333333', background:'#1e1e1e', flexShrink:0 }}>
             <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
               <span style={{ fontSize:'13px', color:'#e5e7eb', fontWeight:'600', fontFamily:"'Rajdhani',sans-serif" }}>Code</span>
               <div className="lc-sep" style={{ height:'14px' }} />
@@ -1775,9 +1775,9 @@ function ChallengePage({ challenge, setPage }) {
           </div>
 
           {/* ── Bottom tabbed panel ── */}
-          <div style={{ flexShrink:0, height:'230px', borderTop:'1px solid #1e2028', display:'flex', flexDirection:'column', background:'#0a0b0e' }}>
+          <div style={{ flexShrink:0, height:'230px', borderTop:'1px solid #333333', display:'flex', flexDirection:'column', background:'#1e1e1e' }}>
             {/* Tab bar */}
-            <div style={{ display:'flex', alignItems:'center', borderBottom:'1px solid #1e2028', background:'#080910', flexShrink:0, paddingLeft:'4px' }}>
+            <div style={{ display:'flex', alignItems:'center', borderBottom:'1px solid #333333', background:'#1e1e1e', flexShrink:0, paddingLeft:'4px' }}>
               {[{k:'testcase',label:'Testcase'},{k:'results',label:'Test Results'},{k:'compilation',label:'Compilation'}].map(({k,label},i)=>(
                 <React.Fragment key={k}>
                   {i > 0 && <div className="lc-sep" />}
@@ -1802,7 +1802,7 @@ function ChallengePage({ challenge, setPage }) {
                   {tcs.length > 1 && (
                     <div style={{ display:'flex', gap:'6px', marginBottom:'8px' }}>
                       {tcs.map((t,i)=>(
-                        <button key={i} onClick={()=>setTcIdx(i)} style={{ background:tcIdx===i?'rgba(0,212,255,0.1)':'none', border:`1px solid ${tcIdx===i?'rgba(0,212,255,0.3)':'#2a2d35'}`, borderRadius:'4px', color:tcIdx===i?'#00D4FF':'#6b7280', padding:'2px 10px', fontSize:'12px', cursor:'pointer', fontFamily:"'Rajdhani',sans-serif", fontWeight:'600' }}>{t.label}</button>
+                        <button key={i} onClick={()=>setTcIdx(i)} style={{ background:tcIdx===i?'rgba(0,212,255,0.1)':'none', border:`1px solid ${tcIdx===i?'rgba(0,212,255,0.3)':'#3d3d3d'}`, borderRadius:'4px', color:tcIdx===i?'#00D4FF':'#6b7280', padding:'2px 10px', fontSize:'12px', cursor:'pointer', fontFamily:"'Rajdhani',sans-serif", fontWeight:'600' }}>{t.label}</button>
                       ))}
                     </div>
                   )}
@@ -1890,7 +1890,7 @@ function PlaygroundPage() {
       <div style={{ display:'flex', gap:'8px', flexWrap:'wrap' }}>
         <span style={{ fontSize:'12px', color:'#888', alignSelf:'center' }}>Snippets:</span>
         {snippets.map(s => (
-          <button key={s.label} onClick={()=>setCode(s.code)} style={{ padding:'4px 12px', background:'#111216', border:'1px solid #2a2d35', color:'#ccc', borderRadius:'6px', fontSize:'12px', cursor:'pointer' }}>
+          <button key={s.label} onClick={()=>setCode(s.code)} style={{ padding:'4px 12px', background:'#282828', border:'1px solid #2a2d35', color:'#ccc', borderRadius:'6px', fontSize:'12px', cursor:'pointer' }}>
             {s.label}
           </button>
         ))}
@@ -1899,7 +1899,7 @@ function PlaygroundPage() {
       <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px', flex:1 }}>
         <CodeEditor value={code} onChange={setCode} height="100%" />
         <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
-          <div style={{ background:'#050709', border:'1px solid #1e2028', borderRadius:'8px', flex:1, overflow:'auto', padding:'16px' }}>
+          <div style={{ background:'#1e1e1e', border:'1px solid #333333', borderRadius:'8px', flex:1, overflow:'auto', padding:'16px' }}>
             <div style={{ display:'flex', justifyContent:'space-between', marginBottom:'12px' }}>
               <span className="mono" style={{ fontSize:'11px', color:'#4a4f5a' }}>OUTPUT CONSOLE</span>
               <button onClick={()=>setLogs([])} style={{ background:'none', border:'none', color:'#4a4f5a', cursor:'pointer', fontSize:'11px' }}>Clear</button>
@@ -1907,20 +1907,20 @@ function PlaygroundPage() {
             {logs.length === 0 ? (
               <div className="mono" style={{ fontSize:'13px', color:'#4a4f5a' }}>
                 <div>{">"} Click Run to execute your code</div>
-                <div style={{ marginTop:'8px', color:'#2a2d35' }}>-- print(), warn(), error() are simulated</div>
+                <div style={{ marginTop:'8px', color:'#3d3d3d' }}>-- print(), warn(), error() are simulated</div>
               </div>
             ) : logs.map((l,i) => (
-              <div key={i} className="mono" style={{ fontSize:'13px', color:l.type==='error'?'#ef4444':l.type==='warn'?'#eab308':'#98c379', padding:'2px 0', borderBottom:'1px solid #0a0c10' }}>
+              <div key={i} className="mono" style={{ fontSize:'13px', color:l.type==='error'?'#ef4444':l.type==='warn'?'#eab308':'#98c379', padding:'2px 0', borderBottom:'1px solid #1e1e1e' }}>
                 <span style={{ color:'#4a4f5a', marginRight:'8px' }}>[{String(i+1).padStart(2,'0')}]</span>
                 {l.type==='error'?'✗ ':l.type==='warn'?'⚠ ':'▶ '}{l.text}
               </div>
             ))}
           </div>
-          <div style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'8px', padding:'16px' }}>
+          <div style={{ background:'#282828', border:'1px solid #333333', borderRadius:'8px', padding:'16px' }}>
             <div style={{ fontSize:'13px', fontWeight:'700', marginBottom:'12px', color:'#888' }}>AUTOCOMPLETE SNIPPETS</div>
             <div style={{ display:'flex', flexDirection:'column', gap:'6px' }}>
               {['game:GetService("ServiceName")', 'workspace:FindFirstChild("name")', 'task.spawn(function() end)', 'Vector3.new(x, y, z)', 'CFrame.new(x, y, z)'].map((s,i)=>(
-                <button key={i} onClick={()=>setCode(prev=>prev+'\n'+s)} className="mono" style={{ textAlign:'left', background:'#0a0c10', border:'1px solid #2a2d35', color:'#888', padding:'5px 8px', borderRadius:'4px', fontSize:'11px', cursor:'pointer' }}>
+                <button key={i} onClick={()=>setCode(prev=>prev+'\n'+s)} className="mono" style={{ textAlign:'left', background:'#1e1e1e', border:'1px solid #2a2d35', color:'#888', padding:'5px 8px', borderRadius:'4px', fontSize:'11px', cursor:'pointer' }}>
                   {s}
                 </button>
               ))}
@@ -1951,7 +1951,7 @@ function ReferencePage() {
           <input type="text" placeholder="Search APIs..." value={search} onChange={e=>setSearch(e.target.value)} style={{ paddingLeft:'34px' }} />
         </div>
         <div style={{ display:'flex', gap:'4px', flexWrap:'wrap' }}>
-          {cats.map(c => <button key={c} onClick={()=>setCat(c)} style={{ padding:'3px 10px', borderRadius:'999px', background:cat===c?'rgba(0,212,255,0.15)':'#111216', color:cat===c?'#00D4FF':'#888', border:`1px solid ${cat===c?'rgba(0,212,255,0.3)':'#1e2028'}`, cursor:'pointer', fontSize:'11px' }}>{c}</button>)}
+          {cats.map(c => <button key={c} onClick={()=>setCat(c)} style={{ padding:'3px 10px', borderRadius:'999px', background:cat===c?'rgba(0,212,255,0.15)':'#282828', color:cat===c?'#00D4FF':'#888', border:`1px solid ${cat===c?'rgba(0,212,255,0.3)':'#333333'}`, cursor:'pointer', fontSize:'11px' }}>{c}</button>)}
         </div>
         <div style={{ flex:1, overflow:'auto', display:'flex', flexDirection:'column', gap:'4px' }}>
           {filtered.map(e => (
@@ -1968,26 +1968,26 @@ function ReferencePage() {
         <div style={{ overflow:'auto' }}>
           <div style={{ display:'flex', gap:'12px', alignItems:'center', marginBottom:'20px', flexWrap:'wrap' }}>
             <h1 className="oxanium" style={{ fontSize:'28px', fontWeight:'800', color:'#00D4FF' }}>{selected.name}</h1>
-            <span style={{ fontSize:'13px', color:'#888', background:'#111216', border:'1px solid #2a2d35', padding:'3px 10px', borderRadius:'6px' }}>{selected.category}</span>
+            <span style={{ fontSize:'13px', color:'#888', background:'#282828', border:'1px solid #2a2d35', padding:'3px 10px', borderRadius:'6px' }}>{selected.category}</span>
             <button style={{ marginLeft:'auto', background:'none', border:'1px solid #2a2d35', color:'#888', padding:'5px 12px', borderRadius:'6px', cursor:'pointer', fontSize:'12px' }}>⭐ Favorite</button>
           </div>
           <p style={{ color:'#ccc', lineHeight:1.8, fontSize:'16px', marginBottom:'24px' }}>{selected.description}</p>
 
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'20px', marginBottom:'24px' }}>
-            <div style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'10px', padding:'16px' }}>
+            <div style={{ background:'#282828', border:'1px solid #333333', borderRadius:'10px', padding:'16px' }}>
               <div style={{ color:'#888', fontSize:'12px', marginBottom:'8px', fontWeight:'700' }}>SYNTAX</div>
               <div className="mono" style={{ color:'#61afef', fontSize:'14px' }}>{selected.syntax}</div>
             </div>
-            <div style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'10px', padding:'16px' }}>
+            <div style={{ background:'#282828', border:'1px solid #333333', borderRadius:'10px', padding:'16px' }}>
               <div style={{ color:'#888', fontSize:'12px', marginBottom:'8px', fontWeight:'700' }}>KEY MEMBERS</div>
               <div style={{ display:'flex', flexWrap:'wrap', gap:'6px' }}>
-                {selected.properties.map(p => <span key={p} className="mono" style={{ fontSize:'12px', background:'#0a0c10', border:'1px solid #2a2d35', padding:'2px 8px', borderRadius:'4px', color:'#c678dd' }}>{p}</span>)}
+                {selected.properties.map(p => <span key={p} className="mono" style={{ fontSize:'12px', background:'#1e1e1e', border:'1px solid #2a2d35', padding:'2px 8px', borderRadius:'4px', color:'#c678dd' }}>{p}</span>)}
               </div>
             </div>
           </div>
 
-          <div style={{ background:'#0a0c10', border:'1px solid #2a2d35', borderRadius:'10px', padding:'0' }}>
-            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'12px 16px', borderBottom:'1px solid #1e2028' }}>
+          <div style={{ background:'#1e1e1e', border:'1px solid #2a2d35', borderRadius:'10px', padding:'0' }}>
+            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'12px 16px', borderBottom:'1px solid #333333' }}>
               <span className="mono" style={{ fontSize:'12px', color:'#888' }}>EXAMPLE</span>
               <button onClick={()=>navigator.clipboard.writeText(selected.example)} style={{ background:'none', border:'none', color:'#888', cursor:'pointer', fontSize:'12px' }}>Copy</button>
             </div>
@@ -1998,7 +1998,7 @@ function ReferencePage() {
             <div style={{ color:'#00D4FF', fontWeight:'700', marginBottom:'8px' }}>📚 Related Lessons</div>
             <div style={{ display:'flex', gap:'8px', flexWrap:'wrap' }}>
               {LESSONS.filter(l=>l.category===selected.category).slice(0,3).map(l=>(
-                <span key={l.id} style={{ fontSize:'13px', color:'#888', background:'#111216', border:'1px solid #1e2028', padding:'4px 12px', borderRadius:'6px' }}>{l.title.slice(0,30)}...</span>
+                <span key={l.id} style={{ fontSize:'13px', color:'#888', background:'#282828', border:'1px solid #333333', padding:'4px 12px', borderRadius:'6px' }}>{l.title.slice(0,30)}...</span>
               ))}
             </div>
           </div>
@@ -2033,12 +2033,12 @@ function ProfilePage({ setShowUpgrade, setPage, avatarUrl, setAvatarUrl }) {
   return (
     <div style={{ padding:'32px', maxWidth:'800px' }}>
       <h1 className="oxanium" style={{ fontSize:'32px', fontWeight:'800', marginBottom:'24px' }}>👤 My Profile</h1>
-      <div style={{ display:'grid', gridTemplateColumns:'auto 1fr', gap:'24px', background:'#111216', border:'1px solid #1e2028', borderRadius:'16px', padding:'24px', marginBottom:'24px', alignItems:'center' }}>
+      <div style={{ display:'grid', gridTemplateColumns:'auto 1fr', gap:'24px', background:'#282828', border:'1px solid #333333', borderRadius:'16px', padding:'24px', marginBottom:'24px', alignItems:'center' }}>
         <div style={{ position:'relative', width:'80px', height:'80px', cursor:'pointer' }} onClick={()=>fileInputRef.current?.click()} title="Click to change photo">
           <div style={{ width:'80px', height:'80px', borderRadius:'50%', background:'linear-gradient(135deg, #00D4FF, #0099cc)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'36px', overflow:'hidden' }}>
             {avatarUrl ? <img src={avatarUrl} alt="avatar" style={{ width:'100%', height:'100%', objectFit:'cover' }} /> : '🧑‍💻'}
           </div>
-          <div style={{ position:'absolute', bottom:0, right:0, width:'24px', height:'24px', borderRadius:'50%', background:'#00D4FF', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'13px', border:'2px solid #0d0f14' }}>📷</div>
+          <div style={{ position:'absolute', bottom:0, right:0, width:'24px', height:'24px', borderRadius:'50%', background:'#00D4FF', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'13px', border:'2px solid #1A1A1A' }}>📷</div>
           <input ref={fileInputRef} type="file" accept="image/*" style={{ display:'none' }} onChange={handleAvatarUpload} />
         </div>
         <div>
@@ -2056,7 +2056,7 @@ function ProfilePage({ setShowUpgrade, setPage, avatarUrl, setAvatarUrl }) {
               <span style={{ color:'#ccc' }}>Level {level} → {level+1}</span>
               <span style={{ color:'#00D4FF', fontWeight:'700' }}>{xp} / {maxXp} XP</span>
             </div>
-            <div style={{ background:'#1e2028', borderRadius:'9999px', height:'8px' }}>
+            <div style={{ background:'#333333', borderRadius:'9999px', height:'8px' }}>
               <div className="xp-bar" style={{ width:`${Math.min((xp/maxXp)*100,100)}%`, height:'8px' }} />
             </div>
           </div>
@@ -2065,7 +2065,7 @@ function ProfilePage({ setShowUpgrade, setPage, avatarUrl, setAvatarUrl }) {
 
       <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(160px, 1fr))', gap:'16px', marginBottom:'32px' }}>
         {[[String(currentUser?.completedLessons?.length??2),'Lessons Done'],['1','Challenges'],[String(xp),'XP Total'],[String(streak),'Day Streak'],['3','Badges']].map(([v,l])=>(
-          <div key={l} style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'10px', padding:'16px', textAlign:'center' }}>
+          <div key={l} style={{ background:'#282828', border:'1px solid #333333', borderRadius:'10px', padding:'16px', textAlign:'center' }}>
             <div className="oxanium" style={{ fontSize:'26px', fontWeight:'800', color:'#00D4FF' }}>{v}</div>
             <div style={{ fontSize:'12px', color:'#888', marginTop:'4px' }}>{l}</div>
           </div>
@@ -2075,7 +2075,7 @@ function ProfilePage({ setShowUpgrade, setPage, avatarUrl, setAvatarUrl }) {
       <h3 style={{ fontWeight:'700', marginBottom:'16px', fontSize:'18px' }}>🏅 Badges</h3>
       <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(180px, 1fr))', gap:'16px', marginBottom:'32px' }}>
         {BADGES_LIST.map(b => (
-          <div key={b.name} style={{ background:'#111216', border:`1px solid ${b.earned?'rgba(0,212,255,0.3)':'#1e2028'}`, borderRadius:'10px', padding:'16px', textAlign:'center', opacity:b.earned?1:0.45 }}>
+          <div key={b.name} style={{ background:'#282828', border:`1px solid ${b.earned?'rgba(0,212,255,0.3)':'#333333'}`, borderRadius:'10px', padding:'16px', textAlign:'center', opacity:b.earned?1:0.45 }}>
             <div style={{ fontSize:'36px', marginBottom:'8px' }}>{b.icon}</div>
             <div style={{ fontWeight:'700', fontSize:'14px', color:b.earned?'#fff':'#888', marginBottom:'4px' }}>{b.name}</div>
             <div style={{ fontSize:'11px', color:'#666' }}>{b.desc}</div>
@@ -2091,12 +2091,12 @@ function ProfilePage({ setShowUpgrade, setPage, avatarUrl, setAvatarUrl }) {
           const total = LESSONS.filter(l=>l.category===cat.name).length;
           const pct = total ? (done/total)*100 : 0;
           return (
-            <div key={cat.name} style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'8px', padding:'14px 18px' }}>
+            <div key={cat.name} style={{ background:'#282828', border:'1px solid #333333', borderRadius:'8px', padding:'14px 18px' }}>
               <div style={{ display:'flex', justifyContent:'space-between', marginBottom:'8px', fontSize:'14px' }}>
                 <span>{cat.icon} {cat.name}</span>
                 <span style={{ color: pct===100?'#22c55e':'#888' }}>{done}/{total}</span>
               </div>
-              <div style={{ background:'#1e2028', borderRadius:'999px', height:'6px' }}>
+              <div style={{ background:'#333333', borderRadius:'999px', height:'6px' }}>
                 <div style={{ background: pct===100?'#22c55e':'linear-gradient(90deg, #00D4FF, #0099cc)', width:`${pct}%`, height:'6px', borderRadius:'999px', transition:'width 0.6s' }} />
               </div>
             </div>
@@ -2176,9 +2176,9 @@ function LeaderboardPage() {
           <button key={t} onClick={()=>setLbTab(t)} style={{
             padding:'6px 20px', borderRadius:'999px', cursor:'pointer', fontSize:'13px',
             fontFamily:"'Rajdhani',sans-serif", fontWeight:'700', transition:'all 0.15s',
-            background: t===lbTab ? 'rgba(0,212,255,0.15)' : '#111216',
+            background: t===lbTab ? 'rgba(0,212,255,0.15)' : '#282828',
             color: t===lbTab ? '#00D4FF' : '#888',
-            border: `1px solid ${t===lbTab ? 'rgba(0,212,255,0.4)' : '#1e2028'}`,
+            border: `1px solid ${t===lbTab ? 'rgba(0,212,255,0.4)' : '#333333'}`,
           }}>{t}</button>
         ))}
       </div>
@@ -2186,8 +2186,8 @@ function LeaderboardPage() {
       <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
         {data.slice(0, 10).map(p => (
           <div key={p.rank} style={{
-            background: p.isUser ? 'rgba(0,212,255,0.08)' : p.rank===1?'rgba(234,179,8,0.08)':p.rank===2?'rgba(148,163,184,0.05)':p.rank===3?'rgba(205,127,50,0.05)':'#111216',
-            border:`1px solid ${p.isUser?'rgba(0,212,255,0.35)':p.rank===1?'rgba(234,179,8,0.3)':p.rank===2?'rgba(148,163,184,0.2)':p.rank===3?'rgba(205,127,50,0.2)':'#1e2028'}`,
+            background: p.isUser ? 'rgba(0,212,255,0.08)' : p.rank===1?'rgba(234,179,8,0.08)':p.rank===2?'rgba(148,163,184,0.05)':p.rank===3?'rgba(205,127,50,0.05)':'#282828',
+            border:`1px solid ${p.isUser?'rgba(0,212,255,0.35)':p.rank===1?'rgba(234,179,8,0.3)':p.rank===2?'rgba(148,163,184,0.2)':p.rank===3?'rgba(205,127,50,0.2)':'#333333'}`,
             borderRadius:'12px', padding:'16px 20px', display:'flex', alignItems:'center', gap:'16px'
           }}>
             <div className="oxanium" style={{ fontSize:'22px', fontWeight:'800', width:'40px', color:p.rank===1?'#eab308':p.rank===2?'#94a3b8':p.rank===3?'#cd7f32':'#888' }}>
@@ -2240,9 +2240,9 @@ function PricingPage({ setShowUpgrade }) {
           <span style={{ background:'linear-gradient(135deg, #00D4FF, #FF3B3B)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Potential</span>
         </h1>
         <p style={{ color:'#888', fontSize:'16px', marginBottom:'24px' }}>Choose the plan that fits your journey</p>
-        <div style={{ display:'inline-flex', alignItems:'center', gap:'12px', background:'#111216', border:'1px solid #2a2d35', borderRadius:'999px', padding:'4px 12px' }}>
+        <div style={{ display:'inline-flex', alignItems:'center', gap:'12px', background:'#282828', border:'1px solid #2a2d35', borderRadius:'999px', padding:'4px 12px' }}>
           <span style={{ color: !annual?'#fff':'#888', fontSize:'14px' }}>Monthly</span>
-          <div onClick={()=>setAnnual(a=>!a)} style={{ width:'44px', height:'24px', background: annual?'#00D4FF':'#2a2d35', borderRadius:'999px', cursor:'pointer', position:'relative', transition:'background 0.2s' }}>
+          <div onClick={()=>setAnnual(a=>!a)} style={{ width:'44px', height:'24px', background: annual?'#00D4FF':'#3d3d3d', borderRadius:'999px', cursor:'pointer', position:'relative', transition:'background 0.2s' }}>
             <div style={{ position:'absolute', top:'3px', left: annual?'22px':'3px', width:'18px', height:'18px', background:'#fff', borderRadius:'50%', transition:'left 0.2s' }} />
           </div>
           <span style={{ color: annual?'#fff':'#888', fontSize:'14px' }}>Annual <span style={{ color:'#22c55e', fontWeight:'700' }}>-40%</span></span>
@@ -2250,7 +2250,7 @@ function PricingPage({ setShowUpgrade }) {
       </div>
       <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(260px, 1fr))', gap:'24px', marginBottom:'48px' }}>
         {[
-          { name:"Free", price:"$0", annualPrice:"$0", period:"forever", color:"#111216", accent:"#888", features:["3 lessons per category","Basic API reference (20 entries)","Luau Playground","Public leaderboard access","Community forum access"], cta:"Current Plan", ctaStyle:'#2a2d35', disabled:true },
+          { name:"Free", price:"$0", annualPrice:"$0", period:"forever", color:"#282828", accent:"#888", features:["3 lessons per category","Basic API reference (20 entries)","Luau Playground","Public leaderboard access","Community forum access"], cta:"Current Plan", ctaStyle:'#3d3d3d', disabled:true },
           { name:"Pro", price:"$9", annualPrice:"$5.40", period:"/month", color:"rgba(0,212,255,0.05)", accent:"#00D4FF", features:["All 150+ lessons","Full API reference (78+ entries)","All challenges + solution reveals","AI code hints","Pro badge on profile","Priority leaderboard slot","Certificate of completion"], cta:"Upgrade to Pro", popular:true },
           { name:"Teams", price:"$15", annualPrice:"$9", period:"/mo per seat", color:"rgba(255,59,59,0.05)", accent:"#FF3B3B", tag:"BEST DEAL 🔥", features:["Everything in Pro","Team leaderboard","Shared progress tracking","Admin dashboard","Priority support","Custom team branding","Bulk seat discounts"], cta:"Get Teams Plan" },
         ].map((p,i) => (
@@ -2266,14 +2266,14 @@ function PricingPage({ setShowUpgrade }) {
             <div style={{ flex:1, marginBottom:'24px', display:'flex', flexDirection:'column', gap:'10px' }}>
               {p.features.map((f,j) => <div key={j} style={{ display:'flex', gap:'8px', fontSize:'14px', color:'#ccc', alignItems:'flex-start' }}><span style={{ color:p.accent, flexShrink:0, marginTop:'2px' }}>✓</span>{f}</div>)}
             </div>
-            <button onClick={()=>!p.disabled&&setShowUpgrade(true)} style={{ width:'100%', background:p.disabled?'#1e2028':p.popular?'linear-gradient(135deg, #00D4FF, #0099cc)':p.tag?'linear-gradient(135deg, #FF3B3B, #cc0000)':'transparent', color:p.disabled?'#555':p.popular||p.tag?'#000':'#ccc', border:`1px solid ${p.accent}`, borderRadius:'10px', padding:'14px', fontWeight:'700', cursor:p.disabled?'default':'pointer', fontFamily:'Oxanium, sans-serif', fontSize:'15px', transition:'all 0.2s' }}>
+            <button onClick={()=>!p.disabled&&setShowUpgrade(true)} style={{ width:'100%', background:p.disabled?'#333333':p.popular?'linear-gradient(135deg, #00D4FF, #0099cc)':p.tag?'linear-gradient(135deg, #FF3B3B, #cc0000)':'transparent', color:p.disabled?'#555':p.popular||p.tag?'#000':'#ccc', border:`1px solid ${p.accent}`, borderRadius:'10px', padding:'14px', fontWeight:'700', cursor:p.disabled?'default':'pointer', fontFamily:'Oxanium, sans-serif', fontSize:'15px', transition:'all 0.2s' }}>
               {p.cta}
             </button>
           </div>
         ))}
       </div>
 
-      <div style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'16px', padding:'32px' }}>
+      <div style={{ background:'#282828', border:'1px solid #333333', borderRadius:'16px', padding:'32px' }}>
         <h3 className="oxanium" style={{ textAlign:'center', fontSize:'22px', fontWeight:'700', marginBottom:'24px' }}>Compare Plans</h3>
         <div style={{ overflowX:'auto' }}>
           <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'14px' }}>
@@ -2294,7 +2294,7 @@ function PricingPage({ setShowUpgrade }) {
                 ['Team leaderboard','✗','✗','✓'],
                 ['Admin dashboard','✗','✗','✓'],
               ].map(([feat,...vals],i)=>(
-                <tr key={i} style={{ borderBottom:'1px solid #1e2028', background:i%2===0?'transparent':'rgba(255,255,255,0.01)' }}>
+                <tr key={i} style={{ borderBottom:'1px solid #333333', background:i%2===0?'transparent':'rgba(255,255,255,0.01)' }}>
                   <td style={{ padding:'10px 16px', color:'#ccc' }}>{feat}</td>
                   {vals.map((v,j)=><td key={j} style={{ padding:'10px 16px', textAlign:'center', color:v==='✓'?'#22c55e':v==='✗'?'#ef4444':'#ccc', fontWeight:v==='✓'||v==='✗'?'700':'400' }}>{v}</td>)}
                 </tr>
@@ -2377,7 +2377,7 @@ function AuthPage({ mode, setPage }) {
   if (step === 'verify') {
     return (
       <div style={{ minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', padding:'40px 20px' }} className="grid-bg">
-        <div style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'16px', padding:'40px', width:'100%', maxWidth:'420px' }}>
+        <div style={{ background:'#282828', border:'1px solid #333333', borderRadius:'16px', padding:'40px', width:'100%', maxWidth:'420px' }}>
           <div style={{ textAlign:'center', marginBottom:'28px' }}>
             <div style={{ fontSize:'52px', marginBottom:'14px' }}>📧</div>
             <div className="oxanium" style={{ fontSize:'24px', fontWeight:'800', marginBottom:'8px' }}>Check your email</div>
@@ -2403,7 +2403,7 @@ function AuthPage({ mode, setPage }) {
                   const txt = (e.clipboardData||window.clipboardData).getData('text').replace(/\D/g,'').slice(0,6);
                   if (txt.length === 6) { setDigits(txt.split('')); digitRefs[5].current?.focus(); e.preventDefault(); }
                 } : undefined}
-                style={{ border:`2px solid ${d ? '#00D4FF' : '#2a2d35'}` }}
+                style={{ border:`2px solid ${d ? '#00D4FF' : '#3d3d3d'}` }}
               />
             ))}
           </div>
@@ -2426,7 +2426,7 @@ function AuthPage({ mode, setPage }) {
   // ── Main form ──
   return (
     <div style={{ minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', padding:'40px 20px' }} className="grid-bg">
-      <div style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'16px', padding:'40px', width:'100%', maxWidth:'400px' }}>
+      <div style={{ background:'#282828', border:'1px solid #333333', borderRadius:'16px', padding:'40px', width:'100%', maxWidth:'400px' }}>
         <div style={{ textAlign:'center', marginBottom:'32px' }}>
           <div className="oxanium" style={{ fontSize:'28px', fontWeight:'800', marginBottom:'4px' }}>
             <span style={{ color:'#00D4FF' }}>Studio</span>Dex
@@ -2500,10 +2500,10 @@ function StreakCalendar() {
   const maxWeeks = Math.ceil((daysInMonth + firstDow) / 7);
 
   return (
-    <div style={{ width:'265px', flexShrink:0, background:'#0c0e13', borderLeft:'1px solid #1e2028', display:'flex', flexDirection:'column', overflowY:'auto' }}>
+    <div style={{ width:'265px', flexShrink:0, background:'#0c0e13', borderLeft:'1px solid #333333', display:'flex', flexDirection:'column', overflowY:'auto' }}>
 
       {/* ── Hex badge + day/timer ── */}
-      <div style={{ padding:'20px 16px 16px', borderBottom:'1px solid #1e2028', textAlign:'center' }}>
+      <div style={{ padding:'20px 16px 16px', borderBottom:'1px solid #333333', textAlign:'center' }}>
         <div style={{ display:'flex', justifyContent:'center', marginBottom:'12px' }}>
           <div style={{
             width:'70px', height:'80px',
@@ -2521,7 +2521,7 @@ function StreakCalendar() {
       </div>
 
       {/* ── Calendar ── */}
-      <div style={{ padding:'12px 14px', borderBottom:'1px solid #1e2028' }}>
+      <div style={{ padding:'12px 14px', borderBottom:'1px solid #333333' }}>
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'10px' }}>
           <button onClick={()=>setViewDate(new Date(year,month-1,1))} style={{ background:'none', border:'none', color:'#6b7280', cursor:'pointer', fontSize:'20px', lineHeight:1, padding:'0 6px', transition:'color 0.1s' }}
             onMouseOver={e=>e.currentTarget.style.color='#ccc'} onMouseOut={e=>e.currentTarget.style.color='#6b7280'}>‹</button>
@@ -2559,7 +2559,7 @@ function StreakCalendar() {
       </div>
 
       {/* ── Weekly Premium ── */}
-      <div style={{ padding:'12px 14px', borderBottom:'1px solid #1e2028' }}>
+      <div style={{ padding:'12px 14px', borderBottom:'1px solid #333333' }}>
         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'10px' }}>
           <span style={{ fontSize:'12px', fontWeight:'700', color:'#ffa116', display:'flex', alignItems:'center', gap:'5px' }}>
             Weekly Premium
@@ -2575,7 +2575,7 @@ function StreakCalendar() {
               <div key={w} style={{
                 textAlign:'center', padding:'6px 0', borderRadius:'6px', cursor:'pointer',
                 background: isActive ? 'rgba(255,161,22,0.14)' : 'transparent',
-                border:`1px solid ${isActive ? '#ffa116' : '#1e2028'}`,
+                border:`1px solid ${isActive ? '#ffa116' : '#333333'}`,
                 color: isActive ? '#ffa116' : isPast ? '#374151' : '#1f2937',
                 fontSize:'11px', fontWeight:'700', fontFamily:"'Rajdhani',sans-serif",
                 transition:'all 0.15s',
@@ -2647,7 +2647,7 @@ function App() {
     return (
       <AuthContext.Provider value={auth}>
         <div>
-          <div style={{ position:'fixed', top:0, left:0, right:0, height:'60px', background:'rgba(13,15,20,0.95)', borderBottom:'1px solid #1e2028', display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 32px', zIndex:50, backdropFilter:'blur(10px)' }}>
+          <div style={{ position:'fixed', top:0, left:0, right:0, height:'60px', background:'rgba(26,26,26,0.95)', borderBottom:'1px solid #333333', display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 32px', zIndex:50, backdropFilter:'blur(10px)' }}>
             <div className="oxanium" style={{ fontSize:'22px', fontWeight:'800', cursor:'pointer' }} onClick={()=>setPage('landing')}>
               <span style={{ color:'#00D4FF' }}>Studio</span>Dex
             </div>
@@ -2678,8 +2678,8 @@ function App() {
     <AuthContext.Provider value={auth}>
       <div style={{ display:'flex', height:'100vh', overflow:'hidden' }}>
         {/* Sidebar */}
-        <div style={{ width: sidebarOpen?'220px':'60px', background:'#080a0e', borderRight:'1px solid #1e2028', display:'flex', flexDirection:'column', flexShrink:0, transition:'width 0.2s', overflow:'hidden' }}>
-          <div style={{ padding:'16px 12px', borderBottom:'1px solid #1e2028', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+        <div style={{ width: sidebarOpen?'220px':'60px', background:'#080a0e', borderRight:'1px solid #333333', display:'flex', flexDirection:'column', flexShrink:0, transition:'width 0.2s', overflow:'hidden' }}>
+          <div style={{ padding:'16px 12px', borderBottom:'1px solid #333333', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
             {sidebarOpen && <div className="oxanium" style={{ fontSize:'18px', fontWeight:'800', cursor:'pointer' }} onClick={()=>setPage('landing')}><span style={{ color:'#00D4FF' }}>Studio</span>Dex</div>}
             <button onClick={()=>setSidebarOpen(o=>!o)} style={{ background:'none', border:'none', color:'#888', cursor:'pointer', padding:'4px', flexShrink:0 }}>
               <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -2687,12 +2687,12 @@ function App() {
           </div>
 
           {sidebarOpen && (
-            <div style={{ padding:'12px', borderBottom:'1px solid #1e2028' }}>
+            <div style={{ padding:'12px', borderBottom:'1px solid #333333' }}>
               <div style={{ display:'flex', justifyContent:'space-between', fontSize:'11px', color:'#888', marginBottom:'4px' }}>
                 <span>Lv.{level} {username}</span>
                 <span>🔥 {streak}</span>
               </div>
-              <div style={{ background:'#1e2028', borderRadius:'999px', height:'5px' }}>
+              <div style={{ background:'#333333', borderRadius:'999px', height:'5px' }}>
                 <div className="xp-bar" style={{ width:`${Math.min((xp/(level*200))*100,100)}%`, height:'5px' }} />
               </div>
             </div>
@@ -2710,14 +2710,14 @@ function App() {
           </nav>
 
           {sidebarOpen && !isPro && (
-            <div style={{ padding:'12px', borderTop:'1px solid #1e2028' }}>
+            <div style={{ padding:'12px', borderTop:'1px solid #333333' }}>
               <button onClick={()=>setShowUpgrade(true)} className="btn-primary pulse-glow" style={{ width:'100%', fontSize:'13px', padding:'10px' }}>
                 ⚡ Go Pro
               </button>
             </div>
           )}
           {sidebarOpen && isPro && (
-            <div style={{ padding:'12px', borderTop:'1px solid #1e2028', textAlign:'center' }}>
+            <div style={{ padding:'12px', borderTop:'1px solid #333333', textAlign:'center' }}>
               <span className="badge badge-pro" style={{ fontSize:'12px' }}>⚡ PRO MEMBER</span>
             </div>
           )}
@@ -2725,7 +2725,7 @@ function App() {
 
         {/* Main Content */}
         <div style={{ flex:1, overflow:'auto', display:'flex', flexDirection:'column' }}>
-          <div style={{ height:'52px', background:'rgba(8,10,14,0.95)', borderBottom:'1px solid #1e2028', display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 24px', flexShrink:0, backdropFilter:'blur(10px)' }}>
+          <div style={{ height:'52px', background:'rgba(8,10,14,0.95)', borderBottom:'1px solid #333333', display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 24px', flexShrink:0, backdropFilter:'blur(10px)' }}>
             <div style={{ fontSize:'14px', color:'#888' }}>
               {navItems.find(n=>n.id===page)?.label || 'StudioDex'}
             </div>
