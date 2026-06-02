@@ -523,7 +523,15 @@ class _Interp{
       inst.set('WaitForChild',w((n)=>mkInstance(n)));
       inst.set('IsA',w((cn2)=>true));
       inst.set('SetAttribute',w(()=>null));inst.set('GetAttribute',w(()=>null));
-      inst.set('Humanoid',null);inst.set('HumanoidRootPart',null);
+      inst.set('GetMass',w(()=>1));inst.set('PivotTo',w(()=>null));inst.set('SetPrimaryPartCFrame',w(()=>null));
+      inst.set('Anchored',false);inst.set('CanCollide',true);inst.set('Transparency',0);
+      inst.set('Material','SmoothPlastic');inst.set('Reflectance',0);inst.set('CastShadow',true);
+      inst.set('MaxHealth',100);inst.set('Health',100);inst.set('WalkSpeed',16);inst.set('JumpPower',50);inst.set('JumpHeight',7.2);
+      inst.set('Velocity',null);inst.set('RotVelocity',null);
+      // __index fallback: any unknown property returns a stub instance (prevents "attempt to index nil")
+      const imt=new LuaTable();
+      imt.set('__index',(tbl,k)=>{const child=mkInstance(String(k));tbl.set(k,child);return[child];});
+      inst.mt=imt;
       return inst;
     };
 
@@ -535,7 +543,17 @@ class _Interp{
     gameInst.set('ServerStorage',mkInstance('ServerStorage'));
     gameInst.set('Players',mkInstance('Players'));
     gameInst.set('Workspace',mkInstance('Workspace'));
-    g.def('game',gameInst);g.def('workspace',mkInstance('Workspace'));g.def('script',mkInstance('Script'));
+    g.def('game',gameInst);
+    {const ws=mkInstance('Workspace');
+    ws.set('Gravity',196.2);
+    ws.set('Raycast',w(()=>null));ws.set('SphereCast',w(()=>null));ws.set('FindPartOnRay',w(()=>null));ws.set('GetPartsInPart',()=>[new LuaTable()]);
+    const cam=mkInstance('Camera');cam.set('CameraType','Custom');cam.set('FieldOfView',70);ws.set('CurrentCamera',cam);
+    // __index: any workspace.PartName auto-creates a stub Part so scripts never get "attempt to index nil"
+    const wmt=new LuaTable();
+    wmt.set('__index',(tbl,k)=>{S.out('log',`[Roblox] workspace.${k} → stub`);const p=mkInstance(String(k));p.set('Anchored',false);p.set('CanCollide',true);tbl.set(k,p);return[p];});
+    ws.mt=wmt;
+    g.def('workspace',ws);}
+    g.def('script',mkInstance('Script'));
     g.def('plugin',mkInstance('Plugin'));
 
     g.def('Vector3',{new:(x,y,z)=>{x=+(x||0);y=+(y||0);z=+(z||0);const t=new LuaTable();t.set('X',x);t.set('Y',y);t.set('Z',z);t.set('__name','Vector3');const mag=Math.sqrt(x*x+y*y+z*z);t.set('Magnitude',mag);const um=mag||1;const un=new LuaTable();un.set('X',x/um);un.set('Y',y/um);un.set('Z',z/um);un.set('__name','Vector3');t.set('Unit',un);t.set('Dot',w((other)=>x*(other.get?other.get('X'):0)+y*(other.get?other.get('Y'):0)+z*(other.get?other.get('Z'):0)));t.set('Cross',w((other)=>g.get('Vector3').new(y*(other.get?other.get('Z'):0)-z*(other.get?other.get('Y'):0),z*(other.get?other.get('X'):0)-x*(other.get?other.get('Z'):0),x*(other.get?other.get('Y'):0)-y*(other.get?other.get('X'):0))[0]));t.set('Lerp',w((other,alpha)=>g.get('Vector3').new(x+(((other.get?other.get('X'):0)-x)*alpha),y+(((other.get?other.get('Y'):0)-y)*alpha),z+(((other.get?other.get('Z'):0)-z)*alpha))[0]));return[t];},zero:rb('Vector3'),one:rb('Vector3')});
@@ -716,6 +734,38 @@ function runLuauCode(code, outFn) {
   }
 }
 
+// ─── OUTPUT CHECKER FOR CHALLENGE VALIDATION ──────────────────────────────────
+function checkOutput(actualLines, expectedStr) {
+  if (!expectedStr) return actualLines.length > 0;
+  const actual = actualLines.join('\n');
+  const expLines = expectedStr.split('\n').map(l => l.trim()).filter(l =>
+    l &&
+    !l.startsWith('(') &&
+    !l.startsWith('...') &&
+    !l.includes('HH:MM') &&
+    !l.includes('updates each') &&
+    !l.includes('continues to') &&
+    !l.includes('80%') &&
+    !l.includes('0.1s)') &&
+    !l.includes('trigger') &&
+    !l.includes('fill width') &&
+    !l.includes('-- ') &&
+    !l.startsWith('//') &&
+    !l.includes('45%')
+  );
+  if (expLines.length === 0) return actualLines.length > 0;
+  const normalLines = actualLines.map(l => l.trim()).filter(l => l);
+  return expLines.every(exp => {
+    const isPrefix = exp.endsWith('...');
+    const text = isPrefix ? exp.slice(0, -3).trim() : exp;
+    if (!text) return true;
+    if (isPrefix) {
+      return normalLines.some(line => line.startsWith(text));
+    }
+    return normalLines.some(line => line === text);
+  });
+}
+
 // ─── MOCK DATA ────────────────────────────────────────────────────────────────
 const LESSONS = [
   { id:1, title:"Introduction to BasePart Properties", category:"Classes", difficulty:"Beginner", xp:50, time:"8 min", locked:false, completed:true, description:"Learn the foundational properties of BasePart: Size, Position, Color, Material, Anchored, and CanCollide.", code:`-- BasePart Properties Example\nlocal part = workspace.MyPart\n\n-- Position the part\npart.Position = Vector3.new(0, 10, 0)\n\n-- Set size\npart.Size = Vector3.new(4, 1, 4)\n\n-- Visual properties\npart.Color = Color3.fromRGB(255, 100, 0)\npart.Material = Enum.Material.SmoothPlastic\n\n-- Physics\npart.Anchored = true\npart.CanCollide = true\n\nprint("Part configured!")` },
@@ -736,6 +786,16 @@ const LESSONS = [
   { id:16, title:"CollectionService & Tags", category:"Classes", difficulty:"Intermediate", xp:100, time:"13 min", locked:true, completed:false, description:"Use CollectionService to tag instances and perform bulk operations — perfect for enemy systems, interactables, and team logic.", code:`-- CollectionService: Tag-based instance management\nlocal CS = game:GetService("CollectionService")\n\n-- Tag an instance\nlocal part = workspace.MyPart\nCS:AddTag(part, "Dangerous")\n\n-- Check if tagged\nif CS:HasTag(part, "Dangerous") then\n  print("This part is dangerous!")\nend\n\n-- Get ALL instances with a tag\nfor _, dangerPart in ipairs(CS:GetTagged("Dangerous")) do\n  dangerPart.BrickColor = BrickColor.new("Bright red")\n  print("Found dangerous part:", dangerPart.Name)\nend\n\n-- Listen for new tagged instances\nCS:GetInstanceAddedSignal("Dangerous"):Connect(function(inst)\n  print("New dangerous part:", inst.Name)\nend)\n\n-- Remove a tag\nCS:RemoveTag(part, "Dangerous")\nprint("Tag removed!")` },
   { id:17, title:"PathfindingService for NPCs", category:"Classes", difficulty:"Advanced", xp:175, time:"20 min", locked:true, completed:false, description:"Create intelligent NPC navigation using PathfindingService — compute paths, follow waypoints, and handle obstacles.", code:`-- PathfindingService NPC Navigation\nlocal PFS = game:GetService("PathfindingService")\n\nlocal function moveNPCTo(npc, destination)\n  local path = PFS:CreatePath({\n    AgentRadius = 2,\n    AgentHeight = 5,\n    AgentCanJump = true,\n    AgentJumpHeight = 7.2,\n    AgentMaxSlope = 45,\n  })\n\n  -- Compute path to destination\n  local success, err = pcall(function()\n    path:ComputeAsync(npc.PrimaryPart.Position, destination)\n  end)\n\n  if not success then\n    warn("Path compute failed:", err)\n    return\n  end\n\n  -- Follow waypoints\n  local waypoints = path:GetWaypoints()\n  local humanoid = npc:FindFirstChildWhichIsA("Humanoid")\n\n  for _, waypoint in ipairs(waypoints) do\n    if waypoint.Action == Enum.PathWaypointAction.Jump then\n      humanoid.Jump = true\n    end\n    humanoid:MoveTo(waypoint.Position)\n    humanoid.MoveToFinished:Wait()\n  end\n  print("NPC reached destination!")\nend\n\nmoveNPCTo(workspace.NPC, Vector3.new(50, 0, 50))` },
   { id:18, title:"ModuleScript & require()", category:"Classes", difficulty:"Intermediate", xp:100, time:"14 min", locked:true, completed:false, description:"Write reusable Luau libraries with ModuleScript. Use require() to share code across Server, Client, and between scripts.", code:`-- ModuleScript (in ReplicatedStorage.Utils)\nlocal M = {}\n\n-- A reusable function\nfunction M.lerp(a, b, t)\n  return a + (b - a) * t\nend\n\nfunction M.clamp(n, min, max)\n  return math.clamp(n, min, max)\nend\n\nfunction M.roundTo(n, places)\n  local mult = 10 ^ places\n  return math.round(n * mult) / mult\nend\n\n-- Stateful module pattern\nM._coins = {}\n\nfunction M.getCoins(player)\n  return M._coins[player.UserId] or 0\nend\n\nfunction M.addCoins(player, amount)\n  M._coins[player.UserId] = M.getCoins(player) + amount\n  print(player.Name, "now has", M.getCoins(player), "coins")\nend\n\nreturn M\n\n-- In any other Script:\n-- local Utils = require(game.ReplicatedStorage.Utils)\n-- print(Utils.lerp(0, 100, 0.5))  -- 50\n-- Utils.addCoins(player, 50)` },
+  { id:37, title:"LinearVelocity & AngularVelocity", category:"Classes", difficulty:"Intermediate", xp:110, time:"14 min", locked:true, completed:false, description:"Use the modern LinearVelocity and AngularVelocity constraints for physics-based movement — the stable successors to BodyVelocity and BodyAngularVelocity.", code:`-- LinearVelocity: modern physics constraint\nlocal att = Instance.new("Attachment")\natt.Parent = workspace.Projectile\n\nlocal lv = Instance.new("LinearVelocity")\nlv.Attachment0 = att\nlv.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector\nlv.MaxForce = 1e5\nlv.VectorVelocity = Vector3.new(0, 0, -80)  -- fire forward\nlv.Parent = workspace.Projectile\nprint("LinearVelocity applied! Speed:", lv.VectorVelocity.Z)\n\n-- AngularVelocity: spin a part\nlocal att2 = Instance.new("Attachment")\natt2.Parent = workspace.Spinner\nlocal av = Instance.new("AngularVelocity")\nav.Attachment0 = att2\nav.AngularVelocity = Vector3.new(0, 5, 0)  -- spin on Y axis\nav.MaxTorque = 1e5\nav.ReactionTorqueEnabled = false\nav.Parent = workspace.Spinner\nprint("AngularVelocity applied! RPM:", math.deg(av.AngularVelocity.Y))\n\n-- Remove after 2s\ngame:GetService("Debris"):AddItem(lv, 2)\ngame:GetService("Debris"):AddItem(av, 2)\nprint("Both constraints will auto-remove after 2 seconds")` },
+  { id:38, title:"HingeConstraint & SpringConstraint", category:"Classes", difficulty:"Advanced", xp:150, time:"17 min", locked:true, completed:false, description:"Build revolving doors, swinging objects, and spring-based physics using HingeConstraint and SpringConstraint with Attachments.", code:`-- HingeConstraint: revolving door\nlocal doorPart = workspace.Door\nlocal framePart = workspace.DoorFrame\n\nlocal att0 = Instance.new("Attachment")\natt0.Position = Vector3.new(-2, 0, 0)  -- pivot on left edge\natt0.Parent = doorPart\n\nlocal att1 = Instance.new("Attachment")\natt1.Position = Vector3.new(0, 0, 0)\natt1.Parent = framePart\n\nlocal hinge = Instance.new("HingeConstraint")\nhinge.Attachment0 = att0\nhinge.Attachment1 = att1\nhinge.ActuatorType = Enum.ActuatorType.Motor\nhinge.MotorMaxTorque = 1000\nhinge.AngularSpeed = 1  -- rads/sec\nhinge.TargetAngle = 90  -- open 90 degrees\nhinge.Parent = doorPart\nprint("Door hinge created! Target angle:", hinge.TargetAngle, "degrees")\n\n-- SpringConstraint: bouncy platform\nlocal s0 = Instance.new("Attachment")\ns0.Parent = workspace.Platform\nlocal s1 = Instance.new("Attachment")\ns1.Parent = workspace.Ground\n\nlocal spring = Instance.new("SpringConstraint")\nspring.Attachment0 = s0\nspring.Attachment1 = s1\nspring.FreeLength = 5\nspring.Stiffness = 500\nspring.Damping = 20\nspring.Coils = 6\nspring.Parent = workspace.Platform\nprint("Spring created! Stiffness:", spring.Stiffness)` },
+  { id:39, title:"Sound & SoundGroup System", category:"Classes", difficulty:"Beginner", xp:75, time:"10 min", locked:true, completed:false, description:"Play sounds in 3D space and globally. Group sounds by category using SoundGroup for master volume control.", code:`-- Sound: 3D positional audio\nlocal explosion = Instance.new("Sound")\nexplosion.SoundId = "rbxassetid://4612395848"\nexplosion.Volume = 0.8\nexplosion.RollOffMaxDistance = 100\nexplosion.RollOffMode = Enum.RollOffMode.Linear\nexplosion.Parent = workspace.ExplosionPart\nexplosion:Play()\nprint("Explosion sound playing from part!")\n\n-- SoundGroup: category volume control\nlocal sfxGroup = Instance.new("SoundGroup")\nsfxGroup.Name = "SFX"\nsfxGroup.Volume = 0.7\nsfxGroup.Parent = game:GetService("SoundService")\n\nlocal bgmGroup = Instance.new("SoundGroup")\nbgmGroup.Name = "Music"\nbgmGroup.Volume = 0.5\nbgmGroup.Parent = game:GetService("SoundService")\n\n-- Background music\nlocal bgm = Instance.new("Sound")\nbgm.SoundId = "rbxassetid://1843654475"\nbgm.Looped = true\nbgm.SoundGroup = bgmGroup\nbgm.Parent = game:GetService("SoundService")\nbgm:Play()\nprint("BGM group volume:", bgmGroup.Volume)\nprint("SFX group volume:", sfxGroup.Volume)\n\n-- Fade out\ntask.delay(5, function()\n  for v = bgmGroup.Volume, 0, -0.05 do\n    bgmGroup.Volume = v\n    task.wait(0.1)\n  end\n  bgm:Stop()\n  print("BGM faded out!")\nend)` },
+  { id:40, title:"MarketplaceService: Passes & Products", category:"Classes", difficulty:"Advanced", xp:175, time:"20 min", locked:true, completed:false, description:"Monetize your game with Game Passes and Developer Products using MarketplaceService. Handle purchases and check ownership.", code:`-- MarketplaceService\nlocal MPS = game:GetService("MarketplaceService")\nlocal Players = game:GetService("Players")\n\nlocal GAMEPASS_ID = 123456789   -- replace with real ID\nlocal PRODUCT_ID  = 987654321   -- replace with real ID\n\n-- Check game pass on join\nPlayers.PlayerAdded:Connect(function(player)\n  local ok, owns = pcall(function()\n    return MPS:UserOwnsGamePassAsync(player.UserId, GAMEPASS_ID)\n  end)\n  if ok and owns then\n    -- Give VIP perks\n    player.Character and player.Character:WaitForChild("Humanoid").WalkSpeed == 32\n    print(player.Name, "has VIP pass — granting perks!")\n  else\n    print(player.Name, "does not have VIP pass")\n  end\nend)\n\n-- Prompt purchase (from LocalScript)\nlocal function promptPass(player)\n  MPS:PromptGamePassPurchase(player, GAMEPASS_ID)\nend\n\n-- Handle Developer Product purchases (Server)\nMPS.ProcessReceipt = function(receiptInfo)\n  local player = Players:GetPlayerByUserId(receiptInfo.PlayerId)\n  if not player then return Enum.ProductPurchaseDecision.NotProcessedYet end\n  if receiptInfo.ProductId == PRODUCT_ID then\n    -- Give item or currency\n    local coins = player:FindFirstChild("leaderstats") and player.leaderstats.Coins\n    if coins then coins.Value += 100 end\n    print(player.Name, "bought 100 coins!")\n  end\n  return Enum.ProductPurchaseDecision.PurchaseGranted\nend\n\nprint("MarketplaceService ready!")` },
+  { id:41, title:"MessagingService: Cross-Server", category:"Classes", difficulty:"Advanced", xp:200, time:"22 min", locked:true, completed:false, description:"Send real-time messages between different game servers using MessagingService. Perfect for global announcements and cross-server events.", code:`-- MessagingService: cross-server messaging\n-- Requires Studio API access enabled\nlocal MS = game:GetService("MessagingService")\nlocal Players = game:GetService("Players")\n\nlocal TOPIC = "GlobalAnnouncement"\n\n-- Subscribe to messages from other servers\nlocal sub = MS:SubscribeAsync(TOPIC, function(message)\n  local data = game:GetService("HttpService"):JSONDecode(message.Data)\n  print("[GLOBAL] Server", data.serverId, ":", data.text)\n  -- Broadcast to all players on this server\n  for _, player in ipairs(Players:GetPlayers()) do\n    -- Show notification (via RemoteEvent)\n    print("Notifying", player.Name, ":", data.text)\n  end\nend)\n\n-- Publish a message to all servers\nlocal function announce(text)\n  local data = game:GetService("HttpService"):JSONEncode({\n    serverId = game.JobId,\n    text = text,\n    timestamp = os.time(),\n  })\n  local ok, err = pcall(function()\n    MS:PublishAsync(TOPIC, data)\n  end)\n  if ok then\n    print("Announced to all servers:", text)\n  else\n    warn("Announce failed:", err)\n  end\nend\n\n-- Announce when a player wins\nPlayers.PlayerAdded:Connect(function(player)\n  task.delay(5, function()\n    announce(player.Name .. " won the round!")\n  end)\nend)\n\nprint("MessagingService subscribed to:", TOPIC)` },
+  { id:42, title:"Teams & TeamService", category:"Classes", difficulty:"Intermediate", xp:100, time:"13 min", locked:true, completed:false, description:"Create and manage player teams using Teams service. Assign players, customize colors, and implement team-based logic.", code:`-- Teams & TeamService\nlocal Teams = game:GetService("Teams")\nlocal Players = game:GetService("Players")\n\n-- Create teams\nlocal redTeam = Instance.new("Team")\nredTeam.Name = "Red"\nredTeam.TeamColor = BrickColor.new("Bright red")\nredTeam.AutoAssignable = true\nredTeam.Parent = Teams\n\nlocal blueTeam = Instance.new("Team")\nblueTeam.Name = "Blue"\nblueTeam.TeamColor = BrickColor.new("Bright blue")\nblueTeam.AutoAssignable = true\nblueTeam.Parent = Teams\n\nprint("Teams created:", redTeam.Name, "vs", blueTeam.Name)\n\n-- Get players on each team\nlocal function getTeamPlayers(team)\n  local list = {}\n  for _, p in ipairs(Players:GetPlayers()) do\n    if p.Team == team then\n      table.insert(list, p.Name)\n    end\n  end\n  return list\nend\n\n-- Assign specific player to red team\nPlayers.PlayerAdded:Connect(function(player)\n  -- Even-numbered players go Blue, odd go Red\n  local count = #Players:GetPlayers()\n  player.Team = count % 2 == 0 and blueTeam or redTeam\n  print(player.Name, "joined team:", player.Team.Name)\n  print("Red team:", table.concat(getTeamPlayers(redTeam), ", "))\n  print("Blue team:", table.concat(getTeamPlayers(blueTeam), ", "))\nend)\n\n-- Friendly fire check\nlocal function isFriendlyFire(attacker, victim)\n  return attacker.Team == victim.Team and attacker.Team ~= nil\nend\nprint("TeamService ready!")` },
+  { id:43, title:"TextChatService: Modern Chat", category:"Classes", difficulty:"Intermediate", xp:100, time:"12 min", locked:true, completed:false, description:"Use the modern TextChatService to send, filter, and receive chat messages. Create custom chat commands and styled system messages.", code:`-- TextChatService (modern chat system)\nlocal TCS = game:GetService("TextChatService")\nlocal Players = game:GetService("Players")\n\n-- Get the default general channel\nlocal channel = TCS.TextChannels:WaitForChild("RBXGeneral")\n\n-- Send a system message (visible to all)\nlocal function systemMessage(text)\n  channel:DisplaySystemMessage(text)\nend\n\n-- Listen to incoming messages\nTCS.OnIncomingMessage = function(message)\n  local prefix = "[" .. (message.TextSource and message.TextSource.Name or "System") .. "]"\n  print(prefix, message.Text)\n  -- Return modified message (add prefix in chat)\n  local props = Instance.new("TextChatMessageProperties")\n  props.PrefixText = prefix\n  return props\nend\n\n-- Chat command: /speed N\nTCS.OnChatWindowAdded = function(window, chatBarConfiguration)\n  -- Intercept before sending\n  chatBarConfiguration.SendingMessage:Connect(function(msg)\n    local cmd, val = msg.Text:match("^/(%a+)%s*(%d*)")\n    if cmd == "speed" and val ~= "" then\n      local speed = tonumber(val) or 16\n      local hum = Players.LocalPlayer.Character and Players.LocalPlayer.Character:FindFirstChild("Humanoid")\n      if hum then hum.WalkSpeed = speed end\n      print("Speed set to:", speed)\n    end\n  end)\nend\n\nPlayers.PlayerAdded:Connect(function(player)\n  task.delay(1, function()\n    systemMessage("Welcome " .. player.Name .. " to the game!")\n  end)\nend)\n\nprint("TextChatService configured!")` },
+  { id:44, title:"MemoryStoreService: Ephemeral Data", category:"Classes", difficulty:"Advanced", xp:175, time:"18 min", locked:true, completed:false, description:"Store fast, temporary cross-server data with MemoryStoreService — perfect for matchmaking queues, active player counts, and real-time leaderboards.", code:`-- MemoryStoreService: fast ephemeral cross-server data\nlocal MSS = game:GetService("MemoryStoreService")\nlocal HttpService = game:GetService("HttpService")\n\n-- Sorted Map: cross-server leaderboard\nlocal topScores = MSS:GetSortedMap("TopScores")\n\nlocal function setScore(userId, score)\n  local ok, err = pcall(function()\n    topScores:SetAsync(tostring(userId), score, 3600)  -- expires in 1 hour\n  end)\n  if ok then print("Score set:", userId, "->", score)\n  else warn("SetAsync failed:", err) end\nend\n\nlocal function getTopPlayers(limit)\n  local ok, entries = pcall(function()\n    return topScores:GetRangeAsync(Enum.SortDirection.Descending, limit)\n  end)\n  if not ok then warn("GetRange failed:", entries); return {} end\n  return entries\nend\n\nsetScore(1001, 8500)\nsetScore(1002, 12000)\nsetScore(1003, 6200)\n\nlocal top3 = getTopPlayers(3)\nprint("Top 3 scores:")\nfor i, entry in ipairs(top3) do\n  print(i, entry.key, "->", entry.value)\nend\n\n-- Queue: matchmaking\nlocal queue = MSS:GetQueue("MatchQueue")\nlocal function joinQueue(userId)\n  local ok, pos = pcall(function()\n    return queue:AddAsync(tostring(userId), 300, 0)  -- 5 min expiry, priority 0\n  end)\n  if ok then print("Player", userId, "joined queue, pos:", pos)\n  else warn("Queue failed:", ok) end\nend\n\njoinQueue(1001)\njoinQueue(1002)\nprint("MemoryStoreService ready!")` },
+  { id:45, title:"GuiService & TouchGui", category:"Classes", difficulty:"Intermediate", xp:100, time:"12 min", locked:true, completed:false, description:"Use GuiService to detect safe areas, manage touch controls, and control in-game menu visibility across device types.", code:`-- GuiService: device-aware UI management\nlocal GuiService = game:GetService("GuiService")\nlocal Players = game:GetService("Players")\nlocal player = Players.LocalPlayer\nlocal gui = player.PlayerGui\n\n-- Get safe area insets (for notched phones, etc.)\nlocal insets = GuiService:GetGuiInset()\nprint("Top inset (notch/camera):", insets.Y)\nprint("Left inset:", insets.X)\n\n-- Adjust a GUI to respect safe area\nlocal mainFrame = gui:FindFirstChild("MainFrame")\nif mainFrame then\n  mainFrame.Position = UDim2.new(0, insets.X, 0, insets.Y)\n  print("Frame adjusted for safe area")\nend\n\n-- Touch controls visibility\nprint("Touch enabled:", GuiService.TouchControlsEnabled)\nGuiService.TouchControlsEnabled = true  -- show joystick on mobile\n\n-- Check if user is using touch\nlocal UIS = game:GetService("UserInputService")\nif UIS.TouchEnabled then\n  print("Mobile device detected — enabling touch UI")\nelse\n  print("Desktop/console — standard UI active")\nend\n\n-- In-game menu\nGuiService:SetMenuIsOpen(false)  -- hide escape menu\nprint("Menu open state:", GuiService:GetMenuIsOpen())\n\n-- Auto-select for gamepad\nGuiService.AutoSelectGuiEnabled = true\nprint("GuiService configured!")` },
+  { id:46, title:"Raycasting: Workspace:Raycast()", category:"Classes", difficulty:"Intermediate", xp:125, time:"15 min", locked:true, completed:false, description:"Cast rays through the 3D world to detect surfaces, parts, and characters. The foundation of hitscan weapons, NPC vision, and click detection.", code:`-- Raycasting: detect what's at a point in space\nlocal Players = game:GetService("Players")\nlocal player = Players.LocalPlayer\nlocal cam = workspace.CurrentCamera\n\n-- Basic ray from camera forward\nlocal origin = cam.CFrame.Position\nlocal direction = cam.CFrame.LookVector * 500\n\n-- RaycastParams: filter what the ray can hit\nlocal params = RaycastParams.new()\nparams.FilterDescendantsInstances = {player.Character}  -- exclude self\nparams.FilterType = Enum.RaycastFilterType.Exclude\n\nlocal result = workspace:Raycast(origin, direction, params)\n\nif result then\n  print("Hit:", result.Instance.Name)\n  print("Position:", result.Position)\n  print("Normal:", result.Normal)  -- surface normal\n  print("Material:", result.Material)\n  \n  -- Create a visual indicator at hit point\n  local indicator = Instance.new("Part")\n  indicator.Size = Vector3.new(0.3, 0.3, 0.3)\n  indicator.Color = Color3.fromRGB(255, 50, 50)\n  indicator.Anchored = true\n  indicator.CanCollide = false\n  indicator.CFrame = CFrame.new(result.Position)\n  indicator.Parent = workspace\n  game:GetService("Debris"):AddItem(indicator, 2)\nelse\n  print("No hit detected — ray went into the void")\nend\n\n-- Shapecast for thicker detection\nlocal overlapParams = OverlapParams.new()\noverlapParams.FilterDescendantsInstances = {player.Character}\nlocal hits = workspace:SphereCast(origin, 2, direction, params)\nif hits then\n  print("SphereCast hit:", hits.Instance.Name)\nend\nprint("Raycast complete!")` },
   { id:19, title:"Camera Manipulation", category:"Classes", difficulty:"Intermediate", xp:125, time:"15 min", locked:true, completed:false, description:"Control the player camera using workspace.CurrentCamera. Switch modes, set custom positions, and create cinematic sequences.", code:`-- Camera Manipulation (LocalScript)\nlocal camera = workspace.CurrentCamera\nlocal RunService = game:GetService("RunService")\nlocal player = game.Players.LocalPlayer\n\n-- Lock to a fixed viewpoint\ncamera.CameraType = Enum.CameraType.Scriptable\ncamera.CFrame = CFrame.new(Vector3.new(0, 50, 100),\n  Vector3.new(0, 0, 0)) -- look at origin\n\nprint("Camera locked to overhead view")\n\n-- Orbit camera effect\nlocal angle = 0\nlocal conn = RunService.RenderStepped:Connect(function(dt)\n  angle += dt * 0.5\n  local x = math.cos(angle) * 40\n  local z = math.sin(angle) * 40\n  camera.CFrame = CFrame.new(\n    Vector3.new(x, 20, z),\n    Vector3.new(0, 0, 0)\n  )\nend)\n\n-- Reset to default after 5 seconds\ntask.delay(5, function()\n  conn:Disconnect()\n  camera.CameraType = Enum.CameraType.Custom\n  print("Camera reset to default")\nend)\n\nprint("Orbit camera started!")` },
   { id:20, title:"Sound & SoundService", category:"Classes", difficulty:"Beginner", xp:75, time:"10 min", locked:true, completed:false, description:"Play sound effects and music using Sound instances and SoundService. Control volume, pitch, loops, and effects.", code:`-- Sound & SoundService\nlocal SoundService = game:GetService("SoundService")\n\n-- Create a Sound instance\nlocal sound = Instance.new("Sound")\nsound.SoundId = "rbxassetid://131961136"  -- coin collect\nsound.Volume = 0.8\nsound.RollOffMaxDistance = 40\nsound.Parent = workspace\n\n-- Play and control\nsound:Play()\nprint("Playing sound:", sound.SoundId)\nprint("Is playing:", sound.IsPlaying)\n\n-- Wait until finished\nsound.Ended:Connect(function()\n  print("Sound finished!")\nend)\n\n-- Background music (loop forever)\nlocal music = Instance.new("Sound")\nmusic.SoundId = "rbxassetid://1843654475"\nmusic.Looped = true\nmusic.Volume = 0.3\nmusic.Parent = SoundService\nmusic:Play()\nprint("Music started, looped:", music.Looped)\n\n-- Pitch shift for effects\nsound.PlaybackSpeed = 1.5  -- 50% faster\nprint("PlaybackSpeed:", sound.PlaybackSpeed)` },
   { id:21, title:"GetPropertyChangedSignal", category:"Events", difficulty:"Intermediate", xp:75, time:"9 min", locked:true, completed:false, description:"Listen to specific property changes on any Instance with GetPropertyChangedSignal — more efficient than polling.", code:`-- GetPropertyChangedSignal — watch specific properties\nlocal Players = game:GetService("Players")\n\nPlayers.PlayerAdded:Connect(function(player)\n  -- Watch when the player's team changes\n  player:GetPropertyChangedSignal("Team"):Connect(function()\n    print(player.Name, "changed team to:", tostring(player.Team))\n  end)\n\n  -- Watch character health\n  player.CharacterAdded:Connect(function(char)\n    local hum = char:WaitForChild("Humanoid")\n\n    -- Fire whenever Health changes (efficient!)\n    hum:GetPropertyChangedSignal("Health"):Connect(function()\n      local pct = math.floor(hum.Health / hum.MaxHealth * 100)\n      print(player.Name, "HP:", pct .. "%")\n\n      if hum.Health < 25 then\n        warn(player.Name, "is in critical condition!")\n      end\n    end)\n\n    -- Watch walk speed\n    hum:GetPropertyChangedSignal("WalkSpeed"):Connect(function()\n      print("Speed changed to:", hum.WalkSpeed)\n    end)\n  end)\nend)\nprint("Watching player properties...")` },
@@ -775,6 +835,20 @@ const CHALLENGES = [
   { id:16, title:"Laser Beam Between Two Parts", difficulty:"Intermediate", tags:["Attachment","Beam"], xp:140, completed:false, description:"Connect two parts with a glowing Beam using Attachments. Animate the beam's color over time using a loop.", starter:`-- Challenge: Animated Laser Beam\nlocal partA = workspace.LaserSource\nlocal partB = workspace.LaserTarget\n\n-- TODO: Create Attachment on partA and partB\n-- TODO: Create Beam between them\n-- TODO: Set beam properties (width, lightEmission, color)\n-- TODO: Animate beam hue cycling using Heartbeat\nprint("Laser challenge start!")`, solution:`local att0 = Instance.new("Attachment")\natt0.Parent = partA\nlocal att1 = Instance.new("Attachment")\natt1.Parent = partB\nlocal beam = Instance.new("Beam")\nbeam.Attachment0 = att0\nbeam.Attachment1 = att1\nbeam.Width0 = 0.15\nbeam.Width1 = 0.15\nbeam.FaceCamera = true\nbeam.LightEmission = 1\nbeam.Parent = partA\nlocal hue = 0\ngame:GetService("RunService").Heartbeat:Connect(function(dt)\n  hue = (hue + dt * 0.3) % 1\n  beam.Color = ColorSequence.new(Color3.fromHSV(hue, 1, 1))\nend)\nprint("Laser beam active!")` },
   { id:17, title:"Collision Group Shooter", difficulty:"Advanced", tags:["PhysicsService","Raycasting"], xp:280, completed:false, description:"Combine PhysicsService collision groups with Raycasting to build a shooter where bullets pass through the firing player but hit everything else.", starter:`-- Challenge: Collision-aware hitscan\nlocal PS = game:GetService("PhysicsService")\nlocal Players = game:GetService("Players")\nlocal player = Players.LocalPlayer\n\n-- TODO: Register "Bullets" and "Players" collision groups\n-- TODO: Set Players/Bullets to non-collidable\n-- TODO: On mouse click, fire a Raycast from camera\n-- TODO: Exclude local character with RaycastParams\n-- TODO: If hit.Instance has Humanoid parent, print "HIT!"\nprint("Shooter setup!")`, solution:`PS:RegisterCollisionGroup("Bullets")\nPS:RegisterCollisionGroup("Players")\nPS:CollisionGroupSetCollidable("Bullets","Players",false)\nlocal cam = workspace.CurrentCamera\nlocal char = player.Character or player.CharacterAdded:Wait()\nlocal params = RaycastParams.new()\nparams.FilterDescendantsInstances = {char}\nparams.FilterType = Enum.RaycastFilterType.Exclude\ngame:GetService("UserInputService").InputBegan:Connect(function(inp, gp)\n  if gp then return end\n  if inp.UserInputType == Enum.UserInputType.MouseButton1 then\n    local origin = cam.CFrame.Position\n    local dir = cam.CFrame.LookVector * 500\n    local result = workspace:Raycast(origin, dir, params)\n    if result then\n      local hum = result.Instance.Parent:FindFirstChildWhichIsA("Humanoid")\n      if hum then print("HIT!", hum.Parent.Name) end\n    end\n  end\nend)` },
   { id:18, title:"Day/Night Cycle Controller", difficulty:"Beginner", tags:["Lighting","RunService"], xp:110, completed:false, description:"Build a smooth day/night cycle using Lighting.ClockTime and RunService.Heartbeat. Let players control the speed.", starter:`-- Challenge: Day/Night Cycle\nlocal Lighting = game:GetService("Lighting")\nlocal RS = game:GetService("RunService")\n\nlocal CYCLE_SPEED = 1  -- 1 = real time, 60 = 60x faster\n\n-- TODO: Connect RS.Heartbeat\n-- TODO: Each frame: advance ClockTime by dt * CYCLE_SPEED / 60\n-- TODO: Keep ClockTime in 0-24 range using modulo\n-- TODO: Print current time of day each real-world second\nprint("Day/night cycle challenge!")`, solution:`local elapsed = 0\nRS.Heartbeat:Connect(function(dt)\n  Lighting.ClockTime = (Lighting.ClockTime + dt * CYCLE_SPEED / 60) % 24\n  elapsed += dt\n  if elapsed >= 1 then\n    elapsed = 0\n    local h = math.floor(Lighting.ClockTime)\n    local m = math.floor((Lighting.ClockTime - h) * 60)\n    print(string.format("Time: %02d:%02d", h, m))\n  end\nend)\nprint("Day/night cycle running!")` },
+  { id:19, title:"FizzBuzz in Luau", difficulty:"Beginner", tags:["Loops","Conditionals"], xp:75, completed:false, description:"Classic FizzBuzz: print numbers 1–20. If divisible by 3 print 'Fizz', by 5 print 'Buzz', by both print 'FizzBuzz'.", starter:`-- Challenge: FizzBuzz\nprint("FizzBuzz challenge!")\n\nfor i = 1, 20 do\n  -- TODO: Check if i is divisible by 15 (FizzBuzz)\n  -- TODO: Check if i is divisible by 3 (Fizz)\n  -- TODO: Check if i is divisible by 5 (Buzz)\n  -- TODO: Otherwise print the number\nend`, solution:`print("FizzBuzz challenge!")\nfor i = 1, 20 do\n  if i % 15 == 0 then\n    print("FizzBuzz")\n  elseif i % 3 == 0 then\n    print("Fizz")\n  elseif i % 5 == 0 then\n    print("Buzz")\n  else\n    print(i)\n  end\nend` },
+  { id:20, title:"Fibonacci Sequence", difficulty:"Beginner", tags:["Loops","Math"], xp:75, completed:false, description:"Generate and print the first 10 Fibonacci numbers: each number is the sum of the two before it. Start with 1, 1.", starter:`-- Challenge: Fibonacci Sequence\nprint("Fibonacci sequence!")\n\n-- TODO: Generate and print first 10 Fibonacci numbers\n-- Expected: 1, 1, 2, 3, 5, 8, 13, 21, 34, 55`, solution:`print("Fibonacci sequence!")\nlocal a, b = 1, 1\nfor i = 1, 10 do\n  print(a)\n  a, b = b, a + b\nend` },
+  { id:21, title:"Table Statistics", difficulty:"Intermediate", tags:["table","Math"], xp:100, completed:false, description:"Given a table of numbers, compute and print the max, min, sum, and average. Format average to 1 decimal place.", starter:`-- Challenge: Table Stats\nlocal nums = {15, 3, 8, 42, 7, 19, 1, 56, 11, 24}\n\nprint("Stats challenge!")\n\n-- TODO: Find max value\n-- TODO: Find min value\n-- TODO: Compute sum\n-- TODO: Compute average (sum / count)\n-- Print each result in the format:\n-- Max: 56\n-- Min: 1\n-- Sum: 186\n-- Avg: 18.6`, solution:`local nums = {15, 3, 8, 42, 7, 19, 1, 56, 11, 24}\nprint("Stats challenge!")\nlocal max, min, sum = nums[1], nums[1], 0\nfor _, v in ipairs(nums) do\n  if v > max then max = v end\n  if v < min then min = v end\n  sum += v\nend\nlocal avg = sum / #nums\nprint("Max:", max)\nprint("Min:", min)\nprint("Sum:", sum)\nprint(string.format("Avg: %.1f", avg))` },
+  { id:22, title:"Palindrome Checker", difficulty:"Intermediate", tags:["string","Loops"], xp:100, completed:false, description:"Check if each word in a table is a palindrome (reads the same forwards and backwards). Print the result for each word.", starter:`-- Challenge: Palindrome Checker\nlocal words = {"racecar", "lua", "level", "roblox", "radar"}\n\nprint("Palindrome check!")\n\nfor _, word in ipairs(words) do\n  -- TODO: Reverse the word\n  -- TODO: Compare reversed to original\n  -- TODO: Print "<word> is/is not a palindrome"\nend`, solution:`local words = {"racecar", "lua", "level", "roblox", "radar"}\nprint("Palindrome check!")\nfor _, word in ipairs(words) do\n  local rev = string.reverse(word)\n  if rev == word then\n    print(word, "is a palindrome")\n  else\n    print(word, "is not a palindrome")\n  end\nend` },
+  { id:23, title:"OOP Counter with Metatables", difficulty:"Advanced", tags:["OOP","Metatables"], xp:175, completed:false, description:"Build a Counter class using Luau metatables with new(), increment(), decrement(), getValue(), and reset() methods.", starter:`-- Challenge: OOP Counter\nprint("OOP Counter challenge!")\n\n-- TODO: Create a Counter class using metatables\n-- Counter:new(startValue) -> creates counter at startValue\n-- Counter:increment()      -> adds 1\n-- Counter:decrement()      -> subtracts 1\n-- Counter:getValue()       -> returns current value\n-- Counter:reset()          -> resets to initial value\n\n-- Your implementation here...\n\n-- Test (do not remove these lines)\nlocal c = Counter:new(10)\nc:increment()\nc:increment()\nc:increment()\nprint("Value:", c:getValue())  -- should print: Value: 13\nc:decrement()\nprint("Value:", c:getValue())  -- should print: Value: 12\nc:reset()\nprint("Reset:", c:getValue())  -- should print: Reset: 10`, solution:`print("OOP Counter challenge!")\nlocal Counter = {}\nCounter.__index = Counter\nfunction Counter:new(start)\n  return setmetatable({ _val = start, _start = start }, Counter)\nend\nfunction Counter:increment() self._val += 1 end\nfunction Counter:decrement() self._val -= 1 end\nfunction Counter:getValue() return self._val end\nfunction Counter:reset() self._val = self._start end\nlocal c = Counter:new(10)\nc:increment()\nc:increment()\nc:increment()\nprint("Value:", c:getValue())\nc:decrement()\nprint("Value:", c:getValue())\nc:reset()\nprint("Reset:", c:getValue())` },
+  { id:24, title:"Bubble Sort Implementation", difficulty:"Intermediate", tags:["table","Algorithms"], xp:125, completed:false, description:"Implement bubble sort from scratch on a table of numbers. Print the sorted result and total swap count.", starter:`-- Challenge: Bubble Sort\nlocal numbers = {5, 2, 9, 1, 7, 3}\n\nprint("Bubble sort challenge!")\n\n-- TODO: Implement bubble sort\n-- Hint: Outer loop n-1 times, inner loop compares adjacent pairs\n-- Swap if left > right, track swap count\n-- Print: "Sorted: 1 2 3 5 7 9"\n-- Print: "Swaps made: <count>"`, solution:`local numbers = {5, 2, 9, 1, 7, 3}\nprint("Bubble sort challenge!")\nlocal swaps = 0\nfor i = 1, #numbers - 1 do\n  for j = 1, #numbers - i do\n    if numbers[j] > numbers[j+1] then\n      numbers[j], numbers[j+1] = numbers[j+1], numbers[j]\n      swaps += 1\n    end\n  end\nend\nlocal parts = {}\nfor _, v in ipairs(numbers) do table.insert(parts, tostring(v)) end\nprint("Sorted:", table.concat(parts, " "))\nprint("Swaps made:", swaps)` },
+  { id:25, title:"Word Counter & Longest Word", difficulty:"Intermediate", tags:["string","table"], xp:100, completed:false, description:"Split a sentence into words, count them, and find the longest word. Print total word count and the longest word.", starter:`-- Challenge: Word Counter\nlocal sentence = "the quick brown fox jumps over the lazy dog"\n\nprint("Word counter challenge!")\n\n-- TODO: Split sentence into words (use string.gmatch with "%S+")\n-- TODO: Count total words\n-- TODO: Find the longest word\n-- TODO: Print "Total words: 9"\n-- TODO: Print "Longest word: <word>"`, solution:`local sentence = "the quick brown fox jumps over the lazy dog"\nprint("Word counter challenge!")\nlocal words = {}\nfor w in string.gmatch(sentence, "%S+") do\n  table.insert(words, w)\nend\nlocal longest = ""\nfor _, w in ipairs(words) do\n  if #w > #longest then longest = w end\nend\nprint("Total words:", #words)\nprint("Longest word:", longest)` },
+  { id:26, title:"Prime Number Checker", difficulty:"Beginner", tags:["Math","Loops"], xp:80, completed:false, description:"Write a function that checks if a number is prime, then print all prime numbers from 1 to 30.", starter:`-- Challenge: Prime Number Checker\nprint("Prime checker challenge!")\n\n-- TODO: Write function isPrime(n) that returns true if n is prime\n-- A prime number is only divisible by 1 and itself\n-- Numbers <= 1 are NOT prime\n\n-- TODO: Loop from 1 to 30 and print all primes\n-- Expected output starts: 2 3 5 7 11 13...`, solution:`print("Prime checker challenge!")\nlocal function isPrime(n)\n  if n <= 1 then return false end\n  for i = 2, math.floor(math.sqrt(n)) do\n    if n % i == 0 then return false end\n  end\n  return true\nend\nlocal primes = {}\nfor i = 1, 30 do\n  if isPrime(i) then table.insert(primes, i) end\nend\nprint(table.concat(primes, " "))` },
+  { id:27, title:"Reverse a String", difficulty:"Beginner", tags:["string","Loops"], xp:60, completed:false, description:"Reverse the string 'Hello, Roblox!' without using any library functions. Print the reversed string.", starter:`-- Challenge: Reverse a String\nlocal str = "Hello, Roblox!"\nprint("Reverse string challenge!")\n\n-- TODO: Reverse str character by character\n-- Do NOT use string.reverse()\n-- Print: "!xolboR ,olleH"`, solution:`local str = "Hello, Roblox!"\nprint("Reverse string challenge!")\nlocal reversed = ""\nfor i = #str, 1, -1 do\n  reversed = reversed .. string.sub(str, i, i)\nend\nprint(reversed)` },
+  { id:28, title:"Temperature Converter", difficulty:"Beginner", tags:["Math","Functions"], xp:70, completed:false, description:"Write three functions: celsiusToFahrenheit, fahrenheitToCelsius, and celsiusToKelvin. Test with 100°C, 32°F, and 0°C.", starter:`-- Challenge: Temperature Converter\nprint("Temperature converter challenge!")\n\n-- TODO: function celsiusToFahrenheit(c)  -> (c * 9/5) + 32\n-- TODO: function fahrenheitToCelsius(f)  -> (f - 32) * 5/9\n-- TODO: function celsiusToKelvin(c)      -> c + 273.15\n\n-- Test (do not remove):\nprint(celsiusToFahrenheit(100))  -- 212.0\nprint(fahrenheitToCelsius(32))   -- 0.0\nprint(celsiusToKelvin(0))        -- 273.15`, solution:`print("Temperature converter challenge!")\nlocal function celsiusToFahrenheit(c) return (c * 9/5) + 32 end\nlocal function fahrenheitToCelsius(f) return (f - 32) * 5/9 end\nlocal function celsiusToKelvin(c) return c + 273.15 end\nprint(celsiusToFahrenheit(100))\nprint(fahrenheitToCelsius(32))\nprint(celsiusToKelvin(0))` },
+  { id:29, title:"Stack Data Structure", difficulty:"Intermediate", tags:["OOP","table"], xp:130, completed:false, description:"Implement a Stack with push(val), pop(), peek(), isEmpty(), and size() methods using a Luau table. Test all methods.", starter:`-- Challenge: Stack Data Structure\nprint("Stack challenge!")\n\n-- TODO: Create a Stack module with:\n--   Stack.new()     -> creates empty stack\n--   stack:push(v)   -> add to top\n--   stack:pop()     -> remove and return top (nil if empty)\n--   stack:peek()    -> return top without removing\n--   stack:isEmpty() -> returns boolean\n--   stack:size()    -> returns count\n\n-- Test (do not remove):\nlocal s = Stack.new()\ns:push(1)\ns:push(2)\ns:push(3)\nprint("Size:", s:size())    -- Size: 3\nprint("Peek:", s:peek())    -- Peek: 3\nprint("Pop:", s:pop())      -- Pop: 3\nprint("Size:", s:size())    -- Size: 2\nprint("Empty:", s:isEmpty()) -- Empty: false`, solution:`print("Stack challenge!")\nlocal Stack = {}\nStack.__index = Stack\nfunction Stack.new()\n  return setmetatable({ _data = {}, _size = 0 }, Stack)\nend\nfunction Stack:push(v)\n  self._size += 1\n  self._data[self._size] = v\nend\nfunction Stack:pop()\n  if self._size == 0 then return nil end\n  local v = self._data[self._size]\n  self._data[self._size] = nil\n  self._size -= 1\n  return v\nend\nfunction Stack:peek() return self._data[self._size] end\nfunction Stack:isEmpty() return self._size == 0 end\nfunction Stack:size() return self._size end\nlocal s = Stack.new()\ns:push(1)\ns:push(2)\ns:push(3)\nprint("Size:", s:size())\nprint("Peek:", s:peek())\nprint("Pop:", s:pop())\nprint("Size:", s:size())\nprint("Empty:", s:isEmpty())` },
+  { id:30, title:"Binary Search", difficulty:"Advanced", tags:["Algorithms","table"], xp:150, completed:false, description:"Implement binary search on a sorted table. Return the index of the target or -1 if not found. Must run in O(log n).", starter:`-- Challenge: Binary Search\nlocal sorted = {2, 5, 8, 12, 16, 23, 38, 56, 72, 91}\nprint("Binary search challenge!")\n\n-- TODO: function binarySearch(arr, target)\n-- Returns index of target in arr, or -1 if not found\n-- Use low/high/mid pointer approach (no linear scan!)\n\n-- Test (do not remove):\nprint(binarySearch(sorted, 23))   -- 6\nprint(binarySearch(sorted, 72))   -- 9\nprint(binarySearch(sorted, 99))   -- -1`, solution:`local sorted = {2, 5, 8, 12, 16, 23, 38, 56, 72, 91}\nprint("Binary search challenge!")\nlocal function binarySearch(arr, target)\n  local low, high = 1, #arr\n  while low <= high do\n    local mid = math.floor((low + high) / 2)\n    if arr[mid] == target then return mid\n    elseif arr[mid] < target then low = mid + 1\n    else high = mid - 1\n    end\n  end\n  return -1\nend\nprint(binarySearch(sorted, 23))\nprint(binarySearch(sorted, 72))\nprint(binarySearch(sorted, 99))` },
+  { id:31, title:"TweenService Basics", difficulty:"Beginner", tags:["TweenService","Animation"], xp:90, completed:false, description:"Use TweenService to smoothly move a part from its current position to Vector3.new(10, 5, 0) over 2 seconds with EaseInOut.", starter:`-- Challenge: TweenService\nlocal TweenService = game:GetService("TweenService")\nlocal part = workspace.MovingPart\n\nprint("TweenService challenge!")\n\n-- TODO: Create a TweenInfo for 2 seconds, EasingStyle.Quad, EasingDirection.InOut\n-- TODO: Tween part to Position Vector3.new(10, 5, 0)\n-- TODO: Play the tween\n-- TODO: When tween completes, print "Tween complete!"`, solution:`local TweenService = game:GetService("TweenService")\nlocal part = workspace.MovingPart\nprint("TweenService challenge!")\nlocal info = TweenInfo.new(2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)\nlocal tween = TweenService:Create(part, info, { Position = Vector3.new(10, 5, 0) })\ntween.Completed:Connect(function()\n  print("Tween complete!")\nend)\ntween:Play()\nprint("Tween started!")` },
+  { id:32, title:"Remote Events: Client→Server", difficulty:"Intermediate", tags:["RemoteEvent","Networking"], xp:120, completed:false, description:"Set up a RemoteEvent in ReplicatedStorage. Fire it from a LocalScript with a player's score, receive it on the Server and print confirmation.", starter:`-- SERVER SCRIPT\nlocal RS = game:GetService("ReplicatedStorage")\nlocal Players = game:GetService("Players")\n\nprint("RemoteEvent challenge!")\n\n-- TODO: Create RemoteEvent named "UpdateScore" in RS\n-- TODO: On OnServerEvent, print: player.Name .. " scored: " .. score\n\n-- CLIENT SCRIPT (LocalScript)\n-- local event = RS:WaitForChild("UpdateScore")\n-- event:FireServer(42)  -- send score of 42`, solution:`local RS = game:GetService("ReplicatedStorage")\nprint("RemoteEvent challenge!")\nlocal event = Instance.new("RemoteEvent")\nevent.Name = "UpdateScore"\nevent.Parent = RS\nevent.OnServerEvent:Connect(function(player, score)\n  print(player.Name .. " scored: " .. tostring(score))\nend)\nprint("Server listening for UpdateScore")\n-- Client fires:\n-- RS:WaitForChild("UpdateScore"):FireServer(42)` },
 ];
 
 const CHALLENGE_TESTCASES = {
@@ -795,7 +869,14 @@ const CHALLENGE_TESTCASES = {
   15:[{ label:"Case 1", input:"hum.Died:Fire()\nhrp.Position = Vector3.new(0,5,0)", expected:"Death burst triggered!\n(60 particles emitted)" }],
   16:[{ label:"Case 1", input:"partA and partB exist in workspace", expected:"Laser beam active!" }],
   17:[{ label:"Case 1", input:"MouseButton1 click\nRaycast hits NPC with Humanoid", expected:"Shooter setup!\nHIT! NPC" }],
-  18:[{ label:"Case 1", input:"CYCLE_SPEED = 60\nHeartbeat fires for 1 real second", expected:"Day/night cycle challenge!\nDay/night cycle running!\nTime: HH:MM (updates each second)" }],
+  18:[{ label:"Case 1", input:"CYCLE_SPEED = 60\nHeartbeat fires for 1 real second", expected:"Day/night cycle challenge!\nDay/night cycle running!" }],
+  19:[{ label:"Case 1", input:"n = 20", expected:"FizzBuzz challenge!\n1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz\n16\n17\nFizz\n19\nBuzz" }],
+  20:[{ label:"Case 1", input:"n = 10 terms", expected:"Fibonacci sequence!\n1\n1\n2\n3\n5\n8\n13\n21\n34\n55" }],
+  21:[{ label:"Case 1", input:"nums = {15, 3, 8, 42, 7, 19, 1, 56, 11, 24}", expected:"Stats challenge!\nMax: 56\nMin: 1\nSum: 186\nAvg: 18.6" }],
+  22:[{ label:"Case 1", input:'words = {"racecar","lua","level","roblox","radar"}', expected:"Palindrome check!\nracecar is a palindrome\nlua is not a palindrome\nlevel is a palindrome\nroblox is not a palindrome\nradar is a palindrome" }],
+  23:[{ label:"Case 1", input:"Counter:new(10), increment x3, decrement x1, reset", expected:"OOP Counter challenge!\nValue: 13\nValue: 12\nReset: 10" }],
+  24:[{ label:"Case 1", input:"numbers = {5, 2, 9, 1, 7, 3}", expected:"Bubble sort challenge!\nSorted: 1 2 3 5 7 9\nSwaps made: ..." }],
+  25:[{ label:"Case 1", input:'sentence = "the quick brown fox jumps over the lazy dog"', expected:"Word counter challenge!\nTotal words: 9\nLongest word: ..." }],
 };
 
 const API_ENTRIES = [
@@ -842,16 +923,16 @@ const API_ENTRIES = [
 ];
 
 const LEADERBOARD = [
-  { rank:1, name:"xXScriptLordXx", xp:27400, level:68, badge:"Wizard", avatar:"🧙", streak:112, isPro:true },
-  { rank:2, name:"DevQueen_Rose", xp:22850, level:57, badge:"Wizard", avatar:"👑", streak:74, isPro:true },
-  { rank:3, name:"LuauNinja_09", xp:19300, level:48, badge:"Wizard", avatar:"🥷", streak:55, isPro:true },
-  { rank:4, name:"RbxArchitectMike", xp:16100, level:40, badge:"Architect", avatar:"🏗️", streak:38, isPro:true },
-  { rank:5, name:"CFrameQueen", xp:12750, level:32, badge:"Engineer", avatar:"✨", streak:29, isPro:true },
-  { rank:6, name:"ScriptKing_Dev", xp:9800, level:25, badge:"Engineer", avatar:"⚙️", streak:18 },
-  { rank:7, name:"AlphaBuilderX", xp:7200, level:18, badge:"Builder", avatar:"🔨", streak:11 },
-  { rank:8, name:"DevHopeMisha", xp:5100, level:13, badge:"Builder", avatar:"🌟", streak:8 },
-  { rank:9, name:"LuauNewbie_42", xp:2600, level:7, badge:"Coder", avatar:"🎮", streak:4 },
-  { rank:10, name:"RoScriptJordan", xp:1200, level:3, badge:"Novice", avatar:"⭐", streak:2 },
+  { rank:1, name:"Jake M.", xp:27400, level:68, badge:"Wizard", avatar:"🧙", streak:112, isPro:true },
+  { rank:2, name:"Sarah K.", xp:22850, level:57, badge:"Wizard", avatar:"👑", streak:74, isPro:true },
+  { rank:3, name:"Ryan T.", xp:19300, level:48, badge:"Wizard", avatar:"🥷", streak:55, isPro:true },
+  { rank:4, name:"Marcus L.", xp:16100, level:40, badge:"Architect", avatar:"🏗️", streak:38, isPro:true },
+  { rank:5, name:"Emma R.", xp:12750, level:32, badge:"Engineer", avatar:"✨", streak:29, isPro:true },
+  { rank:6, name:"Tyler B.", xp:9800, level:25, badge:"Engineer", avatar:"⚙️", streak:18 },
+  { rank:7, name:"Priya S.", xp:7200, level:18, badge:"Builder", avatar:"🔨", streak:11 },
+  { rank:8, name:"Alex W.", xp:5100, level:13, badge:"Builder", avatar:"🌟", streak:8 },
+  { rank:9, name:"Jordan C.", xp:2600, level:7, badge:"Coder", avatar:"🎮", streak:4 },
+  { rank:10, name:"Chris P.", xp:1200, level:3, badge:"Novice", avatar:"⭐", streak:2 },
 ];
 
 const CATEGORIES = [
@@ -1417,24 +1498,74 @@ function LessonPage({ lesson, setPage, setShowUpgrade }) {
 function ChallengesPage({ setPage, setSelectedChallenge }) {
   const [diff, setDiff] = useState('All');
   const [tag, setTag] = useState('All');
+  const [pathFilter, setPathFilter] = useState(null);
   const diffs = ['All','Beginner','Intermediate','Advanced'];
   const allTags = ['All', ...new Set(CHALLENGES.flatMap(c=>c.tags))];
-  const filtered = CHALLENGES.filter(c => (diff==='All'||c.difficulty===diff) && (tag==='All'||c.tags.includes(tag)));
+  const tagFilter = pathFilter ? pathFilter : (tag === 'All' ? null : tag);
+  const filtered = CHALLENGES.filter(c =>
+    (diff==='All'||c.difficulty===diff) &&
+    (!tagFilter || c.tags.includes(tagFilter))
+  );
   return (
     <div style={{ padding:'32px' }}>
-      <div style={{ marginBottom:'32px' }}>
+      <div style={{ marginBottom:'28px' }}>
         <h1 className="oxanium" style={{ fontSize:'32px', fontWeight:'800', marginBottom:'8px' }}>⚡ Challenges</h1>
         <p style={{ color:'#888' }}>Real Roblox problems. Real Luau solutions. Earn XP for every submission.</p>
       </div>
 
-      <div style={{ display:'flex', gap:'32px', marginBottom:'32px', flexWrap:'wrap' }}>
-        {[['10','Total'],['1','Solved'],['9','Remaining'],['350','XP Available']].map(([v,l])=>(
-          <div key={l} style={{ textAlign:'center' }}>
-            <div className="oxanium" style={{ fontSize:'28px', fontWeight:'700', color:'#00D4FF' }}>{v}</div>
-            <div style={{ fontSize:'12px', color:'#888' }}>{l}</div>
-          </div>
-        ))}
+      {/* Learning Paths */}
+      <div style={{ marginBottom:'32px' }}>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'14px' }}>
+          <h2 className="oxanium" style={{ fontSize:'18px', fontWeight:'700' }}>📚 Learning Paths</h2>
+          {pathFilter && (
+            <button onClick={()=>setPathFilter(null)} style={{ fontSize:'12px', padding:'4px 12px', borderRadius:'999px', background:'rgba(0,212,255,0.1)', color:'#00D4FF', border:'1px solid rgba(0,212,255,0.3)', cursor:'pointer' }}>
+              Clear filter ✕
+            </button>
+          )}
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(180px, 1fr))', gap:'12px' }}>
+          {CATEGORIES.map(cat => {
+            const lessonCount = LESSONS.filter(l => l.category === cat.name).length;
+            const challengeCount = CHALLENGES.filter(c => c.tags.includes(cat.name)).length;
+            const isActive = pathFilter === cat.name;
+            return (
+              <div key={cat.name} onClick={()=>setPathFilter(isActive ? null : cat.name)}
+                style={{ background:isActive ? `rgba(${parseInt(cat.color.slice(1,3),16)||0},${parseInt(cat.color.slice(3,5),16)||212},${parseInt(cat.color.slice(5,7),16)||255},0.15)` : '#111216', border:`1px solid ${isActive?cat.color+'66':'#1e2028'}`, borderRadius:'12px', padding:'14px', cursor:'pointer', transition:'all 0.2s', display:'flex', flexDirection:'column' }}>
+                <div style={{ fontSize:'24px', marginBottom:'6px' }}>{cat.icon}</div>
+                <div style={{ fontWeight:'700', fontSize:'14px', color: isActive ? cat.color : '#e2e8f0', marginBottom:'2px' }}>{cat.name}</div>
+                <div style={{ fontSize:'11px', color:'#666', marginBottom: lessonCount > 0 ? '8px' : '0' }}>
+                  {lessonCount > 0 ? `${lessonCount} lesson${lessonCount!==1?'s':''}` : ''}
+                  {lessonCount > 0 && challengeCount > 0 ? ' · ' : ''}
+                  {challengeCount > 0 ? `${challengeCount} challenge${challengeCount!==1?'s':''}` : ''}
+                  {lessonCount === 0 && challengeCount === 0 ? 'Explore' : ''}
+                </div>
+                {lessonCount > 0 && (
+                  <div onClick={e=>{ e.stopPropagation(); setPage('learn'); }}
+                    style={{ marginTop:'auto', fontSize:'11px', color:'#00D4FF', fontWeight:'600', paddingTop:'6px', borderTop:'1px solid rgba(0,212,255,0.15)' }}>
+                    View Lessons →
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
+
+      {(() => {
+        const total = CHALLENGES.length;
+        const solved = CHALLENGES.filter(c => c.completed).length;
+        const xpAvail = CHALLENGES.reduce((s, c) => s + c.xp, 0);
+        return (
+          <div style={{ display:'flex', gap:'32px', marginBottom:'32px', flexWrap:'wrap' }}>
+            {[[String(total),'Total'],[String(solved),'Solved'],[String(total-solved),'Remaining'],[xpAvail.toLocaleString(),'XP Available']].map(([v,l])=>(
+              <div key={l} style={{ textAlign:'center' }}>
+                <div className="oxanium" style={{ fontSize:'28px', fontWeight:'700', color:'#00D4FF' }}>{v}</div>
+                <div style={{ fontSize:'12px', color:'#888' }}>{l}</div>
+              </div>
+            ))}
+          </div>
+        );
+      })()}
 
       {/* Filters */}
       <div style={{ display:'flex', gap:'16px', marginBottom:'24px', flexWrap:'wrap', alignItems:'center' }}>
@@ -1474,6 +1605,7 @@ function ChallengesPage({ setPage, setSelectedChallenge }) {
 }
 
 function ChallengePage({ challenge, setPage }) {
+  const { currentUser } = useAuth();
   const [code, setCode] = useState(challenge?.starter || '');
   const [showSolution, setShowSolution] = useState(false);
   const [leftTab, setLeftTab] = useState('description');
@@ -1496,10 +1628,24 @@ function ChallengePage({ challenge, setPage }) {
     return { out, errs };
   };
 
-  const handleRun = () => { setSubmitted(false); const { errs } = runCode(); setBottomTab(errs.length > 0 ? 'compilation' : 'results'); };
-  const handleSubmit = () => { setSubmitted(true); const { errs } = runCode(); setBottomTab(errs.length > 0 ? 'compilation' : 'results'); };
+  const [passed, setPassed] = useState(false);
 
-  const passed = submitted && errors.length === 0;
+  const handleRun = () => {
+    setSubmitted(false);
+    setPassed(false);
+    const { errs } = runCode();
+    setBottomTab(errs.length > 0 ? 'compilation' : 'results');
+  };
+
+  const handleSubmit = () => {
+    setSubmitted(true);
+    const { out, errs } = runCode();
+    setBottomTab(errs.length > 0 ? 'compilation' : 'results');
+    const tc0 = tcs[0];
+    const ok = errs.length === 0 && checkOutput(out, tc0?.expected || '');
+    setPassed(ok);
+  };
+
   const tc = tcs[tcIdx] || tcs[0];
 
   return (
@@ -1517,8 +1663,11 @@ function ChallengePage({ challenge, setPage }) {
         <div style={{ flex:1 }} />
         <button onClick={()=>setCode(challenge.starter)} style={{ background:'none', border:'1px solid #2a2d35', color:'#6b7280', padding:'5px 14px', borderRadius:'6px', fontSize:'12px', cursor:'pointer', transition:'all 0.15s' }}
           onMouseOver={e=>{e.currentTarget.style.borderColor='#4a4f5a';e.currentTarget.style.color='#ccc';}} onMouseOut={e=>{e.currentTarget.style.borderColor='#2a2d35';e.currentTarget.style.color='#6b7280';}}>↺ Reset</button>
-        <button className="btn-run" onClick={handleRun}>{Icons.play} Run</button>
-        <button className="btn-submit" onClick={handleSubmit}>✓ Submit</button>
+        {currentUser
+          ? <><button className="btn-run" onClick={handleRun}>{Icons.play} Run</button>
+              <button className="btn-submit" onClick={handleSubmit}>✓ Submit</button></>
+          : <button onClick={()=>setPage('login')} style={{ background:'linear-gradient(135deg,#00D4FF,#0099cc)', color:'#000', border:'none', borderRadius:'8px', padding:'6px 18px', fontWeight:'700', fontSize:'13px', cursor:'pointer' }}>🔐 Log in to Run</button>
+        }
       </div>
 
       {/* ── Main split ── */}
@@ -1859,8 +2008,20 @@ function ReferencePage() {
   );
 }
 
-function ProfilePage({ setShowUpgrade, setPage }) {
+function ProfilePage({ setShowUpgrade, setPage, avatarUrl, setAvatarUrl }) {
   const { currentUser, authLogout } = useAuth();
+  const fileInputRef = React.useRef(null);
+  const handleAvatarUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const url = ev.target.result;
+      localStorage.setItem('studiodex_avatar', url);
+      setAvatarUrl(url);
+    };
+    reader.readAsDataURL(file);
+  };
   const xp = currentUser?.xp ?? 1250;
   const level = currentUser?.level ?? 12;
   const maxXp = level * 200;
@@ -1873,7 +2034,13 @@ function ProfilePage({ setShowUpgrade, setPage }) {
     <div style={{ padding:'32px', maxWidth:'800px' }}>
       <h1 className="oxanium" style={{ fontSize:'32px', fontWeight:'800', marginBottom:'24px' }}>👤 My Profile</h1>
       <div style={{ display:'grid', gridTemplateColumns:'auto 1fr', gap:'24px', background:'#111216', border:'1px solid #1e2028', borderRadius:'16px', padding:'24px', marginBottom:'24px', alignItems:'center' }}>
-        <div style={{ width:'80px', height:'80px', borderRadius:'50%', background:'linear-gradient(135deg, #00D4FF, #0099cc)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'36px' }}>🧑‍💻</div>
+        <div style={{ position:'relative', width:'80px', height:'80px', cursor:'pointer' }} onClick={()=>fileInputRef.current?.click()} title="Click to change photo">
+          <div style={{ width:'80px', height:'80px', borderRadius:'50%', background:'linear-gradient(135deg, #00D4FF, #0099cc)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'36px', overflow:'hidden' }}>
+            {avatarUrl ? <img src={avatarUrl} alt="avatar" style={{ width:'100%', height:'100%', objectFit:'cover' }} /> : '🧑‍💻'}
+          </div>
+          <div style={{ position:'absolute', bottom:0, right:0, width:'24px', height:'24px', borderRadius:'50%', background:'#00D4FF', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'13px', border:'2px solid #0d0f14' }}>📷</div>
+          <input ref={fileInputRef} type="file" accept="image/*" style={{ display:'none' }} onChange={handleAvatarUpload} />
+        </div>
         <div>
           <div style={{ display:'flex', gap:'12px', alignItems:'center', flexWrap:'wrap', marginBottom:'4px' }}>
             <h2 className="oxanium" style={{ fontSize:'24px', fontWeight:'800' }}>{username}</h2>
@@ -1947,23 +2114,58 @@ function ProfilePage({ setShowUpgrade, setPage }) {
 }
 
 function LeaderboardPage() {
+  const { currentUser } = useAuth();
+  const userXp = currentUser?.xp ?? 0;
+  const userStreak = currentUser?.streak ?? 0;
+  const isPro = currentUser?.isPro ?? false;
   const [lbTab, setLbTab] = useState('Weekly');
 
+  const mulForTab = { Weekly: 1, Monthly: 4.2, 'All Time': 52 };
+  const xpMulForTab = { Weekly: 1, Monthly: 3.2, 'All Time': 17.5 };
+  const xpDecForTab = { Weekly: 0, Monthly: 0.08, 'All Time': 0.45 };
+
   const getData = () => {
-    if (lbTab === 'Weekly') return LEADERBOARD;
-    if (lbTab === 'Monthly') return LEADERBOARD.map((p,i) => ({
+    const mul = mulForTab[lbTab];
+    const xpMul = xpMulForTab[lbTab];
+    const xpDec = xpDecForTab[lbTab];
+    const baseList = LEADERBOARD.map((p, i) => ({
       ...p,
-      xp: Math.round(p.xp * (3.2 - i * 0.08)),
-      streak: Math.round(p.streak * 4.2),
+      xp: lbTab === 'Weekly' ? p.xp : Math.round(p.xp * (xpMul - i * xpDec)),
+      streak: lbTab === 'Weekly' ? p.streak : Math.round(p.streak * mul),
     }));
-    return LEADERBOARD.map((p,i) => ({
-      ...p,
-      xp: Math.round(p.xp * (17.5 - i * 0.45)),
-      streak: Math.round(p.streak * 52),
-    }));
+
+    if (currentUser) {
+      const uXP = lbTab === 'Weekly' ? (userXp || 0)
+        : lbTab === 'Monthly' ? Math.round((userXp || 0) * 4)
+        : Math.round((userXp || 0) * 48);
+      const uStreak = lbTab === 'Weekly' ? (userStreak || 0)
+        : lbTab === 'Monthly' ? Math.round((userStreak || 0) * 4)
+        : Math.round((userStreak || 0) * 48);
+      const userEntry = {
+        name: currentUser,
+        xp: uXP,
+        streak: uStreak,
+        level: Math.max(1, Math.floor((userXp || 0) / 500) + 1),
+        badge: isPro ? 'Pro' : 'Learner',
+        avatar: '🧑‍💻',
+        isPro,
+        isUser: true,
+      };
+      const withUser = [...baseList, userEntry]
+        .sort((a, b) => b.xp - a.xp)
+        .map((p, i) => ({ ...p, rank: i + 1 }));
+      return withUser;
+    }
+    return baseList;
   };
+
   const data = getData();
-  const subtitles = { Weekly:'Top XP earners this week.', Monthly:'Top XP earners this month.', 'All Time':'All-time XP hall of fame.' };
+  const userEntry = data.find(p => p.isUser);
+  const subtitles = {
+    Weekly: 'Top XP earners this week.',
+    Monthly: 'Top XP earners this month.',
+    'All Time': 'All-time XP hall of fame.',
+  };
 
   return (
     <div style={{ padding:'32px', maxWidth:'700px' }}>
@@ -1982,10 +2184,10 @@ function LeaderboardPage() {
       </div>
 
       <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
-        {data.map(p => (
+        {data.slice(0, 10).map(p => (
           <div key={p.rank} style={{
-            background: p.rank===1?'rgba(234,179,8,0.08)':p.rank===2?'rgba(148,163,184,0.05)':p.rank===3?'rgba(205,127,50,0.05)':'#111216',
-            border:`1px solid ${p.rank===1?'rgba(234,179,8,0.3)':p.rank===2?'rgba(148,163,184,0.2)':p.rank===3?'rgba(205,127,50,0.2)':'#1e2028'}`,
+            background: p.isUser ? 'rgba(0,212,255,0.08)' : p.rank===1?'rgba(234,179,8,0.08)':p.rank===2?'rgba(148,163,184,0.05)':p.rank===3?'rgba(205,127,50,0.05)':'#111216',
+            border:`1px solid ${p.isUser?'rgba(0,212,255,0.35)':p.rank===1?'rgba(234,179,8,0.3)':p.rank===2?'rgba(148,163,184,0.2)':p.rank===3?'rgba(205,127,50,0.2)':'#1e2028'}`,
             borderRadius:'12px', padding:'16px 20px', display:'flex', alignItems:'center', gap:'16px'
           }}>
             <div className="oxanium" style={{ fontSize:'22px', fontWeight:'800', width:'40px', color:p.rank===1?'#eab308':p.rank===2?'#94a3b8':p.rank===3?'#cd7f32':'#888' }}>
@@ -1995,22 +2197,34 @@ function LeaderboardPage() {
             <div style={{ flex:1 }}>
               <div style={{ fontWeight:'700', fontSize:'15px', marginBottom:'3px', display:'flex', alignItems:'center', gap:'6px' }}>
                 {p.name}
+                {p.isUser && <span style={{ fontSize:'10px', padding:'2px 6px', borderRadius:'4px', background:'rgba(0,212,255,0.15)', color:'#00D4FF', fontWeight:'700' }}>YOU</span>}
                 {p.isPro && <span className="badge badge-pro" style={{ fontSize:'10px' }}>⚡ PRO</span>}
               </div>
               <div style={{ fontSize:'12px', color:'#888' }}>Level {p.level} · {p.badge} · 🔥 {p.streak.toLocaleString()} streak</div>
             </div>
             <div style={{ textAlign:'right' }}>
-              <div className="oxanium" style={{ fontSize:'20px', fontWeight:'800', color:'#00D4FF' }}>{p.xp.toLocaleString()}</div>
+              <div className="oxanium" style={{ fontSize:'20px', fontWeight:'800', color: p.isUser?'#00D4FF':'#00D4FF' }}>{p.xp.toLocaleString()}</div>
               <div style={{ fontSize:'11px', color:'#888' }}>XP</div>
             </div>
           </div>
         ))}
       </div>
 
-      <div style={{ background:'rgba(0,212,255,0.05)', border:'1px solid rgba(0,212,255,0.15)', borderRadius:'12px', padding:'20px', marginTop:'24px', textAlign:'center' }}>
-        <div style={{ color:'#888', marginBottom:'4px', fontSize:'13px' }}>Your rank · {lbTab}</div>
-        <div className="oxanium" style={{ fontSize:'32px', fontWeight:'800', color:'#00D4FF', marginBottom:'4px' }}>#247</div>
-        <div style={{ fontSize:'14px', color:'#ccc' }}>Complete more lessons to climb the board!</div>
+      <div style={{ background: userEntry ? 'rgba(0,212,255,0.05)' : 'rgba(0,212,255,0.03)', border:'1px solid rgba(0,212,255,0.15)', borderRadius:'12px', padding:'20px', marginTop:'24px', textAlign:'center' }}>
+        {userEntry ? (
+          <>
+            <div style={{ color:'#888', marginBottom:'4px', fontSize:'13px' }}>Your rank · {lbTab}</div>
+            <div className="oxanium" style={{ fontSize:'32px', fontWeight:'800', color:'#00D4FF', marginBottom:'4px' }}>#{userEntry.rank}</div>
+            <div style={{ fontSize:'14px', color:'#ccc' }}>
+              {userEntry.xp.toLocaleString()} XP · {userEntry.rank <= 10 ? '🏆 Top 10!' : 'Keep climbing!'}
+            </div>
+          </>
+        ) : (
+          <>
+            <div style={{ color:'#888', marginBottom:'8px', fontSize:'13px' }}>Sign in to appear on the leaderboard</div>
+            <div style={{ fontSize:'14px', color:'#ccc' }}>Complete more lessons to climb the board!</div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -2388,6 +2602,7 @@ function StreakCalendar() {
 function App() {
   const [page, setPage] = useState('landing');
   const [currentUser, setCurrentUser] = useState(() => _getMe());
+  const [avatarUrl, setAvatarUrl] = useState(() => localStorage.getItem('studiodex_avatar') || null);
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [selectedChallenge, setSelectedChallenge] = useState(null);
   const [showUpgrade, setShowUpgrade] = useState(false);
@@ -2402,7 +2617,6 @@ function App() {
   const showSidebar = !noSidebarPages.includes(page);
 
   const navItems = [
-    { id:'learn', label:'Curriculum', icon:Icons.book },
     { id:'challenges', label:'Challenges', icon:Icons.zap },
     { id:'playground', label:'Playground', icon:Icons.terminal },
     { id:'reference', label:'API Reference', icon:Icons.search },
@@ -2422,7 +2636,7 @@ function App() {
       case 'challenge': return <ChallengePage challenge={selectedChallenge} setPage={setPage} />;
       case 'playground': return <PlaygroundPage />;
       case 'reference': return <ReferencePage />;
-      case 'profile': return <ProfilePage setShowUpgrade={setShowUpgrade} setPage={setPage} />;
+      case 'profile': return <ProfilePage setShowUpgrade={setShowUpgrade} setPage={setPage} avatarUrl={avatarUrl} setAvatarUrl={setAvatarUrl} />;
       case 'leaderboard': return <LeaderboardPage />;
       case 'pricing': return <PricingPage setShowUpgrade={setShowUpgrade} />;
       default: return <LandingPage setPage={setPage} />;
@@ -2516,10 +2730,12 @@ function App() {
               {navItems.find(n=>n.id===page)?.label || 'StudioDex'}
             </div>
             <div style={{ display:'flex', alignItems:'center', gap:'16px' }}>
-              <span style={{ fontSize:'13px', color:'#eab308' }}>🔥 {streak}-day streak</span>
-              <span style={{ fontSize:'13px', color:'#00D4FF', fontWeight:'700' }}>⭐ {xp} XP</span>
+              {currentUser && <span style={{ fontSize:'13px', color:'#eab308' }}>🔥 {streak}-day streak</span>}
+              {currentUser && <span style={{ fontSize:'13px', color:'#00D4FF', fontWeight:'700' }}>⭐ {xp} XP</span>}
               <div style={{ display:'flex', alignItems:'center', gap:'8px', cursor:'pointer' }} onClick={()=>setPage('profile')}>
-                <div style={{ width:'32px', height:'32px', borderRadius:'50%', background:'linear-gradient(135deg, #00D4FF, #0099cc)', display:'flex', alignItems:'center', justifyContent:'center' }}>🧑‍💻</div>
+                <div style={{ width:'32px', height:'32px', borderRadius:'50%', background:'linear-gradient(135deg, #00D4FF, #0099cc)', display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden' }}>
+                  {avatarUrl ? <img src={avatarUrl} alt="avatar" style={{ width:'100%', height:'100%', objectFit:'cover' }} /> : '🧑‍💻'}
+                </div>
                 {isPro && <span className="badge badge-pro" style={{ fontSize:'10px' }}>PRO</span>}
               </div>
             </div>
