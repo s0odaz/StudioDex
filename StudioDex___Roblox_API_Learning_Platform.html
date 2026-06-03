@@ -2668,10 +2668,10 @@ function App() {
     );
   }
 
-  const xp = currentUser?.xp ?? 1250;
-  const level = currentUser?.level ?? 12;
-  const streak = currentUser?.streak ?? 2;
-  const username = currentUser?.username ?? 'Dev';
+  const xp = currentUser?.xp ?? 0;
+  const level = currentUser?.level ?? 1;
+  const streak = currentUser?.streak ?? 0;
+  const username = currentUser?.username ?? 'Guest';
   const isPro = currentUser?.isPro ?? false;
 
   return (
@@ -2730,11 +2730,11 @@ function App() {
               {navItems.find(n=>n.id===page)?.label || 'StudioDex'}
             </div>
             <div style={{ display:'flex', alignItems:'center', gap:'16px' }}>
-              {currentUser && <span style={{ fontSize:'13px', color:'#eab308' }}>🔥 {streak}-day streak</span>}
-              {currentUser && <span style={{ fontSize:'13px', color:'#00D4FF', fontWeight:'700' }}>⭐ {xp} XP</span>}
-              <div style={{ display:'flex', alignItems:'center', gap:'8px', cursor:'pointer' }} onClick={()=>setPage('profile')}>
+              <span style={{ fontSize:'13px', color:'#eab308' }}>🔥 {streak}-day streak</span>
+              <span style={{ fontSize:'13px', color:'#00D4FF', fontWeight:'700' }}>⭐ {xp} XP</span>
+              <div style={{ display:'flex', alignItems:'center', gap:'8px', cursor:'pointer' }} onClick={()=>setPage(currentUser ? 'profile' : 'signup')}>
                 <div style={{ width:'32px', height:'32px', borderRadius:'50%', background:'linear-gradient(135deg, #00D4FF, #0099cc)', display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden' }}>
-                  {avatarUrl ? <img src={avatarUrl} alt="avatar" style={{ width:'100%', height:'100%', objectFit:'cover' }} /> : '🧑‍💻'}
+                  {avatarUrl ? <img src={avatarUrl} alt="avatar" style={{ width:'100%', height:'100%', objectFit:'cover' }} /> : '👤'}
                 </div>
                 {isPro && <span className="badge badge-pro" style={{ fontSize:'10px' }}>PRO</span>}
               </div>
