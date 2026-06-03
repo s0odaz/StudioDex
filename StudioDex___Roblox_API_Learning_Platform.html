@@ -571,6 +571,13 @@ class _Interp{
     g.def('RaycastParams',{new:()=>{const t=new LuaTable();t.set('FilterDescendantsInstances',new LuaTable());t.set('FilterType',null);t.set('IgnoreWater',false);return[t];}});
     g.def('Enum',new Proxy({},{get:(_,p)=>new Proxy({},{get:(_,s)=>p+'.'+s})}));
     g.def('SharedTable',{new:w(()=>new LuaTable())});
+    // Global print/warn
+    g.def('print', (...args) => { this.out('log', args.map(v => this._str(v)).join(' ')); return []; });
+    g.def('warn', (...args) => { this.out('warn', args.map(v => this._str(v)).join(' ')); return []; });
+    g.def('error', (msg) => { throw new _RunE(this._str(msg)); });
+    g.def('wait', w((t) => 0));
+    g.def('delay', w((t, f) => { this._call(f, []); return []; }));
+    g.def('tick', () => [Math.floor(Date.now()/1000)]);
   }
 
   _call(fn,args){
@@ -586,7 +593,7 @@ class _Interp{
       }
       if(fn&&typeof fn==='object'&&typeof fn.new==='function')return this._call(fn.new,args);
       if(fn instanceof LuaTable&&fn.mt){const cc=fn.mt.get('__call');if(cc)return this._call(cc,[fn,...args]);}
-      throw new _RunE(`attempt to call a ${this._type(fn)} value`);
+      throw new _RunE(`attempt to call a ${this._type(fn)} value (check if the function name is spelled correctly or if the service is available)`);
     }finally{this.depth--;}
   }
 
