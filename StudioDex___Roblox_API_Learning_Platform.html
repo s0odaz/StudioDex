@@ -2651,14 +2651,23 @@ function App() {
             <div className="oxanium" style={{ fontSize:'22px', fontWeight:'800', cursor:'pointer' }} onClick={()=>setPage('landing')}>
               <span style={{ color:'#00D4FF' }}>Studio</span>Dex
             </div>
-            <div style={{ display:'flex', gap:'12px' }}>
-              {currentUser
-                ? <button className="btn-primary" style={{ padding:'7px 20px', fontSize:'14px' }} onClick={()=>setPage('learn')}>Dashboard</button>
-                : <>
-                    <button className="btn-outline" style={{ padding:'7px 20px', fontSize:'14px' }} onClick={()=>setPage('login')}>Log In</button>
-                    <button className="btn-primary" style={{ padding:'7px 20px', fontSize:'14px' }} onClick={()=>setPage('signup')}>Sign Up Free</button>
-                  </>
-              }
+            <div style={{ display:'flex', alignItems:'center', gap:'20px' }}>
+              <div style={{ display:'flex', alignItems:'center', gap:'16px' }}>
+                <span style={{ fontSize:'13px', color:'#eab308' }}>🔥 {streak}</span>
+                <span style={{ fontSize:'13px', color:'#00D4FF', fontWeight:'700' }}>⭐ {xp}</span>
+              </div>
+              <div style={{ display:'flex', gap:'12px', alignItems:'center' }}>
+                {currentUser
+                  ? <button className="btn-primary" style={{ padding:'7px 20px', fontSize:'14px' }} onClick={()=>setPage('learn')}>Dashboard</button>
+                  : <>
+                      <button className="btn-outline" style={{ padding:'7px 20px', fontSize:'14px' }} onClick={()=>setPage('login')}>Log In</button>
+                      <button className="btn-primary" style={{ padding:'7px 20px', fontSize:'14px' }} onClick={()=>setPage('signup')}>Sign Up Free</button>
+                    </>
+                }
+                <div style={{ width:'32px', height:'32px', borderRadius:'50%', background:'linear-gradient(135deg, #00D4FF, #0099cc)', display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden', cursor:'pointer' }} onClick={()=>setPage(currentUser?'profile':'signup')}>
+                  {avatarUrl ? <img src={avatarUrl} alt="avatar" style={{ width:'100%', height:'100%', objectFit:'cover' }} /> : '👤'}
+                </div>
+              </div>
             </div>
           </div>
           <div style={{ paddingTop:'60px' }}>{renderPage()}</div>
