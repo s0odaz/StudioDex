@@ -923,16 +923,16 @@ const API_ENTRIES = [
 ];
 
 const LEADERBOARD = [
-  { rank:1, name:"Bloxycowaz", xp:27400, level:68, badge:"Wizard", avatar:"🧙", streak:112, isPro:true },
-  { rank:2, name:"Eli1eZ", xp:22850, level:57, badge:"Wizard", avatar:"👑", streak:74, isPro:true },
-  { rank:3, name:"Smif1ey", xp:19300, level:48, badge:"Wizard", avatar:"🥷", streak:55, isPro:true },
-  { rank:4, name:"Shakychn", xp:16100, level:40, badge:"Architect", avatar:"🏗️", streak:38, isPro:true },
-  { rank:5, name:"Aaronrtwo", xp:12750, level:32, badge:"Engineer", avatar:"✨", streak:29, isPro:true },
-  { rank:6, name:"Whatsupyallmothe", xp:9800, level:25, badge:"Engineer", avatar:"⚙️", streak:18 },
-  { rank:7, name:"Wolfaniac", xp:7200, level:18, badge:"Builder", avatar:"🔨", streak:11 },
-  { rank:8, name:"Polisdev", xp:5100, level:13, badge:"Builder", avatar:"🌟", streak:8 },
-  { rank:9, name:"Xiasertear3", xp:2600, level:7, badge:"Coder", avatar:"🎮", streak:4 },
-  { rank:10, name:"Kimuyo", xp:1200, level:3, badge:"Novice", avatar:"⭐", streak:2 },
+  { rank:1, name:"Bloxycowaz", xp:27400, level:68, badge:"Wizard", avatar:"https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=1735057184&size=150x150&format=Png&isCircular=true", streak:112, isPro:true },
+  { rank:2, name:"Eli1eZ", xp:22850, level:57, badge:"Wizard", avatar:"https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=1196139378&size=150x150&format=Png&isCircular=true", streak:74, isPro:true },
+  { rank:3, name:"Smif1ey", xp:19300, level:48, badge:"Wizard", avatar:"https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=3932271105&size=150x150&format=Png&isCircular=true", streak:55, isPro:true },
+  { rank:4, name:"Shakychn", xp:16100, level:40, badge:"Architect", avatar:"https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=482004017&size=150x150&format=Png&isCircular=true", streak:38, isPro:true },
+  { rank:5, name:"Aaronrtwo", xp:12750, level:32, badge:"Engineer", avatar:"https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=87009930&size=150x150&format=Png&isCircular=true", streak:29, isPro:true },
+  { rank:6, name:"Whatsupyallmothe", xp:9800, level:25, badge:"Engineer", avatar:"https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=1240683451&size=150x150&format=Png&isCircular=true", streak:18 },
+  { rank:7, name:"Wolfaniac", xp:7200, level:18, badge:"Builder", avatar:"https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=400368437&size=150x150&format=Png&isCircular=true", streak:11 },
+  { rank:8, name:"Polisdev", xp:5100, level:13, badge:"Builder", avatar:"https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=8617719531&size=150x150&format=Png&isCircular=true", streak:8 },
+  { rank:9, name:"Xiasertear3", xp:2600, level:7, badge:"Coder", avatar:"https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=708519451&size=150x150&format=Png&isCircular=true", streak:4 },
+  { rank:10, name:"Kimuyo", xp:1200, level:3, badge:"Novice", avatar:"https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=54089687&size=150x150&format=Png&isCircular=true", streak:2 },
 ];
 
 const CATEGORIES = [
@@ -2193,7 +2193,9 @@ function LeaderboardPage() {
             <div className="oxanium" style={{ fontSize:'22px', fontWeight:'800', width:'40px', color:p.rank===1?'#eab308':p.rank===2?'#94a3b8':p.rank===3?'#cd7f32':'#888' }}>
               {p.rank===1?'🥇':p.rank===2?'🥈':p.rank===3?'🥉':`#${p.rank}`}
             </div>
-            <div style={{ fontSize:'30px' }}>{p.avatar}</div>
+            <div style={{ width:'40px', height:'40px', borderRadius:'50%', background:'linear-gradient(135deg, #00D4FF, #0099cc)', display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden', fontSize:'24px' }}>
+              {p.avatar.startsWith('http') ? <img src={p.avatar} alt={p.name} style={{ width:'100%', height:'100%', objectFit:'cover' }} /> : p.avatar}
+            </div>
             <div style={{ flex:1 }}>
               <div style={{ fontWeight:'700', fontSize:'15px', marginBottom:'3px', display:'flex', alignItems:'center', gap:'6px' }}>
                 {p.name}
