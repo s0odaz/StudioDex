@@ -946,11 +946,11 @@ const CATEGORIES = [
 ];
 
 const BADGES_LIST = [
-  { name:"First Script", icon:"📝", earned:true, desc:"Write your first Luau script" },
-  { name:"Event Whisperer", icon:"📡", earned:true, desc:"Connect your first event" },
+  { name:"First Script", icon:"📝", earned:false, desc:"Write your first Luau script" },
+  { name:"Event Whisperer", icon:"📡", earned:false, desc:"Connect your first event" },
   { name:"CFrame Master", icon:"🎯", earned:false, desc:"Complete all CFrame lessons" },
   { name:"Data Keeper", icon:"💾", earned:false, desc:"Implement a DataStore system" },
-  { name:"7-Day Streak", icon:"🔥", earned:true, desc:"Log in 7 days in a row" },
+  { name:"7-Day Streak", icon:"🔥", earned:false, desc:"Log in 7 days in a row" },
   { name:"Challenge Crusher", icon:"⚡", earned:false, desc:"Complete 10 challenges" },
   { name:"API Explorer", icon:"🗺️", earned:false, desc:"View 50 API reference entries" },
   { name:"Wizard", icon:"🧙", earned:false, desc:"Reach level 50" },
@@ -2022,13 +2022,13 @@ function ProfilePage({ setShowUpgrade, setPage, avatarUrl, setAvatarUrl }) {
     };
     reader.readAsDataURL(file);
   };
-  const xp = currentUser?.xp ?? 1250;
-  const level = currentUser?.level ?? 12;
+  const xp = currentUser?.xp ?? 0;
+  const level = currentUser?.level ?? 1;
   const maxXp = level * 200;
   const username = currentUser?.username ?? 'Guest';
   const isPro = currentUser?.isPro ?? false;
-  const joinDate = currentUser?.createdAt ? new Date(currentUser.createdAt).toLocaleDateString('en-US', {month:'long', year:'numeric'}) : 'May 2026';
-  const streak = currentUser?.streak ?? 2;
+  const joinDate = currentUser?.createdAt ? new Date(currentUser.createdAt).toLocaleDateString('en-US', {month:'long', year:'numeric'}) : 'June 2026';
+  const streak = currentUser?.streak ?? 0;
 
   return (
     <div style={{ padding:'32px', maxWidth:'800px' }}>
@@ -2064,7 +2064,7 @@ function ProfilePage({ setShowUpgrade, setPage, avatarUrl, setAvatarUrl }) {
       </div>
 
       <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(160px, 1fr))', gap:'16px', marginBottom:'32px' }}>
-        {[[String(currentUser?.completedLessons?.length || 2),'Lessons Done'],['1','Challenges'],[String(xp),'XP Total'],[String(streak),'Day Streak'],['3','Badges']].map(([v,l])=>(
+        {[[String(currentUser?.completedLessons?.length || 0),'Lessons Done'],['0','Challenges'],[String(xp),'XP Total'],[String(streak),'Day Streak'],['0','Badges']].map(([v,l])=>(
           <div key={l} style={{ background:'#111216', border:'1px solid #1e2028', borderRadius:'10px', padding:'16px', textAlign:'center' }}>
             <div className="oxanium" style={{ fontSize:'26px', fontWeight:'800', color:'#00D4FF' }}>{v}</div>
             <div style={{ fontSize:'12px', color:'#888', marginTop:'4px' }}>{l}</div>
@@ -2677,9 +2677,9 @@ function App() {
     );
   }
 
-  const xp = currentUser?.xp ?? 1250;
-  const level = currentUser?.level ?? 12;
-  const streak = currentUser?.streak ?? 2;
+  const xp = currentUser?.xp ?? 0;
+  const level = currentUser?.level ?? 1;
+  const streak = currentUser?.streak ?? 0;
   const username = currentUser?.username ?? 'Guest';
   const isPro = currentUser?.isPro ?? false;
 
