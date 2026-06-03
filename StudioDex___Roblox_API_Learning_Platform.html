@@ -923,16 +923,16 @@ const API_ENTRIES = [
 ];
 
 const LEADERBOARD = [
-  { rank:1, name:"Bloxycowaz", xp:27400, level:68, badge:"Wizard", avatar:"https://www.roblox.com/headshot-thumbnail/image?userId=1735057184&width=150&height=150&format=png", streak:112, isPro:true },
-  { rank:2, name:"Eli1eZ", xp:22850, level:57, badge:"Wizard", avatar:"https://www.roblox.com/headshot-thumbnail/image?userId=1196139378&width=150&height=150&format=png", streak:74, isPro:true },
-  { rank:3, name:"Smif1ey", xp:19300, level:48, badge:"Wizard", avatar:"https://www.roblox.com/headshot-thumbnail/image?userId=3932271105&width=150&height=150&format=png", streak:55, isPro:true },
-  { rank:4, name:"Shakychn", xp:16100, level:40, badge:"Architect", avatar:"https://www.roblox.com/headshot-thumbnail/image?userId=482004017&width=150&height=150&format=png", streak:38, isPro:true },
-  { rank:5, name:"Aaronrtwo", xp:12750, level:32, badge:"Engineer", avatar:"https://www.roblox.com/headshot-thumbnail/image?userId=87009930&width=150&height=150&format=png", streak:29, isPro:true },
-  { rank:6, name:"Whatsupyallmothe", xp:9800, level:25, badge:"Engineer", avatar:"https://www.roblox.com/headshot-thumbnail/image?userId=1240683451&width=150&height=150&format=png", streak:18 },
-  { rank:7, name:"Wolfaniac", xp:7200, level:18, badge:"Builder", avatar:"https://www.roblox.com/headshot-thumbnail/image?userId=400368437&width=150&height=150&format=png", streak:11 },
-  { rank:8, name:"Polisdev", xp:5100, level:13, badge:"Builder", avatar:"https://www.roblox.com/headshot-thumbnail/image?userId=8617719531&width=150&height=150&format=png", streak:8 },
-  { rank:9, name:"Xiasertear3", xp:2600, level:7, badge:"Coder", avatar:"https://www.roblox.com/headshot-thumbnail/image?userId=708519451&width=150&height=150&format=png", streak:4 },
-  { rank:10, name:"Kimuyo", xp:1200, level:3, badge:"Novice", avatar:"https://www.roblox.com/headshot-thumbnail/image?userId=54089687&width=150&height=150&format=png", streak:2 },
+  { rank:1, name:"Bloxycowaz", xp:27400, level:68, badge:"Wizard", avatar:"https://tr.rbxcdn.com/30day/150/150/AvatarHeadshot/Png/Regular/68792033c46e01239999999999999999/150/150/AvatarHeadshot/Png/Regular" /* Bloxycowaz */, userId: 1735057184, streak:112, isPro:true },
+  { rank:2, name:"Eli1eZ", xp:22850, level:57, badge:"Wizard", avatar:"https://tr.rbxcdn.com/30day/150/150/AvatarHeadshot/Png/Regular/68792033c46e01239999999999999999/150/150/AvatarHeadshot/Png/Regular" /* Eli1eZ */, userId: 1196139378, streak:74, isPro:true },
+  { rank:3, name:"Smif1ey", xp:19300, level:48, badge:"Wizard", avatar:"https://tr.rbxcdn.com/30day/150/150/AvatarHeadshot/Png/Regular/68792033c46e01239999999999999999/150/150/AvatarHeadshot/Png/Regular" /* Smif1ey */, userId: 3932271105, streak:55, isPro:true },
+  { rank:4, name:"Shakychn", xp:16100, level:40, badge:"Architect", avatar:"https://tr.rbxcdn.com/30day/150/150/AvatarHeadshot/Png/Regular/68792033c46e01239999999999999999/150/150/AvatarHeadshot/Png/Regular" /* Shakychn */, userId: 482004017, streak:38, isPro:true },
+  { rank:5, name:"Aaronrtwo", xp:12750, level:32, badge:"Engineer", avatar:"https://tr.rbxcdn.com/30day/150/150/AvatarHeadshot/Png/Regular/68792033c46e01239999999999999999/150/150/AvatarHeadshot/Png/Regular" /* Aaronrtwo */, userId: 87009930, streak:29, isPro:true },
+  { rank:6, name:"Whatsupyallmothe", xp:9800, level:25, badge:"Engineer", avatar:"https://tr.rbxcdn.com/30day/150/150/AvatarHeadshot/Png/Regular/68792033c46e01239999999999999999/150/150/AvatarHeadshot/Png/Regular" /* Whatsupyallmothe */, userId: 1240683451, streak:18 },
+  { rank:7, name:"Wolfaniac", xp:7200, level:18, badge:"Builder", avatar:"https://tr.rbxcdn.com/30day/150/150/AvatarHeadshot/Png/Regular/68792033c46e01239999999999999999/150/150/AvatarHeadshot/Png/Regular" /* Wolfaniac */, userId: 400368437, streak:11 },
+  { rank:8, name:"Polisdev", xp:5100, level:13, badge:"Builder", avatar:"https://tr.rbxcdn.com/30day/150/150/AvatarHeadshot/Png/Regular/68792033c46e01239999999999999999/150/150/AvatarHeadshot/Png/Regular" /* Polisdev */, userId: 8617719531, streak:8 },
+  { rank:9, name:"Xiasertear3", xp:2600, level:7, badge:"Coder", avatar:"https://tr.rbxcdn.com/30day/150/150/AvatarHeadshot/Png/Regular/68792033c46e01239999999999999999/150/150/AvatarHeadshot/Png/Regular" /* Xiasertear3 */, userId: 708519451, streak:4 },
+  { rank:10, name:"Kimuyo", xp:1200, level:3, badge:"Novice", avatar:"https://tr.rbxcdn.com/30day/150/150/AvatarHeadshot/Png/Regular/68792033c46e01239999999999999999/150/150/AvatarHeadshot/Png/Regular" /* Kimuyo */, userId: 54089687, streak:2 },
 ];
 
 const CATEGORIES = [
@@ -2113,6 +2113,25 @@ function ProfilePage({ setShowUpgrade, setPage, avatarUrl, setAvatarUrl }) {
   );
 }
 
+function RobloxAvatar({ userId, username, size=40 }) {
+  const [src, setSrc] = React.useState(`https://www.roblox.com/headshot-thumbnail/image?userId=${userId}&width=150&height=150&format=png`);
+  return (
+    <div style={{ width:`${size}px`, height:`${size}px`, borderRadius:'50%', background:'linear-gradient(135deg, #1e2028, #111216)', display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden', border:'1px solid rgba(255,255,255,0.05)' }}>
+      <img 
+        src={src} 
+        alt={username} 
+        style={{ width:'100%', height:'100%', objectFit:'cover' }} 
+        onError={() => {
+          // If direct thumbnail fails, try the alternative rbxcdn format or fallback to initials
+          if (src.includes('roblox.com')) {
+            setSrc(`https://tr.rbxcdn.com/30day/150/150/AvatarHeadshot/Png/Regular/68792033c46e01239999999999999999/150/150/AvatarHeadshot/Png/Regular`);
+          }
+        }}
+      />
+    </div>
+  );
+}
+
 function LeaderboardPage() {
   const { currentUser } = useAuth();
   const userXp = currentUser?.xp ?? 0;
@@ -2193,9 +2212,13 @@ function LeaderboardPage() {
             <div className="oxanium" style={{ fontSize:'22px', fontWeight:'800', width:'40px', color:p.rank===1?'#eab308':p.rank===2?'#94a3b8':p.rank===3?'#cd7f32':'#888' }}>
               {p.rank===1?'🥇':p.rank===2?'🥈':p.rank===3?'🥉':`#${p.rank}`}
             </div>
-            <div style={{ width:'40px', height:'40px', borderRadius:'50%', background:'linear-gradient(135deg, #00D4FF, #0099cc)', display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden', fontSize:'24px' }}>
-              {p.avatar.startsWith('http') ? <img src={p.avatar} alt={p.name} style={{ width:'100%', height:'100%', objectFit:'cover' }} /> : p.avatar}
-            </div>
+            {p.userId ? (
+              <RobloxAvatar userId={p.userId} username={p.name} />
+            ) : (
+              <div style={{ width:'40px', height:'40px', borderRadius:'50%', background:'linear-gradient(135deg, #00D4FF, #0099cc)', display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden', fontSize:'24px' }}>
+                {p.avatar}
+              </div>
+            )}
             <div style={{ flex:1 }}>
               <div style={{ fontWeight:'700', fontSize:'15px', marginBottom:'3px', display:'flex', alignItems:'center', gap:'6px' }}>
                 {p.name}
